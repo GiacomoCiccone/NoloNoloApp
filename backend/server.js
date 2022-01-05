@@ -4,8 +4,9 @@
 //per usare il file di config basta questa dichiarazione all'inizio del file principale
 require("dotenv").config({ path: "./config.env" });
 
-const cors = require("cors"); // cors di merda fottiti
+const cors = require("cors");
 const express = require("express");
+const path = require("path");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 
@@ -18,6 +19,9 @@ const app = express();
 app.use(express.json({ limit: "5mb" }));
 app.use(cors());
 
+//serve static file from react app
+app.use(express.static(path.join(__dirname, './frontend/build')));
+
 //redirect verso routers
 app.use("/api/auth", require("./routers/auth")); //tutte le richieste ad /api/auth vengono mandate a /routers/auth
 app.use("/api/users", require("./routers/users"));
@@ -25,6 +29,12 @@ app.use("/api/pickups", require("./routers/pickups"));
 app.use("/api/cars", require("./routers/cars"));
 app.use("/api/rents", require("./routers/rents"));
 app.use("/api/kits", require("./routers/kits"));
+
+
+// redirect everything else to the frontend
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, './frontend/build', 'index.html'));
+});
 
 
 //L'errorHandler deve essere l'ultimo middleware

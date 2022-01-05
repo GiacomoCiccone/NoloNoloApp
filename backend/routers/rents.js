@@ -135,7 +135,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
                 return next(new ErrorResponse("Nessun noleggio trovato", 404))
             } else {
                 if (rentToUpdate.type === "period") {
-                    if (rentToUpdate.period.since > new Date() || changeState) {    //si modifica solo se non e' ancora iniziato o se si sta cambiando lo stato
+                    if (rentToUpdate.state !== "concluded" && (rentToUpdate.period.since > new Date() || changeState)) {    //si modifica solo se non e' finito e o non e' ancora iniziato o se si sta cambiando lo stato
                         rentToUpdate = await Rents.findByIdAndUpdate(req.params.id, { $set: req.body },
                             { new: true, runValidators: true, useFindAndModify: false });
                         rentoToUpdate.price = calcPrice(rentoToUpdate, rentToUpdate.rentObj.car); //ogni modifica viene ricalcolato il prezzo
@@ -144,7 +144,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
                         return next(new ErrorResponse("Non si può eliminare un noleggio già iniziato", 400))
                     }
                 } else {
-                    if (rentToUpdate.classic.from > new Date() || changeState) { //si modifica solo se non e' ancora iniziato o se si sta cambiando lo stato
+                    if (rentToUpdate.state !== "concluded" && (rentToUpdate.classic.from > new Date() || changeState)) { //si modifica solo se non e' ancora iniziato o se si sta cambiando lo stato
                         rentToUpdate = await Rents.findByIdAndUpdate(req.params.id, { $set: req.body },
                             { new: true, runValidators: true, useFindAndModify: false });
                             rentoToUpdate.price = calcPrice(rentoToUpdate, rentToUpdate.rentObj.car);   //ogni modifica viene ricalcolato il prezzo
