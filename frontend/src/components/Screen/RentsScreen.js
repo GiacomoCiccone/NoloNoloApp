@@ -1,11 +1,11 @@
 import React from 'react'
 
-const SettingsScreen = () => {
+const RentsScreen = () => {
     return (
         <div>
-            v
+            
         </div>
     )
 }
 
-export default SettingsScreen
+export default RentsScreen

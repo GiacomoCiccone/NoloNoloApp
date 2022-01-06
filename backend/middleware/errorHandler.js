@@ -9,14 +9,14 @@ const errorHandler = (err, req, res, next) => {
 
   //duplicate key in mongodb
   if (err.code === 11000) {
-    const message = `Duplicate Field Value Enter`;
+    const message = `Spiacenti, i dati inseriti non sono disponibili.`;
     //bad request
     error = new ErrorResponse(message, 400);
   }
 
   //oggetto non trovato in mongodb
   if (err.name === "CastError") {
-    const message = `Resource not found`;
+    const message = `Nessun risultato trovato`;
     //bad request
     error = new ErrorResponse(message, 404);
   }
@@ -35,7 +35,7 @@ const errorHandler = (err, req, res, next) => {
   error.statusCode === 404
     ? (emoji = " 😢")
     : error.statusCode === 400
-    ? (emoji = " 😠")
+    ? (emoji = " 😔")
     : (emoji = " ❌");
 
   //altrimenti e' un errore del server

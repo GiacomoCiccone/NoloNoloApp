@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema(
     address: {
       city: String,
       via: String,
-      postalCode: Number,
+      postal_code: Number,
     },
     birth: {
       type: Date,

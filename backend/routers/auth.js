@@ -9,14 +9,9 @@ var router = express.Router();
 
 //register
 router.route("/register").post(async (req, res, next) => {
-  const { username, email, password } = req.body;
 
   try {
-    const user = new Users({
-      username,
-      email,
-      password,
-    });
+    const user = new Users(req.body);
 
     //generiamo un token da mandare al client per l'autenticazione
     const authToken = user.getSignedToken();
@@ -31,7 +26,7 @@ router.route("/register").post(async (req, res, next) => {
     res.status(201).json({
       success: true,
       data: {
-        token: authToken,
+        authToken: authToken,
         userInfo: { ...info }
       }
     });
@@ -78,7 +73,7 @@ router.route("/registerAdmin").post(async (req, res, next) => {
       .json({
         success: true,
         data: {
-          token: authToken,
+          authToken: authToken,
           userInfo: { ...info }
         }
       });
@@ -120,7 +115,7 @@ router.route("/login").post(async (req, res, next) => {
       .json({
         success: true,
         data: {
-          token: authToken,
+          authToken: authToken,
           userInfo: { ...info }
         }
       });
@@ -168,7 +163,7 @@ router.route("/loginAdmin").post(async (req, res, next) => {
       .json({
         success: true,
         data: {
-          token: authToken,
+          authToken: authToken,
           userInfo: { ...info }
         }
       });

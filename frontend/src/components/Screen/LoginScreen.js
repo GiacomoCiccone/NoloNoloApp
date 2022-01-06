@@ -29,6 +29,7 @@ const LoginScreen = (props) => {
 
     //form
     const onSubmit = (data) => {
+        if (isLoading) return
         dispatch(loginAction(data.login_email, data.login_password));
     };
 
@@ -76,7 +77,7 @@ const LoginScreen = (props) => {
                     <Spin spinning={isLoading}>
                         <div className="p-5">
                             {/* Email */}
-                        <div className="pt-5 flex-col flex">
+                        <div className="pt-5">
                             <label
                                 htmlFor="login_email"
                                 className="font-medium"
@@ -127,7 +128,7 @@ const LoginScreen = (props) => {
                                     autoComplete="off"
                                     type={passwordVisible ? "text" : "password"}
                                     {...register("login_password", {
-                                        required: "Inserisci una password",
+                                        required: "Password richiesta",
                                     })}
                                     className={`input ${
                                         errors.login_password
@@ -179,7 +180,6 @@ const LoginScreen = (props) => {
                         <div className="mt-8">
                             {/* Accedi */}
                             <input
-                                disabled={isLoading}
                                 aria-label="Accedi al tuo account"
                                 type="submit"
                                 value="Accedi"

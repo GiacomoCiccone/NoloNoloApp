@@ -14,11 +14,13 @@ import LoginScreen from "./components/Screen/LoginScreen";
 import NotFoundScreen from "./components/Screen/NotFoundScreen";
 import ProductScreen from "./components/Screen/ProductScreen";
 import RegisterScreen from "./components/Screen/RegisterScreen";
+import RentsScreen from "./components/Screen/RentsScreen";
 import ResetPasswordScreen from "./components/Screen/ResetPasswordScreen";
-import SettingsScreen from "./components/Screen/SettingsScreen";
+
 import Navbar from "./components/Navbar";
 import NavbarSpace from "./components/NavbarSpace";
 import ScrollToTop from "./utils/ScrollToTop";
+
 
 function App() {
     return (
@@ -45,8 +47,8 @@ function App() {
                         component={ResetPasswordScreen}
                     />
 
-                    <Route exact path="/settings" component={SettingsScreen} />
                     <Route exact path="/account" component={AccountScreen} />
+                    <Route exact path="/rents" component={RentsScreen} />
 
                     <Route exact path="/catalog" component={CatalogScreen} />
                     <Route

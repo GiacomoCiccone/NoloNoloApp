@@ -8,29 +8,24 @@ import {
     REGISTER_REQUEST,
 } from "./types";
 
-export const registerAction =
-    (username, email, password) => async (dispatch) => {
-        //inizia la richiesta di registrazione
-        dispatch({ type: REGISTER_REQUEST, payload: {} });
+export const registerAction = (userInfo) => async (dispatch) => {
+    //inizia la richiesta di registrazione
+    dispatch({ type: REGISTER_REQUEST, payload: {} });
 
-        try {
-            const { data } = await axios.post("/api/auth/register", {
-                username,
-                email,
-                password,
-            });
+    try {
+        const { data } = await axios.post("/api/auth/register", userInfo);
 
-            dispatch({
-                type: REGISTER_SUCCESS,
-                payload: data.data,
-            });
-        } catch (error) {
-            dispatch({
-                type: REGISTER_FAIL,
-                payload: error.response.data.error,
-            });
-        }
-    };
+        dispatch({
+            type: REGISTER_SUCCESS,
+            payload: data.data,
+        });
+    } catch (error) {
+        dispatch({
+            type: REGISTER_FAIL,
+            payload: error.response.data.error,
+        });
+    }
+};
 
 export const loginAction = (email, password) => async (dispatch) => {
     dispatch({ type: LOGIN_REQUEST, payload: {} });
