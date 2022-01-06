@@ -16,7 +16,7 @@ const Navbar = () => {
     return (
         <header
             style={{ padding: "0% 4%" }}
-            className="fixed h-20 top-0 w-full bg-neutral flex justify-between items-center shadow-md"
+            className="fixed h-20 top-0 w-full bg-neutral flex justify-between items-center shadow-md z-50"
         >
             {/* Logo */}
             <div>

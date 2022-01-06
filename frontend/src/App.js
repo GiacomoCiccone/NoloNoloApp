@@ -18,11 +18,15 @@ import ResetPasswordScreen from "./components/Screen/ResetPasswordScreen";
 import SettingsScreen from "./components/Screen/SettingsScreen";
 import Navbar from "./components/Navbar";
 import NavbarSpace from "./components/NavbarSpace";
+import ScrollToTop from "./utils/ScrollToTop";
 
 function App() {
     return (
         <Router>
             <div>
+                {/* Riporta lo scroll sopra a tutto */}
+                <ScrollToTop />
+
                 <Navbar />
                 <NavbarSpace />
                 <Switch>

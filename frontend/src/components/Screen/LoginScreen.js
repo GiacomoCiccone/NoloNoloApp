@@ -96,7 +96,7 @@ const LoginScreen = (props) => {
                                     } w-full`}
                                     id="login_email"
                                     {...register("login_email", {
-                                        required: "Email-richiesta",
+                                        required: "Email richiesta",
                                     })}
                                     placeholder="Inserisci l'e-mail"
                                 />
@@ -106,7 +106,7 @@ const LoginScreen = (props) => {
                             {errors.login_email && (
                                 <div className="mt-2">
                                     <span role="alert" className=" text-error">
-                                        Per favore inserisci la tua mail
+                                        {errors.login_email.message}
                                     </span>
                                 </div>
                             )}
@@ -170,7 +170,7 @@ const LoginScreen = (props) => {
                             {errors.login_password && (
                                 <div className="mt-2">
                                     <span role="alert" className="text-error">
-                                        Per favore inserisci la tua password
+                                       {errors.login_password.message}
                                     </span>
                                 </div>
                             )}
