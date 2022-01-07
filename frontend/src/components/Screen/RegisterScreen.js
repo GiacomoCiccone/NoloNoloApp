@@ -777,6 +777,7 @@ const RegisterScreen = (props) => {
                                         )}
                                     </div>
                                 </div>{" "}
+                                
                                 {/* Sesso */}
                                 <div className="pt-5">
                                     <label

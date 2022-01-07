@@ -148,7 +148,7 @@ const ForgotPasswordScreen = (props) => {
                             </div>
 
                             <div className="mt-8">
-                                {/* Accedi */}
+                                {/* invia */}
                                 <input
                                     aria-label="Recupera password"
                                     type="submit"

@@ -2,7 +2,7 @@ import React from 'react'
 
 const NavbarSpace = () => {
     return (
-        <div className='mt-20'>
+        <div className='h-20'>
             
         </div>
     )

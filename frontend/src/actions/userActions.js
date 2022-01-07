@@ -6,6 +6,9 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     REGISTER_REQUEST,
+    UPDATE_REQUEST,
+    UPDATE_SUCCESS,
+    UPDATE_FAIL,
 } from "./types";
 
 export const registerAction = (userInfo) => async (dispatch) => {
@@ -47,3 +50,29 @@ export const loginAction = (email, password) => async (dispatch) => {
         });
     }
 };
+
+export const updateAction = (userInfo, userId, token) => async (dispatch) => {
+    //inizia la richiesta di update
+    dispatch({ type: UPDATE_REQUEST, payload: {} });
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      const { data } = await axios.put(`/api/users/${userId}${userInfo.passwordOld ? "?password=true" :''}`, userInfo, config);
+
+  
+      dispatch({ type: UPDATE_SUCCESS, payload: data.data });
+  
+      return Promise.resolve();
+    } catch (error) {
+      dispatch({
+        type: UPDATE_FAIL,
+        payload: error.response.data.error,
+      });
+
+      return Promise.reject();
+    }
+  };

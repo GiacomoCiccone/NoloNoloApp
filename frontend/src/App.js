@@ -31,6 +31,7 @@ function App() {
 
                 <Navbar />
                 <NavbarSpace />
+                
                 <Switch>
                     <Route exact path="/" component={HomeScreen} />
 
