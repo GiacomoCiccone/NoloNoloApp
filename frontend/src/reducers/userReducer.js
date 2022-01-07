@@ -10,6 +10,9 @@ import {
     UPDATE_REQUEST,
     UPDATE_SUCCESS,
     UPDATE_FAIL,
+    DELETE_REQUEST,
+    DELETE_SUCCESS,
+    DELETE_FAIL
 } from "../actions/types";
 
 const initalState = {
@@ -37,6 +40,7 @@ export default function userReducer(state = initalState, action) {
                 error: null,
             };
         case UPDATE_REQUEST:
+        case DELETE_REQUEST:
             return {
                 ...state,
                 isLoading: true,
@@ -52,6 +56,7 @@ export default function userReducer(state = initalState, action) {
                 error: null,
             };
         case LOGOUT_SUCCESS:
+        case DELETE_SUCCESS:
             return {
                 ...state,
                 authToken: null,
@@ -74,6 +79,7 @@ export default function userReducer(state = initalState, action) {
                 error: action.payload,
             };
         case UPDATE_FAIL:
+        case DELETE_FAIL:
             return {
                 ...state,
                 isLoading: false,

@@ -3,6 +3,8 @@ const express = require("express");
 var router = express.Router();
 const { protect } = require("../middleware/auth");
 const Users = require("../models/Users");
+const Rents = require("../models/Rents")
+const mongoose = require("mongoose");
 const ErrorResponse = require("../utils/errorResponse");
 
 //CRUD
@@ -127,15 +129,14 @@ router.route("/:id").delete(protect, async (req, res, next) => {
     ) {
         try {
             //cerchiamo tutti i rent relativi a tale utente
-            const history = Rents.find({
-                customer: mongoose.Schema.Types.ObjectId(req.params.id),
+            const history = await Rents.find({
+                customer: mongoose.Types.ObjectId(req.params.id),
             });
-
-            if (history.length > 0) {
+            if (history.length === 0) {
                 //elimina solo se non ha rent effettuati, altrimenti si disattiva l'account
                 await Users.findByIdAndDelete(req.params.id);
             } else {
-                await Users.findByIdAndUpdate({
+                await Users.findByIdAndUpdate(req.params.id, {
                     $set: {
                         disabled: true,
                         email: "disabled",

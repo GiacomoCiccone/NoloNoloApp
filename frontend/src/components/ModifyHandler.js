@@ -2,10 +2,11 @@ import React from "react";
 
 const ModifyHandler = (props) => {
     return (
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center">
             <h2 style={{ margin: "0" }} className="text-xl">
                 {props.isModifing === props.type ? props.altTitle : props.title}
             </h2>
+            {props.tooltip && props.tooltip}
             <button
                 disabled={props.isModifing && props.isModifing !== props.type}
                 aria-label={props.ariaLabel}
@@ -20,7 +21,7 @@ const ModifyHandler = (props) => {
                         props.isModifing === props.type
                             ? "x-square text-error"
                             : "pencil-square"
-                    }`}
+                    } ml-4`}
                 />
             </button>
         </div>

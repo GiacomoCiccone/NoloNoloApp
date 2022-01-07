@@ -6,6 +6,7 @@ const checkAvaiability = require("../utils/CheckAvaiability");
 const ErrorResponse = require("../utils/errorResponse");
 const Cars = require("../models/Cars");
 const Rents = require("../models/Rents")
+const mongoose = require("mongoose");
 
 //CRUD
 
@@ -64,7 +65,7 @@ router.route("/").get(async (req, res, next) => {
       for (let i = 0; i < data.length; i++) {
         const car = data[i];
         //cerchiamo tutti i rent relativi a tale macchina
-        const history = Rents.find({'rentObj.car': mongoose.Schema.Types.ObjectId(car._id)})
+        const history = Rents.find({'rentObj.car': mongoose.Types.ObjectId(car._id)})
         
         //vede se e' disponibile per le date
         if (history.length > 0 && !checkAvaiability(history, car, dateRange) && car.place === req.query.place) {
@@ -153,7 +154,7 @@ router.route("/:id").delete(protect, async (req, res, next) => {
         return next(new ErrorResponse("Modello di auto non trovato", 404));
       }
 
-      const history = Rents.find({'rentObj.car': mongoose.Schema.Types.ObjectId(req.params.id)})
+      const history = Rents.find({'rentObj.car': mongoose.Types.ObjectId(req.params.id)})
 
       //se e' stata noleggiata almeno una volta si rende non disponibile
       if (history.length > 0) {

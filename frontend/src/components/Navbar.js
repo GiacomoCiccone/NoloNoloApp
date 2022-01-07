@@ -28,6 +28,7 @@ const Navbar = () => {
 
     const loggedMenu = (
         <Menu
+            id="navbarMenu"
             mode="inline"
             selectedKeys={[currentDropDownSelected]}
             style={{
@@ -169,10 +170,11 @@ const Navbar = () => {
                                     visible={dropDownOpen}
                                     onVisibleChange={(visible) =>
                                         setDropDownOpen(visible)
+                                    
                                     }
                                 >
                                     <button
-                                    aria-label={`Ciao ${userInfo.first_name}. Clicca per aprire il menù.`}
+                                    aria-label={`Ciao ${userInfo.first_name}. ${dropDownOpen ? "Clicca per chiudere il menù" : "Clicca per aprire il menù"}`}
                                         type="button"
                                         className="btn rounded-full btn-primary"
                                     >

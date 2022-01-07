@@ -52,11 +52,7 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Per favore fornisci informazioni sul genere"]
     },
     //preferenze
-    preferences: [String],
-    noloPoints: {
-      type: Number,
-      default: 0,
-    },
+    preferences: [String],  //sportiva - elegante - famiglia - viaggio
     //commenti aggiunti da admin
     comments: {
       type: Array,

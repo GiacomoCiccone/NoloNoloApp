@@ -9,6 +9,9 @@ import {
     UPDATE_REQUEST,
     UPDATE_SUCCESS,
     UPDATE_FAIL,
+    DELETE_REQUEST,
+    DELETE_SUCCESS,
+    DELETE_FAIL
 } from "./types";
 
 export const registerAction = (userInfo) => async (dispatch) => {
@@ -70,6 +73,31 @@ export const updateAction = (userInfo, userId, token) => async (dispatch) => {
     } catch (error) {
       dispatch({
         type: UPDATE_FAIL,
+        payload: error.response.data.error,
+      });
+
+      return Promise.reject();
+    }
+  };
+
+  export const deleteAction = (userId, token) => async (dispatch) => {
+    //inizia la richiesta di update
+    dispatch({ type: DELETE_REQUEST, payload: {} });
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    try {
+      await axios.delete(`/api/users/${userId}`, config);
+
+      dispatch({ type: DELETE_SUCCESS });
+  
+      return Promise.resolve();
+    } catch (error) {
+      dispatch({
+        type: DELETE_FAIL,
         payload: error.response.data.error,
       });
 
