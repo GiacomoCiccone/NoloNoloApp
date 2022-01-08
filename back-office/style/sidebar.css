@@ -1,0 +1,36 @@
+#sidebar {
+    height: 100vh;
+    z-index: 1;
+    background: #7386D5;
+    color: #fff;
+    flex: 1 1 10%;
+}
+
+#sidebar .sidebar-header {
+    padding: 2vw;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+    padding: 2vw 0;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul li a {
+    padding: 1vw;
+    padding-left: 2vw;
+    font-size: 1.1;
+    display: block;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+#sidebar ul li a:hover {
+    color: #7386D5;
+    background: #fff;
+}
+
+#sidebar ul li a:selected {
+    color: #FFFFFF;
+    background: #4f5c94;
+}

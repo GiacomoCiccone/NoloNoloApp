@@ -1,0 +1,58 @@
+#elements {
+    display: grid;
+    grid-template-columns: 1fr;  
+    grid-template-rows: 1fr 1fr 1fr 1fr;  
+    background-color: white;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.ui /*The outer div of the site*/
+{
+    padding: 1vw;
+    background-color: white;
+    vertical-align: middle;
+    height: 100%;
+    width: 100%;
+}
+
+#list-wrapper{
+    padding: 1vw;
+    height: 90%;
+    width: 100%;
+}
+
+.entry {
+    padding: 1vw;
+    position: relative;
+    border-color: rgba(204, 208, 209, 0.7);
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 1vw;
+}
+
+.entry img{
+    max-height: 15vh;
+    max-width: 10vw;
+    display: block;
+    margin: auto;
+}
+
+.entry .entry-text {
+    font-size: 1em;
+    white-space: nowrap; 
+    width: 50vw; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.entry .entry-body {
+    position: relative;
+}
+
+.entry:hover {
+    background-color: lightgrey;
+}
