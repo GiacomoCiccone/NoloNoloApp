@@ -74,7 +74,7 @@ const ForgotPasswordScreen = (props) => {
                 minHeight: "640px",
                 height: "calc(100vh - 5rem)",
                 backgroundImage:
-                    "url(https://images.unsplash.com/photo-1570342457566-0002e712eda3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
+                    "url(https://images.unsplash.com/photo-1553949333-0510da388b82?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
             }}
             className="flex justify-center bg-cover relative"
         >

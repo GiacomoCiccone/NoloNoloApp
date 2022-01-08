@@ -218,8 +218,8 @@ const AccountScreen = (props) => {
     }, [error, dispatch]);
 
     const deleteAccount = () => {
-        dispatch(deleteAction(userInfo._id, authToken))
-    }
+        dispatch(deleteAction(userInfo._id, authToken));
+    };
 
     const handleSetIsModifying = (val) => setIsModifing(val);
 
@@ -237,7 +237,7 @@ const AccountScreen = (props) => {
                     style={{
                         minHeight: "calc(100vh - 5rem)",
                         backgroundImage:
-                            "url(https://images.unsplash.com/photo-1570342457566-0002e712eda3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
+                            "url(https://images.unsplash.com/photo-1552083974-186346191183?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
                     }}
                     className="flex justify-center bg-cover relative"
                 >
@@ -1941,7 +1941,10 @@ const AccountScreen = (props) => {
                                         ></path>
                                     </svg>
                                     <label aria-label="Nel caso in cui avessi già effettuato qualche noleggio con questo account, manterremo le informazioni sui tuoi noleggi.">
-                                        Nel caso in cui avessi già effettuato qualche noleggio con questo account, manterremo le informazioni sui tuoi noleggi.
+                                        Nel caso in cui avessi già effettuato
+                                        qualche noleggio con questo account,
+                                        manterremo le informazioni sui tuoi
+                                        noleggi.
                                     </label>
                                 </div>
                             </div>

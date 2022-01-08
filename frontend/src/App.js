@@ -20,6 +20,7 @@ import ResetPasswordScreen from "./components/Screen/ResetPasswordScreen";
 import Navbar from "./components/Navbar";
 import NavbarSpace from "./components/NavbarSpace";
 import ScrollToTop from "./utils/ScrollToTop";
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -60,6 +61,8 @@ function App() {
 
                     <Route component={NotFoundScreen} />
                 </Switch>
+
+                <Footer />
             </div>
         </Router>
     );
