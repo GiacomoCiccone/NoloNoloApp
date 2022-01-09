@@ -1,0 +1,47 @@
+[
+    {
+        "id" : "0", 
+        "car" : {
+            "model" : "Dorime",
+            "category" : "Latire",
+            "power" : "150cc",
+            "description" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent interdum pulvinar libero et porttitor. Praesent eget metus dui. Donec in nisl ac sapien malesuada pretium sed at odio. Quisque placerat id diam nec scelerisque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ac semper lorem, eget facilisis felis. In vel dolor lobortis, pellentesque lectus id, porta leo. Nunc efficitur consectetur turpis. Nullam magna augue, suscipit non justo a, ornare lacinia lectus. Proin tempus luctus auctor. Mauris finibus, tortor et pretium pellentesque, lectus nisi tempus tortor, eu eleifend massa libero vitae turpis."
+        },
+        "image" : "https://i1.sndcdn.com/artworks-QFM1GYM1XeVaeV50-YaWRkg-t500x500.jpg",
+        "rent" : "expired"
+    },
+    {
+        "id" : "1", 
+        "car" : {
+            "model" : "Tom Holland",
+            "category" : "gas",
+            "power" : "50cc",
+            "description" : "È meglio toby maguire"
+        },
+        "image" : "imgs/spiderman.jpg",
+        "rent" : "running"
+    },
+    {
+        "id" : "2", 
+        "car" : {
+            "model" : "Gattino",
+            "category" : "gas",
+            "power" : "50cc",
+            "description" : "Un bel gattino carino"
+        },
+        "image" : "https://www.laryeilmondodeigattini.it/app/uploads/2021/03/determinare_eta-1024x684.jpg",
+        "rent" : "running"
+    },
+    {
+        "id" : "3", 
+        "car" : {
+            "model" : "Cagnetto",
+            "category" : "gas",
+            "power" : "50cc",
+            "description" : "Un bel cagnetto carino"
+        },
+        "image" : "https://www.viagginews.com/wp-content/uploads/2019/01/cane.jpg",
+        "rent" : "running"
+    }
+
+]

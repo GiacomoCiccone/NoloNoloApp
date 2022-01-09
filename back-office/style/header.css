@@ -1,0 +1,32 @@
+#content-header {
+    display: flex;
+    flex-direction: row;
+    gap: 1vw;
+    padding: 1vw;
+}
+
+#search-keyword {
+    flex: 90%; 
+    display: flex;
+    flex-direction: row; 
+    gap: 1vw;
+}
+
+.search-btn{
+    flex: 1;
+    float: right;
+}
+
+.separator {
+    flex: 10;
+}
+
+#login-button {
+    float: right;
+}
+
+
+#add-button {
+    flex: 20%; 
+    float: left;
+}

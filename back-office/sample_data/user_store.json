@@ -1,0 +1,54 @@
+{
+    "users" : [
+        {
+            "id" : "0", 
+            "personal_info" : {
+                "name" : "Alex",
+                "surname" : "Dawkins"
+            },
+            "account_info" : {
+                "email" : "giancarlo@godimento.com",
+                "pw" : "kittyBang89"
+            },
+            "position" : "user"
+        },
+        {
+            "id" : "1", 
+            "personal_info" : {
+                "name" : "Jake",
+                "surname" : "Jacobson"
+            },
+            "account_info" : {
+                "email" : "jakey@email.com",
+                "pw" : "noMoreHeroes3"
+            },
+            "position" : "user"
+        }
+    ],
+    "employees" : [
+        {
+            "id" : "0", 
+            "personal_info" : {
+                "name" : "Angelo",
+                "surname" : "Galavotti"
+            },
+            "account_info" : {
+                "email" : "agalavottib@gmail.com",
+                "pw" : "password123"
+            },
+            "position" : "employee"
+        },
+        {
+            "id" : "1", 
+            "personal_info" : {
+                "name" : "Giacomo",
+                "surname" : "Ciccone"
+            },
+            "account_info" : {
+                "email" : "agentedrif@gmail.com",
+                "pw" : "password123"
+            },
+            "position" : "manager"
+        }
+    ]
+}

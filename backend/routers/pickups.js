@@ -9,6 +9,7 @@ const ErrorResponse = require("../utils/errorResponse");
 
 //create
 router.route("/").post(protect, async (req, res, next) => {
+  console.log(req);
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
   try {
     const point = new Pickups({ ...req.body});
