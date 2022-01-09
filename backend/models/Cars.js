@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const CarSchema = new mongoose.Schema(
   {
-    images: {
-      type: Array,
+    image: {
+      type: String,
       required: true,
     },
     //nome del modello di auto
@@ -30,7 +30,10 @@ const CarSchema = new mongoose.Schema(
       ref: "Pickups",
       required: true
     },
-    tags: [String],
+    tag: {
+      type: String,
+      required: true
+    },
     //descrizione dell'auto
     description: {
       type: String,
@@ -50,7 +53,7 @@ const CarSchema = new mongoose.Schema(
       required: true
     },
     baggageSize: {
-      type: String, //small | medium | big
+      type: Number,
       required: true
     },
     isElectric: {

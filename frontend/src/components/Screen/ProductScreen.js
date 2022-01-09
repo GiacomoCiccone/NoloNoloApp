@@ -1,11 +1,18 @@
-import React from 'react'
+import React from "react";
+import { useSelector } from "react-redux";
+import Protected from "../Protected";
 
-const ProductScreen = () => {
-    return (
-        <div>
-            a
-        </div>
-    )
-}
+const ProductScreen = (props) => {
 
-export default ProductScreen
+    //redux stuff
+    const { authToken } = useSelector(
+        (state) => state.user
+    );
+
+    return <Protected history={props.history}>
+        {authToken && <div>
+            </div>}
+    </Protected>;
+};
+
+export default ProductScreen;

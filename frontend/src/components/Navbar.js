@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SwitchTheme from "./SwitchTheme";
 import useWindowSize from "../utils/useWindowSize";
 import Logo from "./Logo";
+import SearchDialog from "./SearchDialog";
 
 const Navbar = () => {
     const location = useLocation();
@@ -23,9 +24,12 @@ const Navbar = () => {
     const width = useWindowSize();
     const [showDrawer, setShowDrawer] = useState(false);
     const [dropDownOpen, setDropDownOpen] = useState(false);
-    const [currentDropDownSelected, setCurrentDropDownSelected] =
-        useState(null);
+    const [currentDropDownSelected, setCurrentDropDownSelected] = useState(null);
 
+    const [searchModalOpen, setSearchModalOpen] = useState(false)
+    const handleModal = (val) => setSearchModalOpen(val)
+
+    // Menu da loggato
     const loggedMenu = (
         <Menu
             id="navbarMenu"
@@ -84,6 +88,7 @@ const Navbar = () => {
             </Menu.Item>
         </Menu>
     );
+    
 
     useEffect(() => {
         if (width < 768) {
@@ -108,6 +113,15 @@ const Navbar = () => {
             <div>
                 <Logo />
             </div>
+
+            {/* nuova ricerca solo non in home*/}
+            {location.pathname !== "/" && <div>
+                <button aria-label="Clicca per effettuare una nuova ricerca." onClick={() => setSearchModalOpen(true)} className="btn rounded-full btn-secondary sm:w-24" type="button">
+
+                <i class="bi bi-search text-secondary-content text-2xl"></i>
+                </button>
+                <SearchDialog visible={searchModalOpen} setVisible={handleModal} />
+            </div>}
 
             {/* Bottoni */}
             <div className="flex items-center gap-2">

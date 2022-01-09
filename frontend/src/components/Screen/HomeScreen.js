@@ -15,7 +15,7 @@ const HomeScreen = () => {
         <div>
             <HeroSection />
 
-            <section tabIndex={0} className="container mx-auto flex flex-col px-8 items-center mt-16">
+            <section className="container mx-auto flex flex-col px-8 items-center mt-16">
                 <h1 style={{fontSize: 'calc(20px + 1vw)', margin: '0'}} className="text-center">Noleggia auto, come preferisci tu</h1>
                 <h2 style={{fontSize: 'calc(14px + 0.7vw)', marginTop: '5px'}} className="text-center">
                     <span className=" text-base-content text-opacity-60">NoloNolo<sup>+</sup> è la scelta ideale di noleggio, che soddisfa ogni tipo di esigenza</span></h2>
@@ -69,10 +69,10 @@ const HomeScreen = () => {
 
             
 
-            <section tabIndex={0} className="container mx-auto flex flex-col px-8 items-center mt-10">
+            <section className="container mx-auto flex flex-col px-8 items-center mt-10">
                 <h1 style={{fontSize: 'calc(20px + 1vw)', margin: '0'}} className="text-center">Tipologie di noleggio</h1>
                 <h2 style={{fontSize: 'calc(14px + 0.7vw)', marginTop: '5px'}} className="text-center">
-                    <span className=" text-base-content text-opacity-60">Scopri le nostre due tipologie di noleggio, e scegli quella su misura per te</span></h2>
+                    <span className=" text-base-content text-opacity-60">Scopri le nostre due tipologie di noleggio, e scegli quella che fa per te</span></h2>
 
                 <div className="flex flex-col md:flex-row gap-8 items-center justify-center w-full mt-10">
                     
@@ -82,7 +82,7 @@ const HomeScreen = () => {
                         </div>
                     <br />
                     <h3 style={{marginTop: '5px'}} className="text-center text-2xl">Classico</h3>
-                    <p className="text-center">Il noleggio classico è il noleggio come lo hai sempre pensato. Scegli una data di inizio, una data di fine e vai dove vuoi con la tua auto! Questa tipologia di noleggio è perfetta per emergenze o viaggi.</p>
+                    <p className="text-center">Il noleggio classico è il noleggio come lo hai sempre pensato. Scegli una data di inizio, una data di fine e vai dove vuoi con la tua auto! Questa tipologia di noleggio è perfetta per imprevisti o viaggi.</p>
                     <p></p>
                     </div>
                 
