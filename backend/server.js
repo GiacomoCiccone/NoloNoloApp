@@ -40,7 +40,7 @@ app.get('/*', function (req, res) {
 //L'errorHandler deve essere l'ultimo middleware
 app.use(errorHandler);
 
-//se e' definita nel config file prendiamo quella porta altrimenti la 5000
+//se e' definita nel config file prendiamo quella porta altrimenti la 8000
 const PORT = process.env.PORT || 8000;
 
 const server = app.listen(PORT, () =>

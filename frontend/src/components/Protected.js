@@ -6,7 +6,6 @@ const Protected = (props) => {
   const { authToken } = useSelector((state) => state.user);
 
   useEffect(() => {
-    console.log(authToken)
     if (!authToken) {
       props.history.push("/login");
     }

@@ -11,8 +11,7 @@ import { Dropdown, InputNumber, Select } from "antd";
 import useWindowSize from "../../utils/useWindowSize";
 
 //media
-import noData from '../../assets/undraw_towing_-6-yy4.svg'
-
+import noData from "../../assets/undraw_towing_-6-yy4.svg";
 
 const CatalogScreen = () => {
     const location = useLocation();
@@ -28,9 +27,10 @@ const CatalogScreen = () => {
     const [filterObj, setFilterObj] = useState({});
     const [minPrice, setMinPrice] = useState(0);
     const [maxPrice, setMaxPrice] = useState(0);
+    const [orderyByOpen, setOrderByOpen] = useState(false);
 
-    const [filterPanelOpen, setFilterPanelOpen] = useState(false)
-    const width = useWindowSize()
+    const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+    const width = useWindowSize();
 
     useEffect(() => {
         const fetchCars = async () => {
@@ -80,13 +80,13 @@ const CatalogScreen = () => {
                     sameModels(data.data);
                 } else {
                     setCars([]);
-                    setCarsShowed([])
+                    setCarsShowed([]);
                 }
                 setIsLoading(false);
             } catch (error) {
                 setIsLoading(false);
                 setCars([]);
-                setCarsShowed([])
+                setCarsShowed([]);
             }
         };
 
@@ -102,15 +102,11 @@ const CatalogScreen = () => {
             });
         }
         setCarsShowed(Array.from(map.values()));
-        
     };
 
-
     useEffect(() => {
-
         //se ci sono macchine
         if (cars.length > 0) {
-
             //le filtra
             let toFilter = cars;
             if (filterObj.fuelType === "electric")
@@ -131,28 +127,30 @@ const CatalogScreen = () => {
                 );
             if (filterObj.minPrice)
                 toFilter = toFilter.filter(
-                    (car) =>
-                        car.basePrice >= filterObj.minPrice
+                    (car) => car.basePrice >= filterObj.minPrice
                 );
             if (filterObj.maxPrice)
-            toFilter = toFilter.filter(
-                (car) =>
-                    car.basePrice <= filterObj.maxPrice
-            );
-            
+                toFilter = toFilter.filter(
+                    (car) => car.basePrice <= filterObj.maxPrice
+                );
+
             //se e' sopravvissuta qualcuna
             if (toFilter.length > 0) {
                 //le ordina
-                let toSort = toFilter
+                let toSort = toFilter;
                 switch (orderBy) {
                     case "preferences":
                         toSort = toSort.sort((a, b) => {
                             if (
-                                userInfo?.preferences?.includes(a.tag.toLowerCase())
+                                userInfo?.preferences?.includes(
+                                    a.tag.toLowerCase()
+                                )
                             ) {
                                 return -1;
                             } else if (
-                                userInfo?.preferences?.includes(b.tag.toLowerCase())
+                                userInfo?.preferences?.includes(
+                                    b.tag.toLowerCase()
+                                )
                             ) {
                                 return 1;
                             } else return 0;
@@ -161,13 +159,13 @@ const CatalogScreen = () => {
                         break;
                     case "lower":
                         toSort = toSort.sort((a, b) => {
-                            return a.basePrice - b.basePrice
+                            return a.basePrice - b.basePrice;
                         });
                         setCarsShowed(toSort);
                         break;
                     case "higher":
                         toSort = toSort.sort((a, b) => {
-                            return b.basePrice - a.basePrice
+                            return b.basePrice - a.basePrice;
                         });
                         setCarsShowed(toSort);
                         break;
@@ -177,193 +175,208 @@ const CatalogScreen = () => {
 
                 sameModels(toSort);
             } else {
-                sameModels([])
+                sameModels([]);
             }
-
-            
         }
     }, [filterObj, cars, orderBy, userInfo]);
 
     return (
-        <div style={{ minHeight: "calc(100vh - 5rem)" }} className="px-4 py-16 relative">
+        <div
+            style={{ minHeight: "calc(100vh - 5rem)" }}
+            className="px-4 py-16 relative"
+        >
             <Loading loading={isLoading}>
                 <div>
 
-                    {/* Sort */}
-                    {cars.length > 0 && <div className="fixed bottom-10 right-10 z-10">
-                    <Dropdown trigger={["click"]} overlay={<div className="flex flex-col w-52 bg-base-300 shadow-md">
-                        <button aria-label="Clicca per ordinare in base ai consigliati." onClick={() => setOrderBy("preferences")} type="button" className={`w-full text-left p-3 ${orderBy === "preferences" && "bg-primary bg-opacity-20"}`}>Ordina per consigliati</button>
-                        <button aria-label="Clicca per ordinare con prezzo crescente." onClick={() => setOrderBy("lower")} type="button" className={`w-full text-left p-3 ${orderBy === "lower" && "bg-primary bg-opacity-20"}`}>Ordina per prezzo minore</button>
-                        <button aria-label="Clicca per ordinare con prezzo decrescente." onClick={() => setOrderBy("higher")} type="button" className={`w-full text-left p-3 ${orderBy === "higher" && "bg-primary bg-opacity-20"}`}>Ordina per prezzo maggiore</button>
-                    </div>} placement="topRight">
-                        <button aria-label="Clicca per aprire menù ordinamento risultati." className="btn btn-secondary btn-circle">
-                        <i className="bi bi-arrow-down-up text-secondary-content text-xl"></i>
-                        </button>
-                    </Dropdown>
-                    </div>}
-                    
                     {/* Bottone filtri */}
-                    {cars.length > 0 && <div className="sm:hidden flex justify-end">
-                        <button className="btn btn-square btn-xl btn-secondary" onClick={() => setFilterPanelOpen(filterPanelOpen => !filterPanelOpen)} type="button">
-                        <i className={`bi bi-${filterPanelOpen ? "x-lg" : "gear-fill"} text-secondary-content text-xl`}></i>
-                        </button>
-                    </div>}
+                    {cars.length > 0 && (
+                        <div className="sm:hidden flex justify-end">
+                            <button
+                                className="btn btn-square btn-xl btn-secondary"
+                                onClick={() =>
+                                    setFilterPanelOpen(
+                                        (filterPanelOpen) => !filterPanelOpen
+                                    )
+                                }
+                                type="button"
+                            >
+                                <i
+                                    className={`bi bi-${
+                                        filterPanelOpen ? "x-lg" : "gear-fill"
+                                    } text-secondary-content text-xl`}
+                                ></i>
+                            </button>
+                        </div>
+                    )}
 
                     {/* Filtri */}
-                    {((width >= 640 || filterPanelOpen) && cars.length > 0) && <div className="flex justify-center flex-col sm:flex-row max-w-4xl items-center mx-auto gap-2">
-                        <div style={{minWidth: '4rem'}}>Filtra per</div>
+                    {(width >= 640 || filterPanelOpen) && cars.length > 0 && (
+                        <div className="flex justify-center flex-col sm:flex-row max-w-4xl items-center mx-auto gap-2">
+                            <div style={{ minWidth: "4rem" }}>Filtra per</div>
 
-                        <div className="w-full">
-                            <div className="border rounded">
-                                <Select
-                                    value={filterObj.seats}
-                                    placeholder="Posti a sedere"
-                                    aria-label="Decidi i posti a sedere che deve avere la tua auto"
-                                    style={{ width: "100%" }}
-                                    onChange={(val) =>
-                                        setFilterObj((filterObj) => {
+                            <div className="w-full">
+                                <div className="border rounded">
+                                    <Select
+                                        value={filterObj.seats}
+                                        placeholder="Posti a sedere"
+                                        aria-label="Decidi i posti a sedere che deve avere la tua auto"
+                                        style={{ width: "100%" }}
+                                        onChange={(val) =>
+                                            setFilterObj((filterObj) => {
+                                                if (val === "none")
+                                                    return {
+                                                        ...filterObj,
+                                                        seats: undefined,
+                                                    };
+                                                else
+                                                    return {
+                                                        ...filterObj,
+                                                        seats: val,
+                                                    };
+                                            })
+                                        }
+                                        allowClear
+                                    >
+                                        <Select.Option value="none">
+                                            Qualsiasi
+                                        </Select.Option>
+                                        <Select.Option value={2}>
+                                            2
+                                        </Select.Option>
+                                        <Select.Option value={4}>
+                                            4
+                                        </Select.Option>
+                                        <Select.Option value={5}>
+                                            5
+                                        </Select.Option>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            <div className="w-full">
+                                <div className="border rounded">
+                                    <Select
+                                        value={filterObj.transmission}
+                                        placeholder="Trasmissione"
+                                        aria-label="Decidi il tipo di trasmissione della tua auto"
+                                        style={{ width: "100%" }}
+                                        onChange={(val) => {
                                             if (val === "none")
+                                                return setFilterObj(
+                                                    (filterObj) => {
+                                                        return {
+                                                            ...filterObj,
+                                                            transmission:
+                                                                undefined,
+                                                        };
+                                                    }
+                                                );
+                                            setFilterObj((filterObj) => {
                                                 return {
                                                     ...filterObj,
-                                                    seats: undefined,
-                                                };
-                                            else
-                                                return {
-                                                    ...filterObj,
-                                                    seats: val,
-                                                };
-                                        })
-                                    }
-                                    allowClear
-                                >
-                                    <Select.Option value="none">
-                                        Qualsiasi
-                                    </Select.Option>
-                                    <Select.Option value={2}>2</Select.Option>
-                                    <Select.Option value={4}>4</Select.Option>
-                                    <Select.Option value={5}>5</Select.Option>
-                                </Select>
-                            </div>
-                        </div>
-
-                        <div className="w-full">
-                            <div className="border rounded">
-                                <Select
-                                    value={filterObj.transmission}
-                                    placeholder="Trasmissione"
-                                    aria-label="Decidi il tipo di trasmissione della tua auto"
-                                    style={{ width: "100%" }}
-                                    onChange={(val) => {
-                                        if (val === "none")
-                                            return setFilterObj((filterObj) => {
-                                                return {
-                                                    ...filterObj,
-                                                    transmission: undefined,
+                                                    transmission: val,
                                                 };
                                             });
-                                        setFilterObj((filterObj) => {
-                                            return {
-                                                ...filterObj,
-                                                transmission: val,
-                                            };
-                                        });
-                                    }}
-                                    allowClear
-                                >
-                                    <Select.Option value="none">
-                                        Qualsiasi
-                                    </Select.Option>
-                                    <Select.Option value="manual">
-                                        Manuale
-                                    </Select.Option>
-                                    <Select.Option value="auto">
-                                        Automatica
-                                    </Select.Option>
-                                </Select>
+                                        }}
+                                        allowClear
+                                    >
+                                        <Select.Option value="none">
+                                            Qualsiasi
+                                        </Select.Option>
+                                        <Select.Option value="manual">
+                                            Manuale
+                                        </Select.Option>
+                                        <Select.Option value="auto">
+                                            Automatica
+                                        </Select.Option>
+                                    </Select>
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="w-full">
-                            <div className="border rounded">
-                                <Select
-                                    value={filterObj.fuelType}
-                                    placeholder="Motore"
-                                    aria-label="Decidi il tipo di motore della tua auto"
-                                    style={{ width: "100%" }}
-                                    onChange={(val) => {
-                                        if (val === "none")
-                                            return setFilterObj((filterObj) => {
+                            <div className="w-full">
+                                <div className="border rounded">
+                                    <Select
+                                        value={filterObj.fuelType}
+                                        placeholder="Motore"
+                                        aria-label="Decidi il tipo di motore della tua auto"
+                                        style={{ width: "100%" }}
+                                        onChange={(val) => {
+                                            if (val === "none")
+                                                return setFilterObj(
+                                                    (filterObj) => {
+                                                        return {
+                                                            ...filterObj,
+                                                            fuelType: undefined,
+                                                        };
+                                                    }
+                                                );
+                                            setFilterObj((filterObj) => {
                                                 return {
                                                     ...filterObj,
-                                                    fuelType: undefined,
+                                                    fuelType: val,
                                                 };
                                             });
-                                        setFilterObj((filterObj) => {
-                                            return {
-                                                ...filterObj,
-                                                fuelType: val,
-                                            };
-                                        });
-                                    }}
-                                    allowClear
-                                >
-                                    <Select.Option value="none">
-                                        Qualsiasi
-                                    </Select.Option>
-                                    <Select.Option value="normal">
-                                        Benzina
-                                    </Select.Option>
-                                    <Select.Option value="electric">
-                                        Elettrico
-                                    </Select.Option>
-                                </Select>
-                            </div>
-                        </div>
-
-                        <div className="w-full flex gap-2">
-                            <div className="border rounded w-full">
-                                <InputNumber
-                                    value={filterObj.minPrice || minPrice}
-                                    style={{width: '100%'}}
-                                    placeholder="Min €"
-                                    aria-label="Prezzo minimo"
-                                    min={minPrice}
-                                    defaultValue={minPrice}
-                                    formatter={val => `Da ${val}€`}
-                                    max={filterObj.maxPrice || maxPrice}
-                                    onChange={(val) =>
-                                        setFilterObj((filterObj) => {
-                                            return {
-                                                ...filterObj,
-                                                minPrice: val,
-                                            };
-                                        })
-                                    }
-                                />
+                                        }}
+                                        allowClear
+                                    >
+                                        <Select.Option value="none">
+                                            Qualsiasi
+                                        </Select.Option>
+                                        <Select.Option value="normal">
+                                            Benzina
+                                        </Select.Option>
+                                        <Select.Option value="electric">
+                                            Elettrico
+                                        </Select.Option>
+                                    </Select>
+                                </div>
                             </div>
 
-                            <div className="border rounded w-full">
-                                <InputNumber
-                                    value={filterObj.maxPrice || maxPrice}
-                                    style={{width: '100%'}}
-                                    placeholder="Max €"
-                                    aria-label="Prezzo massimo"
-                                    min={filterObj.minPrice || minPrice}
-                                    max={maxPrice}
-                                    defaultValue={maxPrice}
-                                    formatter={val => `A ${val}€`}
-                                    onChange={(val) =>
-                                        setFilterObj((filterObj) => {
-                                            return {
-                                                ...filterObj,
-                                                maxPrice: val,
-                                            };
-                                        })
-                                    }
-                                />
+                            <div className="w-full flex gap-2">
+                                <div className="border rounded w-full">
+                                    <InputNumber
+                                        value={filterObj.minPrice || minPrice}
+                                        style={{ width: "100%" }}
+                                        placeholder="Min €"
+                                        aria-label="Prezzo minimo"
+                                        min={minPrice}
+                                        defaultValue={minPrice}
+                                        formatter={(val) => `Da ${val}€`}
+                                        max={filterObj.maxPrice || maxPrice}
+                                        onChange={(val) =>
+                                            setFilterObj((filterObj) => {
+                                                return {
+                                                    ...filterObj,
+                                                    minPrice: val,
+                                                };
+                                            })
+                                        }
+                                    />
+                                </div>
+
+                                <div className="border rounded w-full">
+                                    <InputNumber
+                                        value={filterObj.maxPrice || maxPrice}
+                                        style={{ width: "100%" }}
+                                        placeholder="Max €"
+                                        aria-label="Prezzo massimo"
+                                        min={filterObj.minPrice || minPrice}
+                                        max={maxPrice}
+                                        defaultValue={maxPrice}
+                                        formatter={(val) => `A ${val}€`}
+                                        onChange={(val) =>
+                                            setFilterObj((filterObj) => {
+                                                return {
+                                                    ...filterObj,
+                                                    maxPrice: val,
+                                                };
+                                            })
+                                        }
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>}
+                    )}
                     <br />
 
                     {/* Macchine */}
@@ -373,29 +386,122 @@ const CatalogScreen = () => {
                                 <CardCar key={car.model} car={car} />
                             ))}
                     </div>
-                    
+
+                     {/* Sort */}
+                     {cars.length > 0 && (
+                        <div className="fixed bottom-10 right-10 z-10">
+                            <Dropdown
+                                onVisibleChange={(visible) =>
+                                    setOrderByOpen(visible)
+                                }
+                                visible={orderyByOpen}
+                                trigger={["click"]}
+                                placement="topRight"
+                                getPopupContainer={() => document.getElementById("drop-down-catalog-container")}
+                                overlay={
+                                    <div
+                                        className="flex flex-col w-52 bg-base-300 shadow-md"
+                                        
+                                    >
+                                        <div id="order-by-menu">
+                                        <button
+                                            aria-label="Clicca per ordinare in base ai consigliati."
+                                            onClick={() =>
+                                                setOrderBy("preferences")
+                                            }
+                                            type="button"
+                                            className={`w-full text-left p-3 ${
+                                                orderBy === "preferences" &&
+                                                "bg-primary bg-opacity-20"
+                                            }`}
+                                        >
+                                            Ordina per consigliati
+                                        </button>
+                                        <button
+                                            aria-label="Clicca per ordinare con prezzo crescente."
+                                            onClick={() => setOrderBy("lower")}
+                                            type="button"
+                                            className={`w-full text-left p-3 ${
+                                                orderBy === "lower" &&
+                                                "bg-primary bg-opacity-20"
+                                            }`}
+                                        >
+                                            Ordina per prezzo minore
+                                        </button>
+                                        <button
+                                            aria-label="Clicca per ordinare con prezzo decrescente."
+                                            onClick={() => setOrderBy("higher")}
+                                            type="button"
+                                            className={`w-full text-left p-3 ${
+                                                orderBy === "higher" &&
+                                                "bg-primary bg-opacity-20"
+                                            }`}
+                                        >
+                                            Ordina per prezzo maggiore
+                                        </button>
+                                        </div>
+                                    </div>
+                                }
+                                
+                            >
+                                <button
+                                    aria-label="Clicca per aprire menù ordinamento risultati."
+                                    className="btn btn-secondary btn-circle"
+                                >
+                                    <i className="bi bi-arrow-down-up text-secondary-content text-xl"></i>
+                                </button>
+                            </Dropdown>
+
+                            <div id="drop-down-catalog-container">
+                                    
+                                </div>
+                        </div>
+                    )}
+
                     {/* No data */}
                     <div>
-                        {carsShowed.length === 0 &&
+                        {carsShowed.length === 0 && (
                             <div className="h-full flex items-center justify-center relative flex-col w-3/5 mt-20 mx-auto">
-                            <img style={{maxWidth: '50rem'}} className="w-full h-full object-contain" src={noData} alt="Nessun risultato trovato" />
-                            <div style={{
-                                        fontSize: 'calc(15px + 1.3vw)'
+                                <img
+                                    style={{ maxWidth: "50rem" }}
+                                    className="w-full h-full object-contain"
+                                    src={noData}
+                                    alt="Nessun risultato trovato"
+                                />
+                                <div
+                                    style={{
+                                        fontSize: "calc(15px + 1.3vw)",
                                     }}
                                     className=" w-full text-center max-w-2xl font-bold"
->
-                                {cars.length === 0 && <p>Spiacenti, non sono stati trovati risultati per la tua ricerca.</p>}
+                                >
+                                    {cars.length === 0 && (
+                                        <p>
+                                            Spiacenti, non sono stati trovati
+                                            risultati per la tua ricerca.
+                                        </p>
+                                    )}
 
-                                {cars.length > 0 && <p>Spiacenti, non sono stati trovati risultati per i tuoi filtri.</p>}
-
-                                
+                                    {cars.length > 0 && (
+                                        <p>
+                                            Spiacenti, non sono stati trovati
+                                            risultati per i tuoi filtri.
+                                        </p>
+                                    )}
+                                </div>
+                                {cars.length === 0 && (
+                                    <Link to="/">
+                                        <button
+                                            aria-label="Clicca per tornare alla home"
+                                            className="btn btn-secondary"
+                                        >
+                                            <span className="text-secondary-content">
+                                                Torna alla home
+                                            </span>
+                                        </button>
+                                    </Link>
+                                )}
                             </div>
-                            {cars.length === 0 &&<Link to="/">
-                                    <button aria-label="Clicca per tornare alla home" className="btn btn-seconday">
-                                        Torna alla home
-                                    </button>
-                                </Link>}
-                            </div>}
+                        )}
                     </div>
                 </div>
             </Loading>

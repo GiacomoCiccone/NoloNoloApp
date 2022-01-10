@@ -19,6 +19,7 @@ const Navbar = () => {
     //redux stuff
     const user = useSelector((state) => state.user);
     const { authToken, userInfo } = user;
+    const {theme} = useSelector((state) => state.userPreferences); //in questo modo stiamo prendendo le informazioni nello stato relative all'user
     const dispatch = useDispatch();
 
     const width = useWindowSize();
@@ -28,66 +29,6 @@ const Navbar = () => {
 
     const [searchModalOpen, setSearchModalOpen] = useState(false)
     const handleModal = (val) => setSearchModalOpen(val)
-
-    // Menu da loggato
-    const loggedMenu = (
-        <Menu
-            id="navbarMenu"
-            mode="inline"
-            selectedKeys={[currentDropDownSelected]}
-            style={{
-                padding: "0",
-                boxShadow: showDrawer
-                    ? "none"
-                    : "0px 5px 6px 2px rgba(0,0,0,0.15)",
-                backgroundColor: showDrawer
-                    ? "transparent"
-                    : window.localStorage.getItem("theme") === "light"
-                    ? "#fff"
-                    : "#1f2937",
-                minWidth: "15rem",
-            }}
-        >
-            <Menu.Item style={{ padding: "1rem 1rem" }} key="account">
-                <Link
-                    aria-selected={currentDropDownSelected === 'account'}
-                    aria-label="Vai al tuo account per visualizzare o modificare le tue informazioni personali."
-                    to="/account"
-                >
-                    <span>
-                        <i className="bi bi-person-circle mr-2" /> Vai a account
-                    </span>
-                </Link>
-            </Menu.Item>
-            <Divider style={{ margin: "0" }} />
-            <Menu.Item style={{ padding: "1rem 1rem" }} key="rents">
-                <Link
-                    aria-selected={currentDropDownSelected === 'rents'}
-                    aria-label="Visualizza la pagina dei tuoi noleggi."
-                    to="/rents"
-                >
-                    <span>
-                        <i className="bi bi-receipt mr-2" /> Vai a noleggi
-                    </span>
-                </Link>
-            </Menu.Item>
-            <Divider style={{ margin: "0" }} />
-            <Menu.Item style={{ padding: "1rem 1rem" }} key="logout">
-                <button
-                    aria-label="Esci dal tuo account."
-                    onClick={() => {
-                        dispatch({
-                            type: "LOGOUT_SUCCESS",
-                        });
-                    }}
-                >
-                    <span>
-                        <i className="bi bi-door-open-fill mr-2" /> Esci
-                    </span>
-                </button>
-            </Menu.Item>
-        </Menu>
-    );
     
 
     useEffect(() => {
@@ -114,11 +55,11 @@ const Navbar = () => {
                 <Logo />
             </div>
 
-            {/* nuova ricerca solo non in home*/}
-            {location.pathname !== "/" && <div>
+            {/* nuova ricerca solo in catalog o product page*/}
+            {(location.pathname === "/catalog" || location.pathname.includes("/product")) && <div>
                 <button aria-label="Clicca per effettuare una nuova ricerca." onClick={() => setSearchModalOpen(true)} className="btn rounded-full btn-secondary sm:w-24" type="button">
 
-                <i class="bi bi-search text-secondary-content text-2xl"></i>
+                <i className="bi bi-search text-secondary-content text-2xl"></i>
                 </button>
                 <SearchDialog visible={searchModalOpen} setVisible={handleModal} />
             </div>}
@@ -132,6 +73,7 @@ const Navbar = () => {
                         <div className="hidden md:flex gap-2">
                             <Link to="/login" aria-label="Accedi al tuo account">
                                 <button
+                                    tabIndex={-1}
                                     className="btn btn-primary"
                                     type="button"
                                     aria-hidden
@@ -144,6 +86,7 @@ const Navbar = () => {
 
                             <Link to="/register" aria-label="Crea un account">
                                 <button
+                                    tabIndex={-1}
                                     className="btn btn-primary btn-outline"
                                     type="button"
                                     aria-hidden
@@ -178,12 +121,69 @@ const Navbar = () => {
                         {/* Utente loggato */}
                         <div className="hidden md:flex gap-2">
                                 <Dropdown
+                                    getPopupContainer={() => document.getElementById('drop-down-navbar-container')}
                                     placement="bottomCenter"
                                     trigger={["click"]}
-                                    overlay={loggedMenu}
+                                    overlay={ <Menu
+                                        id="navbarMenu"
+                                        theme="light"
+                                        selectedKeys={[currentDropDownSelected]}
+                                        style={{
+                                            padding: "0",
+                                            boxShadow: showDrawer
+                                                ? "none"
+                                                : "0px 5px 6px 2px rgba(0,0,0,0.15)",
+                                            backgroundColor: showDrawer
+                                                ? "transparent"
+                                                : theme === "light"
+                                                ? "#fff"
+                                                : "#1f2937",
+                                            minWidth: "15rem",
+                                        }}
+                                    >
+                                        <Menu.Item style={{ padding: "1rem 1rem" }} key="account">
+                                            <Link
+                                                aria-selected={currentDropDownSelected === 'account'}
+                                                aria-label="Vai al tuo account per visualizzare o modificare le tue informazioni personali."
+                                                to="/account"
+                                            >
+                                                <span>
+                                                    <i className="bi bi-person-circle mr-2" /> Vai a account
+                                                </span>
+                                            </Link>
+                                        </Menu.Item>
+                                        <Divider style={{ margin: "0" }} />
+                                        <Menu.Item style={{ padding: "1rem 1rem" }} key="rents">
+                                            <Link
+                                                aria-selected={currentDropDownSelected === 'rents'}
+                                                aria-label="Visualizza la pagina dei tuoi noleggi."
+                                                to="/rents"
+                                            >
+                                                <span>
+                                                    <i className="bi bi-receipt mr-2" /> Vai a noleggi
+                                                </span>
+                                            </Link>
+                                        </Menu.Item>
+                                        <Divider style={{ margin: "0" }} />
+                                        <Menu.Item style={{ padding: "1rem 1rem" }} key="logout">
+                                            <button
+                                                aria-label="Esci dal tuo account."
+                                                onClick={() => {
+                                                    dispatch({
+                                                        type: "LOGOUT_SUCCESS",
+                                                    });
+                                                }}
+                                            >
+                                                <span>
+                                                    <i className="bi bi-door-open-fill mr-2" /> Esci
+                                                </span>
+                                            </button>
+                                        </Menu.Item>
+                                    </Menu>}
                                     visible={dropDownOpen}
-                                    onVisibleChange={(visible) =>
+                                    onVisibleChange={(visible) => 
                                         setDropDownOpen(visible)
+                                        
                                     
                                     }
                                 >
@@ -202,6 +202,10 @@ const Navbar = () => {
                                         </span>
                                     </button>
                                 </Dropdown>
+
+                                <div id="drop-down-navbar-container">
+                                    
+                                </div>
                         </div>
 
                         {/* Hamburger menu */}
@@ -227,7 +231,8 @@ const Navbar = () => {
                 )}
             </div>
 
-            <Drawer
+            {showDrawer && <Drawer
+                autoFocus
                 width={width < 400 ? "100%" : "70%"}
                 title={authToken ? `Menù di ${userInfo.first_name}` : "Menù"}
                 placement="right"
@@ -235,7 +240,7 @@ const Navbar = () => {
                 visible={showDrawer}
                 className="md:hidden"
                 bodyStyle={{ padding: authToken ? "0" : "2rem" }}
-            >
+            >   
                 {!authToken ? (
                     <>
                         {/* Accedi - Registrati */}
@@ -261,9 +266,64 @@ const Navbar = () => {
                         </p>
                     </>
                 ) : (
-                    <>{loggedMenu}</>
+                    <>{ <Menu
+                        id="navbarMenu"
+                        mode="inline"
+                        selectedKeys={[currentDropDownSelected]}
+                        style={{
+                            padding: "0",
+                            boxShadow: showDrawer
+                                ? "none"
+                                : "0px 5px 6px 2px rgba(0,0,0,0.15)",
+                            backgroundColor: showDrawer
+                                ? "transparent"
+                                : theme === "light"
+                                ? "#fff"
+                                : "#1f2937",
+                            minWidth: "15rem",
+                        }}
+                    >
+                        <Menu.Item style={{ padding: "1rem 1rem" }} key="account">
+                            <Link
+                                aria-selected={currentDropDownSelected === 'account'}
+                                aria-label="Vai al tuo account per visualizzare o modificare le tue informazioni personali."
+                                to="/account"
+                            >
+                                <span>
+                                    <i className="bi bi-person-circle mr-2" /> Vai a account
+                                </span>
+                            </Link>
+                        </Menu.Item>
+                        <Divider style={{ margin: "0" }} />
+                        <Menu.Item style={{ padding: "1rem 1rem" }} key="rents">
+                            <Link
+                                aria-selected={currentDropDownSelected === 'rents'}
+                                aria-label="Visualizza la pagina dei tuoi noleggi."
+                                to="/rents"
+                            >
+                                <span>
+                                    <i className="bi bi-receipt mr-2" /> Vai a noleggi
+                                </span>
+                            </Link>
+                        </Menu.Item>
+                        <Divider style={{ margin: "0" }} />
+                        <Menu.Item style={{ padding: "1rem 1rem" }} key="logout">
+                            <button
+                                aria-label="Esci dal tuo account."
+                                onClick={() => {
+                                    dispatch({
+                                        type: "LOGOUT_SUCCESS",
+                                    });
+                                }}
+                            >
+                                <span>
+                                    <i className="bi bi-door-open-fill mr-2" /> Esci
+                                </span>
+                            </button>
+                        </Menu.Item>
+                    </Menu>}</>
                 )}
-            </Drawer>
+            </Drawer>}
         </header>
     );
 };

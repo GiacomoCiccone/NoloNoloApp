@@ -861,7 +861,7 @@ const RegisterScreen = (props) => {
                             <div className="mt-8">
                                 {/* Registra */}
                                 <input
-                                    aria-label="Crea il tuo account"
+                                    aria-label={!checkErrors() ? "Crea il tuo account" : "Inserisci tutti i campi in entrambe le schede per creare il tuo account."}
                                     type="submit"
                                     value="Crea account"
                                     style={{ color: "#fff" }}

@@ -151,8 +151,6 @@ const SearchDialog = (props) => {
         }
     };
 
-    useEffect(() => console.log(canSearch(), place));
-
     return (
         <Modal
             title="Nuova ricerca di noleggio"
