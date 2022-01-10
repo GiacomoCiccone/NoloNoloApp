@@ -5,13 +5,23 @@
     @primary-color: #0ed3cf;
     background-color: #fff;
 
-    .slick-dots li button {
+    .splide__arrow {
+      background: #fff !important;
+      color: #3d4451 !important;
+      opacity: 0.4 !important;
+      filter: invert(100%);
+    }
+      .splide__pagination {
+        gap: 0.5rem;
+        margin-bottom: 0;
+      }
+      .splide__pagination button.splide__pagination__page {
         background: #000 !important;
         opacity: 0.4 !important;
-      }
-      
-      .slick-dots li.slick-active button {
-        opacity: 1 !important;
+        }
+        
+        .splide__pagination button.is-active {
+          opacity: 1 !important;
         background: #000 !important;
-      }
+        }
 }

@@ -4,7 +4,8 @@ var router = express.Router();
 const { protect } = require("../middleware/auth");
 const ErrorResponse = require("../utils/errorResponse");
 const Rents = require("../models/Rents");
-const {calcPrice} = require("../utils/calcPrice")
+const Cars = require("../models/Cars")
+const calcPrice = require("../utils/calcPrice")
 
 //CRUD
 
@@ -13,7 +14,7 @@ router.route("/").post(async (req, res, next) => {
     try {
         const rent = new Rents({
             ...req.body,
-            price: calcPrice(req.body, req.body.rent.rentObj.car)
+            price: calcPrice(req.body, req.body.rent.rentObj.car, false)
         });
 
         await rent.save();
@@ -138,7 +139,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
                     if (rentToUpdate.state !== "concluded" && (rentToUpdate.period.since > new Date() || changeState)) {    //si modifica solo se non e' finito e o non e' ancora iniziato o se si sta cambiando lo stato
                         rentToUpdate = await Rents.findByIdAndUpdate(req.params.id, { $set: req.body },
                             { new: true, runValidators: true, useFindAndModify: false });
-                        rentoToUpdate.price = calcPrice(rentoToUpdate, rentToUpdate.rentObj.car); //ogni modifica viene ricalcolato il prezzo
+                        rentoToUpdate.price = calcPrice(rentoToUpdate, rentToUpdate.rentObj.car, false); //ogni modifica viene ricalcolato il prezzo
                         await rentToUpdate.save();
                     } else {
                         return next(new ErrorResponse("Non si può eliminare un noleggio già iniziato", 400))
@@ -147,7 +148,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
                     if (rentToUpdate.state !== "concluded" && (rentToUpdate.classic.from > new Date() || changeState)) { //si modifica solo se non e' ancora iniziato o se si sta cambiando lo stato
                         rentToUpdate = await Rents.findByIdAndUpdate(req.params.id, { $set: req.body },
                             { new: true, runValidators: true, useFindAndModify: false });
-                            rentoToUpdate.price = calcPrice(rentoToUpdate, rentToUpdate.rentObj.car);   //ogni modifica viene ricalcolato il prezzo
+                            rentoToUpdate.price = calcPrice(rentoToUpdate, rentToUpdate.rentObj.car, false);   //ogni modifica viene ricalcolato il prezzo
                             await rentToUpdate.save();
                     } else {
                         return next(new ErrorResponse("Non si può eliminare un noleggio già iniziato", 400))
@@ -196,6 +197,44 @@ router.route("/:id").delete(protect, async (req, res, next) => {
         }
     } else {
         return next(new ErrorResponse("Non autorizzato", 403));
+    }
+});
+
+//get price of model id
+router.route("/getPrice/:id").get(async (req, res, next) => {
+    try {
+        if (!req.query) return next(new ErrorResponse("Richiesta non corretta", 400))
+        else {
+            let rent = {};
+            if (req.query.type === "period") {
+                rent.type = "period"
+                rent.period = {
+                    from: parseInt(req.query.from),
+                    to: parseInt(req.query.to),
+                    for: parseInt(req.query.for),
+                    since: new Date(new Date(req.query.since).setHours(0,0,0,0)),
+                    singleDay: req.query.from === req.query.to,
+                }
+            } else {
+                rent.type = "classic";
+                rent.classic = {
+                    from: new Date(req.query.from),
+                    to: new Date(req.query.to),
+                }
+            }
+            rent.rentObj = {}
+            rent.rentObj.kits = req.query.kits.split(";").map(kit => {return {price: parseInt(kit)}})
+
+            const car = await Cars.findById(req.params.id);
+
+            if (!car) return next(new ErrorResponse("Auto non trovata", 404))
+
+            let info = calcPrice(rent, car, true)
+
+            res.status(200).json({success: true, data: info});
+        }
+    } catch (error) {
+        return next(error);
     }
 });
 

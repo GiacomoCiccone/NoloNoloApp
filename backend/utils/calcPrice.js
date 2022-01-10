@@ -1,11 +1,25 @@
 const genArrayOfDates =  require("./CheckAvaiability");
 
-function calcPrice(rent, car) {
-    let price = car.basePrice;
-    //perfect | good | weak
-    car.condition === "perfect" ? price = price * 1.2 : car.condition === "good" ? price = price * 1.1 : price = price * 1;
-    let hours = 0;
-    //period | classic
+function calcPrice(rent, car, simulation) {
+    let finalPrice = 0; //prezzo finale comprese ore
+    let discount = 0;   //sconto totale comprese ore
+    let totalPrice = 0; //prezzo kit e modello comprese ore
+
+    let kitsPrice = 0;  //prezzo dei kit
+    let modelPrice = car.basePrice; //prezzo del modello
+    
+
+    let totalHours = 0; //ore totali
+    let hoursDiscount = 0; //ore sconto
+    
+    //calcolo prezzo modello
+    if (car.condition === "perfect") {
+        modelPrice *= 1.2;
+    } else if (car.condition === "good") {
+        modelPrice *= 1.1
+    }
+    
+    //calcolo ore totali
     if (rent.type === "period") {
         let dates = genArrayOfDates(
             rent.period.from,
@@ -15,33 +29,71 @@ function calcPrice(rent, car) {
             rent.period.singleDay
           );
         dates.forEach(date => {
-            hours += (Math.abs(date.to - date.from) / 36e5);
+            totalHours += (Math.abs(date.to - date.from) / 36e5);
         })
+
+        //se noleggia per piu di 4 giorni la settimana 10% di sconto
         if (rent.period.from > rent.period.to) {
             const totalDays = Math.abs(rent.period.from - 7) + rent.period.to
             if (totalDays > 4) {
-                hours *= 0.9;
+                hoursDiscount += (totalHours * 0.1);
             }
         } else if (rent.period.from < rent.period.to) {
             const totalDays = Math.abs(rent.period.from - rent.period.to)
             if (totalDays > 4) {
-                hours *= 0.9;
+                hoursDiscount += (totalHours * 0.1);
             }
         }
         
+        //se e' un noleggio classico per piu di una settimana 10% sconto
     } else {
-        hours += (Math.abs(rent.classic.to - rent.classic.from) / 36e5);
+        totalHours += (Math.abs(rent.classic.to - rent.classic.from) / 36e5);
+
+        const totalDays = Math.floor(Math.abs(rent.classic.to - rent.classic.from) / 86400000)
+            if (totalDays > 7) {
+                hoursDiscount += (totalHours * 0.1);
+            }
     }
 
+    
+
+    //sconto per ogni kit
     if (rent.rentObj.kits && rent.rentObj.kits.length > 0) {
-        rent.rentObj.kits.forEach(kit => hours *= 0.97)
+        rent.rentObj.kits.forEach(kit => {
+            if (kit.price) {
+                hoursDiscount += (0.005 * totalHours);
+                kitsPrice += kit.price || 0;
+            }
+            
+        })
     }
 
+    //se lo sconto è troppo si normalizza a 0.2
+    if (hoursDiscount > 0.15 * totalHours) hoursDiscount = 0.15 * totalHours;
+
+    //se in ritardo sovrapprezzo
     if (rent.state === "expired") {
-        hours *= 1.25;
+        totalHours *= 1.25;
     }
 
-    return price * hours;
+    //calcolo sconto
+    discount = (kitsPrice + modelPrice) * hoursDiscount
+
+    //calcolo totale
+    totalPrice = (kitsPrice + modelPrice) * totalHours;
+
+    //calcolo prezzo finale
+    finalPrice = totalPrice - discount;
+
+    if (simulation) {
+        let info = {
+            finalPrice,
+            modelPrice,
+            kitsPrice,
+            discount
+        }
+        return info
+    } else return finalPrice
 }
 
 module.exports = calcPrice;

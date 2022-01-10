@@ -3,15 +3,13 @@ import { useSelector } from "react-redux";
 import queryString from "query-string";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { Divider, List, PageHeader, Space } from "antd";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+import "@splidejs/splide/dist/css/splide.min.css";
 
 //componenti
 import Loading from "../Loading";
-import {
-    Carousel,
-    Divider,
-    PageHeader,
-    Space,
-} from "antd";
+
 import useWindowSize from "../../utils/useWindowSize";
 import Protected from "../Protected";
 
@@ -24,6 +22,7 @@ const ProductScreen = (props) => {
 
     //redux stuff
     const user = useSelector((state) => state.user);
+    const { theme } = useSelector((state) => state.userPreferences);
     const { authToken } = user;
 
     const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +31,7 @@ const ProductScreen = (props) => {
     const [bagKits, setBagKits] = useState([]);
     const [avaiableCondition, setAvaiableCondition] = useState([]);
     const [selectedCondition, setSelectedCondition] = useState("");
+    const [priceInfo, setPriceInfo] = useState({});
 
     const width = useWindowSize();
 
@@ -119,6 +119,56 @@ const ProductScreen = (props) => {
         fetchKits();
     }, []);
 
+    useEffect(() => {
+        const updatePrice = async () => {
+            const searchQuery = queryString.parse(location.search);
+            var searchObj = {};
+            if (searchQuery.type === "period") {
+                searchObj = {
+                    type: "period",
+                    from: searchQuery.from,
+                    to: searchQuery.to,
+                    since: new Date(searchQuery.since).setHours(0, 0, 0, 0),
+                    singleDay: searchQuery.singleDay,
+                    for: searchQuery.for,
+                };
+            } else {
+                searchObj = {
+                    type: "classic",
+                    from: searchQuery.from,
+                    to: searchQuery.to,
+                };
+            }
+
+            searchObj.kits = "";
+            if (bagKits.length > 0) {
+                bagKits.forEach((kitIn, i) => {
+                    searchObj.kits += `${
+                        kits.filter((kit) => kit._id === kitIn)[0].price
+                    }`;
+                    if (i < bagKits.length - 1) searchObj.kits += ";";
+                });
+            }
+
+            let carId = cars.filter(
+                (car) => car.condition === selectedCondition
+            )[0]._id;
+            try {
+                const { data } = await axios.get(
+                    `/api/rents/getPrice/${carId}`,
+                    {
+                        params: { ...searchObj },
+                    }
+                );
+                setPriceInfo(data.data);
+            } catch (error) {
+                setPriceInfo({});
+            }
+        };
+
+        if (selectedCondition) updatePrice();
+    }, [bagKits, selectedCondition, kits, location.search, cars]);
+
     return (
         <Protected history={props.history}>
             {authToken && (
@@ -138,7 +188,6 @@ const ProductScreen = (props) => {
                                             )
                                         }
                                         title="Pagina noleggio"
-                                        aria-label="Clicca per tornare indietro."
                                     />
 
                                     <br />
@@ -329,138 +378,156 @@ const ProductScreen = (props) => {
                                                 Noleggialo con
                                             </h2>
                                             <br />
-                                            <Carousel
+                                            <Splide
                                                 style={{ height: "22rem" }}
-                                                slidesPerRow={
-                                                    width < 600
-                                                        ? 1
-                                                        : width < 1024
-                                                        ? 2
-                                                        : width < 1500
-                                                        ? 3
-                                                        : 4
-                                                }
-                                                draggable={true}
-                                                swipeToSlide={true}
-                                                infinite
-                                                centerPadding="60px"
+                                                options={{
+                                                    i18n: {
+                                                        prev: "Vai alla slide precedente",
+                                                        next: "Vai alla slide successiva",
+                                                        first: "Vai alla prima slide",
+                                                        last: "Vai all'ultima slide",
+                                                        slideX: "Vai a questa slide.",
+                                                        pageX: "Vai a questa pagina.",
+                                                    },
+                                                    perPage: 4,
+                                                    rewind: true,
+                                                    gap: "1rem",
+                                                    breakpoints: {
+                                                        600: {
+                                                            perPage: 1,
+                                                        },
+                                                        1024: {
+                                                            perPage: 2,
+                                                        },
+                                                        1350: {
+                                                            perPage: 3,
+                                                        },
+                                                    },
+                                                }}
                                             >
                                                 {kits.map((kit) => (
-                                                    <div
-                                                        className="h-72 p-4"
-                                                        key={kit._id}
-                                                    >
-                                                        <div className="w-full h-4/5">
-                                                            <img
-                                                                className="w-full h-full object-contain"
-                                                                src={kit.image}
-                                                                alt={`Immagine ${kit.name}`}
-                                                            />
-                                                        </div>
-
-                                                        <div className="flex justify-between items-center">
-                                                            <div>
-                                                                <p
-                                                                    style={{
-                                                                        margin: "0",
-                                                                    }}
-                                                                    className="font-medium md:text-xl tracking-tight"
-                                                                >
-                                                                    {kit.name}
-                                                                </p>
-                                                                <p
-                                                                    style={{
-                                                                        margin: "0",
-                                                                    }}
-                                                                >
-                                                                    <span className="font-medium md:text-xl">
-                                                                        {
-                                                                            kit.price
-                                                                        }
-                                                                        €
-                                                                    </span>
-                                                                    <span>
-                                                                        / ora
-                                                                    </span>
-                                                                </p>
-                                                            </div>
-
-                                                            <div>
-                                                                <button
-                                                                    onClick={() => {
-                                                                        if (
-                                                                            !bagKits.includes(
-                                                                                kit._id
-                                                                            )
-                                                                        )
-                                                                            setBagKits(
-                                                                                (
-                                                                                    bagKits
-                                                                                ) => [
-                                                                                    ...bagKits,
-                                                                                    kit._id,
-                                                                                ]
-                                                                            );
-                                                                        else {
-                                                                            let tmp =
-                                                                                bagKits.filter(
-                                                                                    (
-                                                                                        id
-                                                                                    ) =>
-                                                                                        id !==
-                                                                                        kit._id
-                                                                                );
-                                                                            setBagKits(
-                                                                                tmp
-                                                                            );
-                                                                        }
-                                                                    }}
-                                                                    aria-label={
-                                                                        bagKits.includes(
-                                                                            kit._id
-                                                                        )
-                                                                            ? `Clicca per rimuovere ${kit.name}.`
-                                                                            : `Clicca per aggiungere ${kit.name}.`
+                                                    <SplideSlide>
+                                                        <div
+                                                            className="h-96 p-4"
+                                                            key={kit._id}
+                                                        >
+                                                            <div className="w-full h-4/5">
+                                                                <img
+                                                                    className="w-full h-full object-contain"
+                                                                    src={
+                                                                        kit.image
                                                                     }
-                                                                    className={`btn ${
-                                                                        width <
-                                                                            400 &&
-                                                                        "btn-circle"
-                                                                    } ${
-                                                                        bagKits.includes(
-                                                                            kit._id
-                                                                        )
-                                                                            ? "btn-error"
-                                                                            : "btn-success"
-                                                                    }`}
-                                                                    type="button"
-                                                                >
-                                                                    {width >=
-                                                                        400 && (
-                                                                        <span className="text-white">
-                                                                            {bagKits.includes(
+                                                                    alt={`Immagine ${kit.name}`}
+                                                                />
+                                                            </div>
+
+                                                            <div className="flex justify-between items-center">
+                                                                <div>
+                                                                    <p
+                                                                        style={{
+                                                                            margin: "0",
+                                                                        }}
+                                                                        className="font-medium md:text-xl tracking-tight"
+                                                                    >
+                                                                        {
+                                                                            kit.name
+                                                                        }
+                                                                    </p>
+                                                                    <p
+                                                                        style={{
+                                                                            margin: "0",
+                                                                        }}
+                                                                    >
+                                                                        <span className="font-medium md:text-xl">
+                                                                            {
+                                                                                kit.price
+                                                                            }
+                                                                            €
+                                                                        </span>
+                                                                        <span>
+                                                                            /
+                                                                            ora
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+
+                                                                <div>
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            if (
+                                                                                !bagKits.includes(
+                                                                                    kit._id
+                                                                                )
+                                                                            )
+                                                                                setBagKits(
+                                                                                    (
+                                                                                        bagKits
+                                                                                    ) => [
+                                                                                        ...bagKits,
+                                                                                        kit._id,
+                                                                                    ]
+                                                                                );
+                                                                            else {
+                                                                                let tmp =
+                                                                                    bagKits.filter(
+                                                                                        (
+                                                                                            id
+                                                                                        ) =>
+                                                                                            id !==
+                                                                                            kit._id
+                                                                                    );
+                                                                                setBagKits(
+                                                                                    tmp
+                                                                                );
+                                                                            }
+                                                                        }}
+                                                                        aria-label={
+                                                                            bagKits.includes(
                                                                                 kit._id
                                                                             )
-                                                                                ? `Rimuovi`
-                                                                                : `Aggiungi`}
-                                                                        </span>
-                                                                    )}
-                                                                    {width <
-                                                                        400 && (
-                                                                        <span className="text-white">
-                                                                            {bagKits.includes(
+                                                                                ? `Clicca per rimuovere ${kit.name}.`
+                                                                                : `Clicca per aggiungere ${kit.name}.`
+                                                                        }
+                                                                        className={`btn ${
+                                                                            width <
+                                                                                400 &&
+                                                                            "btn-circle"
+                                                                        } ${
+                                                                            bagKits.includes(
                                                                                 kit._id
                                                                             )
-                                                                                ? `–`
-                                                                                : `＋`}
-                                                                        </span>
-                                                                    )}
-                                                                </button>
+                                                                                ? "btn-error"
+                                                                                : "btn-success"
+                                                                        }`}
+                                                                        type="button"
+                                                                    >
+                                                                        {width >=
+                                                                            400 && (
+                                                                            <span className="text-white">
+                                                                                {bagKits.includes(
+                                                                                    kit._id
+                                                                                )
+                                                                                    ? `Rimuovi`
+                                                                                    : `Aggiungi`}
+                                                                            </span>
+                                                                        )}
+                                                                        {width <
+                                                                            400 && (
+                                                                            <span className="text-white">
+                                                                                {bagKits.includes(
+                                                                                    kit._id
+                                                                                )
+                                                                                    ? `–`
+                                                                                    : `＋`}
+                                                                            </span>
+                                                                        )}
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </SplideSlide>
                                                 ))}
-                                            </Carousel>
+                                            </Splide>
                                         </div>
                                     )}
 
@@ -573,7 +640,7 @@ const ProductScreen = (props) => {
                                                 aria-checked={
                                                     selectedCondition === "good"
                                                 }
-                                                aria-label="Scegli se selezionare un modello usato. Questo modello di auto è stato immatricolato da qualche anno, ha viaggiato migliaia di kilometri ed è stato necessario riparlarlo alcune volte. Perfetto se cerchi sicurezza e risparmio."
+                                                aria-label="Scegli se selezionare un modello usato. Questo modello di auto è stato immatricolato da qualche anno, ha viaggiato migliaia di kilometri ed è stato necessario ripararlo alcune volte. Perfetto se cerchi sicurezza e risparmio."
                                                 className={`h-56 rounded shadow-md p-4 w-full disabled:opacity-50 text-left ${
                                                     selectedCondition === "good"
                                                         ? "bg-success text-white"
@@ -758,8 +825,217 @@ const ProductScreen = (props) => {
                                                     Checkout
                                                 </h2>
                                                 <br />
+
+                                                {/* Checkout */}
+                                                <List
+                                                    size="small"
+                                                    bordered
+                                                    style={{
+                                                        borderColor: `${
+                                                            theme === "dark"
+                                                                ? "#fff"
+                                                                : "#ccc"
+                                                        }`,
+                                                        paddingTop: "1rem",
+                                                        paddingBottom: "1rem",
+                                                    }}
+                                                    header={
+                                                        <div>
+                                                            <div className="font-medium text-base">
+                                                                Riepilogo
+                                                                noleggio
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    footer={
+                                                        <div>
+                                                            {" "}
+                                                            <hr /> <br />
+                                                            {priceInfo && (
+                                                                <div>
+                                                                    <p
+                                                                        className="font-medium text-base"
+                                                                        style={{
+                                                                            margin: "0",
+                                                                        }}
+                                                                    >
+                                                                        Prezzo
+                                                                        finale
+                                                                    </p>
+                                                                    <br />
+                                                                    <Space
+                                                                        size={
+                                                                            10
+                                                                        }
+                                                                        direction="vertical"
+                                                                    >
+                                                                        <div className="flex items-center gap-2">
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                    minWidth:
+                                                                                        "7rem",
+                                                                                }}
+                                                                                className="font-medium tracking-tight"
+                                                                            >
+                                                                                Prezzo
+                                                                                base
+                                                                            </p>
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                }}
+                                                                            >
+                                                                                +{" "}
+                                                                                {
+                                                                                    priceInfo.modelPrice
+                                                                                }
+                                                                                €{" "}
+                                                                                <span className="text-xs">
+                                                                                    /ora
+                                                                                </span>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className="flex items-center gap-2">
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                    minWidth:
+                                                                                        "7rem",
+                                                                                }}
+                                                                                className="font-medium tracking-tight"
+                                                                            >
+                                                                                Prezzo
+                                                                                kits
+                                                                            </p>
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                }}
+                                                                            >
+                                                                                +{" "}
+                                                                                {bagKits.length >
+                                                                                0 ? (
+                                                                                    <>
+                                                                                        {
+                                                                                            priceInfo.kitsPrice
+                                                                                        }
+                                                                                        €{" "}
+                                                                                        <span className="text-xs">
+                                                                                            /ora
+                                                                                        </span>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <>
+                                                                                        0
+                                                                                    </>
+                                                                                )}
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className="flex items-center gap-2">
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                    minWidth:
+                                                                                        "7rem",
+                                                                                }}
+                                                                                className="font-medium tracking-tight"
+                                                                            >
+                                                                                <span className="text-success">
+                                                                                    Sconti
+                                                                                </span>
+                                                                            </p>
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                }}
+                                                                            >
+                                                                                <span className="text-success">
+                                                                                    -{" "}
+                                                                                    {priceInfo.discount?.toFixed(
+                                                                                        2
+                                                                                    )}{" "}
+                                                                                    €
+                                                                                </span>
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className="flex items-center gap-2">
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                    minWidth:
+                                                                                        "7rem",
+                                                                                }}
+                                                                                className="font-medium text-2xl tracking-tight"
+                                                                            >
+                                                                                Totale
+                                                                            </p>
+                                                                            <p
+                                                                                style={{
+                                                                                    margin: "0",
+                                                                                }}
+                                                                                className="font-medium text-xl tracking-tight"
+                                                                            >
+                                                                                {
+                                                                                    priceInfo.finalPrice
+                                                                                }{" "}
+                                                                                €
+                                                                            </p>
+                                                                        </div>
+                                                                    </Space>
+
+                                                                    <div className="relative flex mt-8">
+                                                                        <div className="relative w-full sm:w-auto">
+                                                                            <div className=" bg-gradient-to-r from-accent to-primary absolute -inset-1 rounded-lg filter blur w-full sm:w-auto"></div>
+                                                                            <button
+                                                                                type="button"
+                                                                                aria-label="Clicca per confermare il noleggio"
+                                                                                className="btn btn-secondary btn-block sm:btn-wide z-20 relative"
+                                                                            >
+                                                                                <span className="text-secondary-content">
+                                                                                    Noleggia
+                                                                                </span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    }
+                                                    dataSource={[
+                                                        `– ${model}, versione ${
+                                                            selectedCondition ===
+                                                            "Perfect"
+                                                                ? "nuova"
+                                                                : selectedCondition ===
+                                                                  "good"
+                                                                ? "usata"
+                                                                : "usurata"
+                                                        }`,
+                                                        ...bagKits.map(
+                                                            (_id) =>
+                                                                "– " +
+                                                                kits.filter(
+                                                                    (kit) =>
+                                                                        kit._id ===
+                                                                        _id
+                                                                )[0].name
+                                                        ),
+                                                    ]}
+                                                    renderItem={(item) => (
+                                                        <List.Item>
+                                                            <span className="">
+                                                                {item}
+                                                            </span>
+                                                        </List.Item>
+                                                    )}
+                                                />
+
+                                                <br />
                                             </div>
-                                            {/* Checkout */}
                                         </>
                                     )}
                                 </div>
