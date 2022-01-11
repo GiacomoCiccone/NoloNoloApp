@@ -10,7 +10,7 @@ const Loading = (props) => {
             <div className="flex-col max-w-xs">
                 <img className='w-full h-full object-contain' src="https://acegif.com/wp-content/uploads/loading-87.gif" alt="Immagine caricamento auto"/>
                 <div className="mt-3 filter font-mono opacity-50 text-center">
-                    Stiamo cercando le tue auto...
+                    Attendi mentre soddisfiamo la tua richiesta...
                 </div>
             </div>
         </div>) : (<>{props.children}</>)}

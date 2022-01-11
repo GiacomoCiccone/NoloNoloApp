@@ -1,4 +1,4 @@
-const genArrayOfDates =  require("./CheckAvaiability");
+const {genArrayOfDates} =  require("./CheckAvaiability");
 
 function calcPrice(rent, car, simulation) {
     let finalPrice = 0; //prezzo finale comprese ore
@@ -18,7 +18,7 @@ function calcPrice(rent, car, simulation) {
     } else if (car.condition === "good") {
         modelPrice *= 1.1
     }
-    
+
     //calcolo ore totali
     if (rent.type === "period") {
         let dates = genArrayOfDates(
@@ -30,6 +30,7 @@ function calcPrice(rent, car, simulation) {
           );
         dates.forEach(date => {
             totalHours += (Math.abs(date.to - date.from) / 36e5);
+            
         })
 
         //se noleggia per piu di 4 giorni la settimana 10% di sconto
@@ -48,9 +49,9 @@ function calcPrice(rent, car, simulation) {
         //se e' un noleggio classico per piu di una settimana 10% sconto
     } else {
         totalHours += (Math.abs(rent.classic.to - rent.classic.from) / 36e5);
-
+        
         const totalDays = Math.floor(Math.abs(rent.classic.to - rent.classic.from) / 86400000)
-            if (totalDays > 7) {
+            if (totalDays >= 7) {
                 hoursDiscount += (totalHours * 0.1);
             }
     }

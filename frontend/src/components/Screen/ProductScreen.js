@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import queryString from "query-string";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
-import { Divider, List, PageHeader, Space } from "antd";
+import { Divider, List, message, PageHeader, Result, Space } from "antd";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/splide/dist/css/splide.min.css";
 
@@ -23,7 +23,7 @@ const ProductScreen = (props) => {
     //redux stuff
     const user = useSelector((state) => state.user);
     const { theme } = useSelector((state) => state.userPreferences);
-    const { authToken } = user;
+    const { authToken, userInfo } = user;
 
     const [isLoading, setIsLoading] = useState(false);
     const [cars, setCars] = useState([]);
@@ -32,6 +32,7 @@ const ProductScreen = (props) => {
     const [avaiableCondition, setAvaiableCondition] = useState([]);
     const [selectedCondition, setSelectedCondition] = useState("");
     const [priceInfo, setPriceInfo] = useState({});
+    const [rentSuccess, setRentSuccess] = useState(false);
 
     const width = useWindowSize();
 
@@ -39,26 +40,25 @@ const ProductScreen = (props) => {
         const fetchCars = async () => {
             const searchQuery = queryString.parse(location.search);
             var searchObj = {};
-            if (authToken) {
-                searchObj.checkAvaiability = true;
+            //deve vedere la disponibilita'
+            if (authToken) { 
                 if (searchQuery.type === "period") {
                     searchObj = {
-                        rentRequest: true,
                         type: "period",
                         from: searchQuery.from,
                         to: searchQuery.to,
-                        since: new Date(searchQuery.since).setHours(0, 0, 0, 0),
+                        since: searchQuery.since,
                         singleDay: searchQuery.singleDay,
                         for: searchQuery.for,
                     };
                 } else {
                     searchObj = {
-                        rentRequest: true,
                         type: "classic",
                         from: searchQuery.from,
                         to: searchQuery.to,
                     };
                 }
+                searchObj.checkAvaiability = true;
             }
 
             searchObj.place = searchQuery.place;
@@ -128,7 +128,7 @@ const ProductScreen = (props) => {
                     type: "period",
                     from: searchQuery.from,
                     to: searchQuery.to,
-                    since: new Date(searchQuery.since).setHours(0, 0, 0, 0),
+                    since: searchQuery.since,
                     singleDay: searchQuery.singleDay,
                     for: searchQuery.for,
                 };
@@ -169,9 +169,70 @@ const ProductScreen = (props) => {
         if (selectedCondition) updatePrice();
     }, [bagKits, selectedCondition, kits, location.search, cars]);
 
+    const requestRent = async () => {
+        const searchQuery = queryString.parse(location.search);
+            var rent = {};
+            if (searchQuery.type === "period") {
+                rent = {
+                    type: "period",
+                    period: {
+                        from: searchQuery.from,
+                        to: searchQuery.to,
+                        since: searchQuery.since,
+                        singleDay: searchQuery.singleDay,
+                        for: searchQuery.for,
+                    }
+                    
+                };
+            } else {
+                rent = {
+                    type: "classic",
+                    classic: {
+                        from: searchQuery.from,
+                        to: searchQuery.to,
+                    }
+                };
+            }
+
+            rent.rentObj = {}
+            rent.rentObj.car = cars.filter(
+                (car) => car.condition === selectedCondition
+            )[0]._id;
+
+            if (bagKits.length > 0) {
+                rent.rentObj.kits = []
+                bagKits.forEach((kitIn, i) => {
+                    rent.rentObj.kits.push(kitIn)
+                });
+
+                rent.rentObj.kits = rent.rentObj.kits.join(";") //bisogna mandarlo come stringa
+
+            }
+
+            rent.customer = userInfo._id;
+
+        try {
+            setIsLoading(true)
+            const config = {
+                headers: {
+                  Authorization: `Bearer ${authToken}`,
+                },
+              };
+            await axios.post('/api/rents/', rent, config)
+            setIsLoading(false)
+            setRentSuccess(true);
+        } catch (error) {
+            setIsLoading(false)
+            message.error({
+                content: <span role="alert">{error.response.data.error}</span>,
+                duration: 5,
+            });
+        }
+    }
+
     return (
         <Protected history={props.history}>
-            {authToken && (
+            {(authToken && !rentSuccess) ? (
                 <div
                     style={{ minHeight: "calc(100vh - 5rem)" }}
                     className="py-16 pt-8 relative"
@@ -405,8 +466,8 @@ const ProductScreen = (props) => {
                                                     },
                                                 }}
                                             >
-                                                {kits.map((kit) => (
-                                                    <SplideSlide>
+                                                {kits.map((kit, i) => (
+                                                    <SplideSlide key={"slide" + i}>
                                                         <div
                                                             className="h-96 p-4"
                                                             key={kit._id}
@@ -980,7 +1041,9 @@ const ProductScreen = (props) => {
                                                                                 className="font-medium text-xl tracking-tight"
                                                                             >
                                                                                 {
-                                                                                    priceInfo.finalPrice
+                                                                                    priceInfo.finalPrice?.toFixed(
+                                                                                        2
+                                                                                    )
                                                                                 }{" "}
                                                                                 €
                                                                             </p>
@@ -991,6 +1054,7 @@ const ProductScreen = (props) => {
                                                                         <div className="relative w-full sm:w-auto">
                                                                             <div className=" bg-gradient-to-r from-accent to-primary absolute -inset-1 rounded-lg filter blur w-full sm:w-auto"></div>
                                                                             <button
+                                                                                onClick={requestRent}
                                                                                 type="button"
                                                                                 aria-label="Clicca per confermare il noleggio"
                                                                                 className="btn btn-secondary btn-block sm:btn-wide z-20 relative"
@@ -1077,7 +1141,21 @@ const ProductScreen = (props) => {
                         </div>
                     </Loading>
                 </div>
-            )}
+            ) : (authToken && rentSuccess) && (<div className="min-h-screen flex justify-center items-center">
+                <Result
+                style={{color: theme === "dark" ? "#00bda0" : "#009485"}}
+                status="success"
+                title="Richiesta di noleggio avvenuta con successo."
+                subTitle="Controlla la tua pagina dei noleggi per vedere quando sarà confermato da un nostro amministratore."
+                extra={[
+                <Link to="/">
+                    <button className="btn btn-secondary" type="button">
+                        <span className="text-secondary-content">Torna alla home</span>
+                    </button>
+                </Link>
+                ]}
+            />
+            </div>)}
         </Protected>
     );
 };

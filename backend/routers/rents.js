@@ -5,25 +5,107 @@ const { protect } = require("../middleware/auth");
 const ErrorResponse = require("../utils/errorResponse");
 const Rents = require("../models/Rents");
 const Cars = require("../models/Cars")
-const calcPrice = require("../utils/calcPrice")
+const Kits = require("../models/Kits")
+const calcPrice = require("../utils/calcPrice");
+const { checkAvailability } = require("../utils/CheckAvaiability");
+const mongoose = require("mongoose");
 
 //CRUD
 
 //create
-router.route("/").post(async (req, res, next) => {
+router.route("/").post(protect, async (req, res, next) => {
+
+    //splittiamo i kit da stringa ad array (nel body non si possono mandare stringhe)
+    if(req.body.rentObj.kits) {
+        let kit = ''    //necessario o impazzisce
+        kit += req.body.rentObj.kits
+        kit = kit.split(";")
+        req.body.rentObj.kits = kit
+    }
+
     try {
-        const rent = new Rents({
-            ...req.body,
-            price: calcPrice(req.body, req.body.rent.rentObj.car, false)
+        //macchina che stiamo per noleggiare
+        const car = await Cars.findById(req.body.rentObj.car);
+        if (!car) return next(new ErrorResponse("Richiesta non valida", 400))
+
+        //cerchiamo tutti i rent relativi a tale macchina
+        const history = await Rents.find({'rentObj.car': mongoose.Types.ObjectId(car._id)})
+        
+
+        let dateRange;
+
+        if (req.body.type === "period") {
+            dateRange = {
+                type: "period",
+                period: {
+                  from: req.body.period.from,
+                  to: req.body.period.to,
+                  for: req.body.period.for,
+                  since: req.body.period.since,
+                  singleDay: req.body.period.from === req.body.period.to,
+                }
+            }
+        } else {
+            dateRange = {
+                type: "classic",
+                classic: {
+                  from: req.body.classic.from,
+                  to: req.body.classic.to,
+                }
+            }
+        }
+
+        //controlla se la macchina è disponibile
+        if(history.length > 0 && !checkAvailability(history, car, dateRange)) return next(new ErrorResponse("Macchina non disponibile nelle date scelte", 404))
+
+
+        let expandedKits = []
+        //bisogna prendere le info sui kit per calcolare il prezzo
+        if(req.body.rentObj.kits && req.body.rentObj.kits.length > 0) {
+
+            for(var i = 0; i < req.body.rentObj.kits.length; i++) {
+                let kit = req.body.rentObj.kits[i]
+                const kitExpanded = await Kits.findById(kit);
+                if (!kitExpanded) return next(new ErrorResponse("Kit non trovato", 404))
+                expandedKits.push(kitExpanded);   
+            }
+        }
+
+        //lui ha le informazioni sui kit e puo' usarle per calc price
+        let expandedKitsBody = {};
+            if (req.body.type === "period") {
+                expandedKitsBody.type = "period"
+                expandedKitsBody.period = {
+                    from: parseInt(req.body.period.from),
+                    to: parseInt(req.body.period.to),
+                    for: parseInt(req.body.period.for),
+                    since: new Date(req.body.period.since),
+                    singleDay: req.body.period.from === req.body.period.to,
+                }
+            } else {
+                expandedKitsBody.type = "classic";
+                expandedKitsBody.classic = {
+                    from: new Date(req.body.classic.from),
+                    to: new Date(req.body.classic.to),
+                }
+            }
+            expandedKitsBody.rentObj = {}
+            expandedKitsBody.rentObj.kits = expandedKits;
+
+
+         const rent = new Rents({
+              ...req.body,
+              price: calcPrice(expandedKitsBody, car, false)
         });
 
         await rent.save();
 
         res.status(201).json({
             success: true,
-            message: "Nuovo noleggio inserito con successo",
+            data: "Nuovo noleggio inserito con successo",
         });
     } catch (error) {
+        console.log(error)
         return next(error);
     }
 });
@@ -32,7 +114,7 @@ router.route("/").post(async (req, res, next) => {
 router.route("/").get(protect, async (req, res, next) => {
     if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
         try {
-            const rents = Rents.find()
+            const rents = await Rents.find()
             .populate("customer")
             .populate({
                 path: "rentObj",
@@ -52,7 +134,7 @@ router.route("/").get(protect, async (req, res, next) => {
 router.route("/:id").get(protect, async (req, res, next) => {
     if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
         try {
-            const rent = Rents.findById(req.params.id)
+            const rent = await Rents.findById(req.params.id)
             .populate("customer")
             .populate({
                 path: "rentObj",
@@ -76,7 +158,7 @@ router.route("/:id").get(protect, async (req, res, next) => {
 router.route("/users/:id").get(protect, async (req, res, next) => {
     if (req.userInfo._id == req.params.id || req.userInfo.role === "admin" && req.userInfo.role === "manager") {
         try {
-            const rents = Rents.find({customer: req.params.id})
+            const rents = await Rents.find({customer: req.params.id})
             .populate("customer")
             .populate({
                 path: "rentObj",
@@ -100,7 +182,7 @@ router.route("/users/:id").get(protect, async (req, res, next) => {
 router.route("/cars/:id").get(protect, async (req, res, next) => {
     if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
         try {
-            const rents = Rents.find({"rentObj.car": req.params.id})
+            const rents = await Rents.find({"rentObj.car": req.params.id})
             .populate("customer")
             .populate({
                 path: "rentObj",
@@ -125,7 +207,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
     if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
         try {
             let changeState = req.query.changeState;
-            const rentToUpdate = Rents.findById(req.params.id)
+            const rentToUpdate = await Rents.findById(req.params.id)
             .populate("customer")
             .populate({
                 path: "rentObj",
@@ -171,7 +253,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
 router.route("/:id").delete(protect, async (req, res, next) => {
     if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
         try {
-            const rentToDelete = Rents.findById(req.params.id)
+            const rentToDelete = await Rents.findById(req.params.id)
 
             if (!rentToDelete) {
                 return next(new ErrorResponse("Nessun noleggio trovato", 404))
@@ -212,7 +294,7 @@ router.route("/getPrice/:id").get(async (req, res, next) => {
                     from: parseInt(req.query.from),
                     to: parseInt(req.query.to),
                     for: parseInt(req.query.for),
-                    since: new Date(new Date(req.query.since).setHours(0,0,0,0)),
+                    since: new Date(req.query.since),
                     singleDay: req.query.from === req.query.to,
                 }
             } else {
@@ -222,6 +304,7 @@ router.route("/getPrice/:id").get(async (req, res, next) => {
                     to: new Date(req.query.to),
                 }
             }
+
             rent.rentObj = {}
             rent.rentObj.kits = req.query.kits.split(";").map(kit => {return {price: parseInt(kit)}})
 

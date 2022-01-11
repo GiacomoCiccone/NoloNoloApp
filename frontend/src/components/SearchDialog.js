@@ -100,7 +100,7 @@ const SearchDialog = (props) => {
             if (isPeriodic) {
                 searchObj.type = "period";
                 searchObj.period = {};
-                searchObj.period.since = startDatePeriod;
+                searchObj.period.since = new Date(new Date(startDatePeriod).setHours(0,0,0,0));
                 searchObj.period.from =
                     ((startDatePeriod.getDay() + 6) % 7) + 1;
                 searchObj.period.to = searchObj.period.from;

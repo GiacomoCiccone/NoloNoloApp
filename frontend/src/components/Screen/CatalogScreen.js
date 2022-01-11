@@ -37,25 +37,25 @@ const CatalogScreen = () => {
             const searchQuery = queryString.parse(location.search);
             var searchObj = {};
             if (authToken) {
-                searchObj.checkAvaiability = true;
                 if (searchQuery.type === "period") {
                     searchObj = {
-                        rentRequest: true,
+                        //rentRequest: true,
                         type: "period",
                         from: searchQuery.from,
                         to: searchQuery.to,
-                        since: new Date(searchQuery.since).setHours(0, 0, 0, 0),
+                        since: searchQuery.since,
                         singleDay: searchQuery.singleDay,
                         for: searchQuery.for,
                     };
                 } else {
                     searchObj = {
-                        rentRequest: true,
+                        //rentRequest: true,
                         type: "classic",
                         from: searchQuery.from,
                         to: searchQuery.to,
                     };
                 }
+                searchObj.checkAvaiability = true;
             }
 
             searchObj.place = searchQuery.place;

@@ -57,11 +57,13 @@ function genArrayOfDates(from, to, since, period, singleDay) {
 function checkAvailability(history, car, rentRequest) {
   let available = true;
 
+  //si assicura che sia una data
   if (rentRequest.type === "classic") {
     rentRequest.classic.from = new Date(rentRequest.classic.from);
     rentRequest.classic.to = new Date(rentRequest.classic.to);
   }
 
+  //controlla con le date di non disponibilita della macchina
   if (car.unavaiable.from) {
     switch (rentRequest.type) {
       case "period":
@@ -101,6 +103,7 @@ function checkAvailability(history, car, rentRequest) {
     }
   }
 
+  //controlla per ogni rent nella history dell'auto
   history.forEach((rent) => {
     rent = rent.toObject();
     //salta il rent in questione che dev'essere modificato

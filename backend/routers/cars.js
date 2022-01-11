@@ -2,7 +2,7 @@ const express = require("express");
 //permette di creare percorsi di route modulari
 var router = express.Router();
 const { protect } = require("../middleware/auth");
-const checkAvaiability = require("../utils/CheckAvaiability");
+const { checkAvailability } = require("../utils/CheckAvaiability");
 const ErrorResponse = require("../utils/errorResponse");
 const Cars = require("../models/Cars");
 const Rents = require("../models/Rents")
@@ -35,6 +35,7 @@ router.route("/").post(async (req, res, next) => {
 router.route("/").get(async (req, res, next) => {
   let dateRange;
   //si stanno filtrando le auto per vederne la disponibilita'
+
   req.query.checkAvaiability
     ? req.query.type === "period"
       ? (dateRange = {
@@ -55,22 +56,25 @@ router.route("/").get(async (req, res, next) => {
           },
         })
     : false;
+
   let query = {}
-  req.query.place ? query.place = req.query.place : mongoose.Types.ObjectId(query.place) = {}
+  req.query.place ? query.place = req.query.place : query.place = {}
   try {
     let data = await Cars.find(query).populate("place")
 
     if (data.length > 0 && req.query.checkAvaiability) {
-      
       let avaiableCar = []
 
       for (let i = 0; i < data.length; i++) {
         const car = data[i];
         //cerchiamo tutti i rent relativi a tale macchina
-        const history = Rents.find({'rentObj.car': mongoose.Types.ObjectId(car._id)})
-        
+        const history = await Rents.find({'rentObj.car': mongoose.Types.ObjectId(car._id)})
+
         //vede se e' disponibile per le date
-        if (history.length > 0 && !checkAvaiability(history, car, dateRange) && car.place === req.query.place) {
+        if (history.length > 0 && checkAvailability(history, car, dateRange)) {
+          avaiableCar.push(car);
+          //se non ha noleggi va bene sempre
+        } else if (history.length === 0) {
           avaiableCar.push(car);
         }
       }
@@ -156,7 +160,7 @@ router.route("/:id").delete(protect, async (req, res, next) => {
         return next(new ErrorResponse("Modello di auto non trovato", 404));
       }
 
-      const history = Rents.find({'rentObj.car': mongoose.Types.ObjectId(req.params.id)})
+      const history = await Rents.find({'rentObj.car': mongoose.Types.ObjectId(req.params.id)})
 
       //se e' stata noleggiata almeno una volta si rende non disponibile
       if (history.length > 0) {
