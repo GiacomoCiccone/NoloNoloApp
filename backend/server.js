@@ -3,7 +3,7 @@
 
 //per usare il file di config basta questa dichiarazione all'inizio del file principale
 require("dotenv").config({ path: "./config.env" });
-
+const bodyParser = require('body-parser')
 const cors = require("cors");
 const express = require("express");
 const path = require("path");
@@ -15,8 +15,8 @@ connectDB();
 
 const app = express();
 
-//middleware per usare i dati nel body delle richieste. 5mb massimo body size
-app.use(express.json({ limit: "5mb" }));
+//middleware per usare i dati nel body delle richieste
+app.use(bodyParser.json());
 app.use(cors());
 
 //serve static file from react app

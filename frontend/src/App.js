@@ -16,11 +16,13 @@ import ProductScreen from "./components/Screen/ProductScreen";
 import RegisterScreen from "./components/Screen/RegisterScreen";
 import RentsScreen from "./components/Screen/RentsScreen";
 import ResetPasswordScreen from "./components/Screen/ResetPasswordScreen";
+import RentInfoScreen from "./components/Screen/RentInfoScreen";
 
 import Navbar from "./components/Navbar";
 import NavbarSpace from "./components/NavbarSpace";
 import ScrollToTop from "./utils/ScrollToTop";
 import Footer from "./components/Footer";
+
 
 
 function App() {
@@ -51,6 +53,7 @@ function App() {
 
                     <Route exact path="/account" component={AccountScreen} />
                     <Route exact path="/rents" component={RentsScreen} />
+                    <Route exact path="/rents/:id" component={RentInfoScreen} />
 
                     <Route exact path="/catalog" component={CatalogScreen} />
                     <Route

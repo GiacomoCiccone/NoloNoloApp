@@ -204,12 +204,10 @@ const ProductScreen = (props) => {
                 bagKits.forEach((kitIn, i) => {
                     rent.rentObj.kits.push(kitIn)
                 });
-
-                rent.rentObj.kits = rent.rentObj.kits.join(";") //bisogna mandarlo come stringa
-
             }
 
             rent.customer = userInfo._id;
+            rent.address = userInfo.address;
 
         try {
             setIsLoading(true)

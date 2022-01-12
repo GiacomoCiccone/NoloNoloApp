@@ -239,11 +239,11 @@ const AccountScreen = (props) => {
                         backgroundImage:
                             "url(https://images.unsplash.com/photo-1552083974-186346191183?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)",
                     }}
-                    className="flex justify-center bg-cover relative py-4"
+                    className="flex justify-center bg-cover relative py-20"
                 >
                     <div className="absolute w-full h-full top-0 backdrop-blur backdrop-brightness-90"></div>
 
-                    <div className="container mx-auto sm:px-8 lg:px-16 xl:px-20 max-w-4xl z-10 mt-20">
+                    <div className="container mx-auto sm:px-8 lg:px-16 xl:px-20 max-w-4xl z-10">
                         <div className="bg-base-200 overflow-hidden shadow-md rounded ">
                             <Spin spinning={isLoading}>
                                 {" "}

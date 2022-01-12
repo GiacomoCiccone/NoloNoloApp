@@ -16,11 +16,19 @@ const RentsSchema = new mongoose.Schema(
       default: "pending",
     },
 
+    concludedOn: Date,  //data conclusione
+
     type: String, //period | classic
     
     classic: {
       from: Date,
       to: Date,
+    },
+
+    address: {
+      city: String,
+      via: String,
+      postal_code: Number,
     },
 
     period: {

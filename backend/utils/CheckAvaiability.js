@@ -107,7 +107,7 @@ function checkAvailability(history, car, rentRequest) {
   history.forEach((rent) => {
     rent = rent.toObject();
     //salta il rent in questione che dev'essere modificato
-    if (rent._id === rentRequest.id);
+    if (rentRequest.id && rentRequest.id.equals(rent._id));
     else {
       switch (rent.type) {
         case "period":

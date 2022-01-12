@@ -38,7 +38,7 @@ router.route("/").get(async (req, res, next) => {
 router.route("/:id").get(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
   try {
-    const kit = Kits.findById(req.params.id);
+    const kit = await Kits.findById(req.params.id);
 
     if (!kit) {
         return next(new ErrorResponse("Kit non trovato", 404))
@@ -56,7 +56,7 @@ router.route("/:id").get(protect, async (req, res, next) => {
 //read
 router.route("/name/:name").get(protect, async (req, res, next) => {
     try {
-      const kit = Kits.findOne({name: req.params.name});
+      const kit = await Kits.findOne({name: req.params.name});
   
       if (!kit) {
           return next(new ErrorResponse("Kit non trovato", 404))
@@ -72,7 +72,7 @@ router.route("/name/:name").get(protect, async (req, res, next) => {
 router.route("/:id").put(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
   try {
-    const kitUpdated = Kits.findByIdAndUpdate(req.params.id, req.body);
+    const kitUpdated = await Kits.findByIdAndUpdate(req.params.id, req.body);
 
     if (!kitUpdated) {
         return next(new ErrorResponse("Kit non trovato", 404))
