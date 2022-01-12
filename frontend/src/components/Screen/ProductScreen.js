@@ -172,6 +172,8 @@ const ProductScreen = (props) => {
     const requestRent = async () => {
         const searchQuery = queryString.parse(location.search);
             var rent = {};
+
+            // Costruisce l'oggetto dell date + tipo
             if (searchQuery.type === "period") {
                 rent = {
                     type: "period",
@@ -194,6 +196,7 @@ const ProductScreen = (props) => {
                 };
             }
 
+            // Inserisce l'id della macchina ed eventuali id di kits
             rent.rentObj = {}
             rent.rentObj.car = cars.filter(
                 (car) => car.condition === selectedCondition
@@ -206,6 +209,7 @@ const ProductScreen = (props) => {
                 });
             }
 
+            // Manda informazioni cliente + indirizzo di fatturazione
             rent.customer = userInfo._id;
             rent.address = userInfo.address;
 

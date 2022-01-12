@@ -7,6 +7,7 @@ function calcPrice(rent, car, simulation) {
 
     let kitsPrice = 0;  //prezzo dei kit
     let modelPrice = car.basePrice; //prezzo del modello
+    let penal = 0;
     
 
     let totalHours = 0; //ore totali
@@ -73,8 +74,8 @@ function calcPrice(rent, car, simulation) {
     if (hoursDiscount > 0.15 * totalHours) hoursDiscount = 0.15 * totalHours;
 
     //se in ritardo sovrapprezzo
-    if (rent.state === "expired") {
-        totalHours *= 1.25;
+    if (rent.isLate) {
+        penal = (kitsPrice + modelPrice) * totalHours * 0.25;
     }
 
     //calcolo sconto
@@ -84,14 +85,16 @@ function calcPrice(rent, car, simulation) {
     totalPrice = (kitsPrice + modelPrice) * totalHours;
 
     //calcolo prezzo finale
-    finalPrice = totalPrice - discount;
+    finalPrice = totalPrice - discount + penal;
 
     if (simulation) {
         let info = {
             finalPrice,
             modelPrice,
             kitsPrice,
-            discount
+            discount,
+            penal,
+            totalHours
         }
         return info
     } else return finalPrice

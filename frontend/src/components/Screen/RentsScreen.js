@@ -28,8 +28,30 @@ const columns = [
       title: 'Stato',
       dataIndex: 'state',
       key: 'state',
-      render: state => <div className={`badge ${state==="pending" ? " badge-warning" : state==="accepted" ? "badge-success" : state==="concluded" ? "badge-info" : "badge-error"}`}>
+      filters: [
+        {
+          text: 'Pendenti',
+          value: 'pending',
+        },
+        {
+            text: 'In ritardo',
+            value: 'expired',
+          },
+
+          {
+            text: 'Accettati',
+            value: 'accepted',
+          },
+          {
+            text: 'Conclusi',
+            value: 'concluded',
+          },
+        
+          ],
+          onFilter: (value, record) => record.state === value,
+      render: state => <div className={`badge ${state==="pending" ? " badge-warning" : state==="accepted" ? "badge-info" : state==="concluded" ? "badge-success" : "badge-error"}`}>
           {state==="pending" ? "Pendente" : state==="accepted" ? "Accettato" : state==="concluded" ? "Concluso" : "In ritardo"}
+          
         
     </div> 
     },
@@ -38,14 +60,17 @@ const columns = [
         title: 'Visualizza',
         key: 'view',
         dataIndex: 'view',
+        
         render: rent => <Link aria-label={`Clicca per visualizzare il noleggio dell'auto ${rent.rentObj.car.model} effettuato il ${new Date (rent.createdAt).toLocaleDateString('it-IT')}`} to={`/rents/${rent._id}`}>
             <span className="underline text-info">Visualizza</span>
         </Link>
+        
     },
     {
         title: 'Data creazione',
         dataIndex: 'date',
         key: 'date',
+        sorter: (a, b) => new Date(a.date) - new Date(b.date),
       },
     {
         title: 'Id ordine',
@@ -82,7 +107,7 @@ const RentsScreen = (props) => {
                         key: i,
                         order_id: rent._id,
                         date: new Date(rent.createdAt).toLocaleDateString('it-IT'),
-                        state: rent.state,
+                        state: (rent.isLate && rent.state !== "concluded") ? "expired" : rent.state,
                         model: rent.rentObj.car,
                         view: rent
                     })
@@ -121,7 +146,7 @@ const RentsScreen = (props) => {
                                     <br />
                         <div className="bg-base-200 overflow-hidden shadow-md rounded ">
                             
-                        <Table loading={isLoading} pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['5', '10', '15']}} scroll={{x: 500}} style={{width: '100'}} bordered columns={columns} dataSource={rents} />
+                        <Table filters={{tabIndex: 0}} loading={isLoading} pagination={{ defaultPageSize: 10, showSizeChanger: true, pageSizeOptions: ['5', '10', '15']}} scroll={{x: 500}} style={{width: '100'}} bordered columns={columns} dataSource={rents} />
                         </div>
                     </div>
                 </div>

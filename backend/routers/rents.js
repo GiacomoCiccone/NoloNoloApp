@@ -514,6 +514,7 @@ router.route("/getPrice/:id").get(async (req, res, next) => {
                 };
             }
 
+            rent.isLate = req.query.isLate === "true"
             rent.rentObj = {};
             rent.rentObj.kits = req.query.kits.split(";").map((kit) => {
                 return { price: parseInt(kit) };

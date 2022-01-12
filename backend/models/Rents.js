@@ -10,13 +10,13 @@ const RentsSchema = new mongoose.Schema(
       car: { type: mongoose.Schema.Types.ObjectId, ref: "Cars" },
       kits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rents' }]
     },
-    //stato del noleggio. pending | accepted | concluded | expired
+    //stato del noleggio. pending | accepted | concluded
     state: {
       type: String,
       default: "pending",
     },
 
-    concludedOn: Date,  //data conclusione
+    concludedAt: Date,  //data conclusione
 
     type: String, //period | classic
     
@@ -24,6 +24,8 @@ const RentsSchema = new mongoose.Schema(
       from: Date,
       to: Date,
     },
+
+    isLate: Boolean,
 
     address: {
       city: String,

@@ -74,7 +74,7 @@ module.exports = {
               "base-100":
                   "#3d4451" /* Base color of page, used for blank backgrounds */,
               "base-200": "#222832" /* Base color, a little darker */,
-              "base-300": "#162030" /* Base color, even more darker */,
+              "base-300": "#15181e" /* Base color, even more darker */,
               "base-content":
                   "#ffffff" /* Foreground content color to use on base color */,
 
