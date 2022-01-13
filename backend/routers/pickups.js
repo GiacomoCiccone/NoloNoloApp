@@ -9,7 +9,6 @@ const ErrorResponse = require("../utils/errorResponse");
 
 //create
 router.route("/").post(protect, async (req, res, next) => {
-    console.log(req);
     if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
         try {
             const point = new Pickups({ ...req.body });
@@ -77,7 +76,6 @@ router.route("/:id").put(protect, async (req, res, next) => {
 //delete
 router.route("/:id").delete(protect, async (req, res, next) => {
     if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
-        //da proteggere
         try {
             const deleted = await Pickups.findByIdAndDelete(req.params.id);
 
@@ -95,9 +93,5 @@ router.route("/:id").delete(protect, async (req, res, next) => {
         return next(new ErrorResponse("Non autorizzato", 403));
     }
 });
-
-//others
-
-//statistiche
 
 module.exports = router;

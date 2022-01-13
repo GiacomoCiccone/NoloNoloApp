@@ -8,7 +8,7 @@ const RentsSchema = new mongoose.Schema(
     },
     rentObj: {
       car: { type: mongoose.Schema.Types.ObjectId, ref: "Cars" },
-      kits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Rents' }]
+      kits: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Kits' }]
     },
     //stato del noleggio. pending | accepted | concluded
     state: {
@@ -25,9 +25,9 @@ const RentsSchema = new mongoose.Schema(
       to: Date,
     },
 
-    isLate: Boolean,
+    isLate: Boolean,  //true se e' in ritardo
 
-    address: {
+    address: {  //indirizzo di fatturazione dell utente === indirizzo dell'utente al momento del noleggio
       city: String,
       via: String,
       postal_code: Number,

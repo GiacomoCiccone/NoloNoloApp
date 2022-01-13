@@ -90,7 +90,6 @@ router.route("/:id").put(protect, async (req, res, next) => {
 //delete
 router.route("/:id").delete(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
-  //da proteggere
   try {
     const deleted = await Kits.findByIdAndDelete(req.params.id);
 
@@ -106,9 +105,5 @@ router.route("/:id").delete(protect, async (req, res, next) => {
   return next(new ErrorResponse("Non autorizzato", 403));
 }
 });
-
-//others
-
-//statistiche
 
 module.exports = router;

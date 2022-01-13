@@ -1,7 +1,24 @@
+/**
+ * 
+ * @param {Date} a_start Data 1 inizio
+ * @param {Date} a_end Data 1 fine
+ * @param {Date} b_start Data 2 inizio
+ * @param {Date} b_end Data 2 fine
+ * @returns Ritorna falso se le date non si intervallano
+ */
 function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
   return !(a_start <= b_end && a_end >= b_start);
 }
 
+/**
+ * 
+ * @param {Number} from Giorno della settimana di inizio 1 Lun - 7 Dom
+ * @param {Number} to Giorno della settimana di fine
+ * @param {Date} since Data di inizio
+ * @param {Number} period Numero settimane
+ * @param {Boolean} singleDay Vero se from === to
+ * @returns Ritorna un array di date nella settimana, per ogni settimana.
+ */
 function genArrayOfDates(from, to, since, period, singleDay) {
   let date = [];
   let current = new Date(since);
@@ -54,6 +71,13 @@ function genArrayOfDates(from, to, since, period, singleDay) {
   return date;
 }
 
+/**
+ * 
+ * @param {*} history Storico dei rent di un auto.
+ * @param {*} car Auto da noleggiare
+ * @param {*} rentRequest Informazioni sul noleggio corrente
+ * @returns Ritorna true se l'auto e' disponibile nelle date scelte.
+ */
 function checkAvailability(history, car, rentRequest) {
   let available = true;
 

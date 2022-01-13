@@ -82,6 +82,53 @@ router.route("/registerAdmin").post(async (req, res, next) => {
   }
 });
 
+//register manager
+router.route("/registerManager").post(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(
+      new ErrorResponse("Per favore fornisci e-mail e password", 400)
+    );
+  }
+  try {
+    //cerca l'user e ritorna anche la password eludendo select: false nello schema
+    const user = await Users.findOne({ email: email, role: 'admin' }).select("+password");
+
+    if (!user) {
+      return next(new ErrorResponse("Credenziali non corrette", 404));
+    }
+
+    //compariamo la password passata a quella salvata nel database
+    const isMatch = await user.matchPasswords(password);
+
+    //controlliamo che faccia match e non sia utente
+    if (!isMatch) {
+      return next(new ErrorResponse("Credenziali non corrette", 404));
+    }
+
+    //assegna all'utente il ruolo manager
+    user.role = 'manager'
+    await user.save();
+
+    const authToken = user.getSignedToken();
+
+    //non mandiamo la password. password: not per evitare conflitti di nomi
+    const { password: not, ...info } = user._doc;
+    res
+      .status(200)
+      .json({
+        success: true,
+        data: {
+          authToken: authToken,
+          userInfo: { ...info }
+        }
+      });
+  } catch (error) {
+    next(error);
+  }
+});
+
 //login
 router.route("/login").post(async (req, res, next) => {
   const { email, password } = req.body;
@@ -136,7 +183,7 @@ router.route("/loginAdmin").post(async (req, res, next) => {
   }
   try {
     //cerca l'user e ritorna anche la password eludendo select: false nello schema
-    const user = await Users.findOne({ email: email }).select("+password");
+    const user = await Users.findOne({ email: email, role: 'admin' }).select("+password");
 
     if (!user) {
       return next(new ErrorResponse("Credenziali non corrette", 404));
@@ -150,8 +197,48 @@ router.route("/loginAdmin").post(async (req, res, next) => {
       return next(new ErrorResponse("Credenziali non corrette", 404));
     }
 
-    if(user.role !== "admin" && user.role !== "manager") {
-      return next(new ErrorResponse("Non Autorizzato", 403))
+    const authToken = user.getSignedToken();
+
+    //non mandiamo la password. password: not per evitare conflitti di nomi
+    const { password: not, ...info } = user._doc;
+    res
+      .status(200)
+      .json({
+        success: true,
+        data: {
+          authToken: authToken,
+          userInfo: { ...info }
+        }
+      });
+  } catch (error) {
+    next(error);
+  }
+});
+
+//login manager
+router.route("/loginManager").post(async (req, res, next) => {
+  const { email, password } = req.body;
+  console.log(req);
+
+  if (!email || !password) {
+    return next(
+      new ErrorResponse("Per favore fornisci e-mail e password", 400)
+    );
+  }
+  try {
+    //cerca l'user e ritorna anche la password eludendo select: false nello schema
+    const user = await Users.findOne({ email: email, role: 'manager' }).select("+password");
+
+    if (!user) {
+      return next(new ErrorResponse("Credenziali non corrette", 404));
+    }
+
+    //compariamo la password passata a quella salvata nel database
+    const isMatch = await user.matchPasswords(password);
+
+    //controlliamo che faccia match e non sia utente
+    if (!isMatch) {
+      return next(new ErrorResponse("Credenziali non corrette", 404));
     }
 
     const authToken = user.getSignedToken();

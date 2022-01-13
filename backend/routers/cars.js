@@ -31,11 +31,16 @@ router.route("/").post(async (req, res, next) => {
   }
 });
 
-//read all
+/**
+ * Se nella query si passa checkAvaiability controlla anche la disponibilita'.
+ * Se nella query si passa place si cercano le auto in quel posto.
+ * type indica il tipo di "noleggio" che si sta cercando ed e' o classic  o period.
+ * Se e' classic allora bisogna specificare anche from (data di inizio con orario) sia un to (data di fine con orario).
+ * Se e' period bisogna specificare in from il numero del giorno della settimana di inizio, to quello di fine, for il numero di settimane totali (da 1 a 54) since la data di inizio (dalla mezzanotte).
+ */
 router.route("/").get(async (req, res, next) => {
   let dateRange;
   //si stanno filtrando le auto per vederne la disponibilita'
-
   req.query.checkAvaiability
     ? req.query.type === "period"
       ? (dateRange = {
@@ -93,7 +98,7 @@ router.route("/").get(async (req, res, next) => {
   }
 });
 
-//read all
+//se si cercano le auto per posto si puo' usare questa passando l'id del posto
 router.route("/place/:id").get(async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
     try {
@@ -112,7 +117,7 @@ router.route("/place/:id").get(async (req, res, next) => {
   }
 });
 
-//read
+//read id auto
 router.route("/:id").get(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
     try {
@@ -131,7 +136,7 @@ router.route("/:id").get(protect, async (req, res, next) => {
   }
 });
 
-//update
+//update id auto
 router.route("/:id").put(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
     try {
@@ -150,7 +155,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
   }
 });
 
-//delete
+//delete id auto
 router.route("/:id").delete(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
     try {
