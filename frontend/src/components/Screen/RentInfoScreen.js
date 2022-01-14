@@ -461,14 +461,14 @@ const RentInfoScreen = (props) => {
                                                         }`}
                                                     >
                                                         {
-                                                            (rent.isLate && rent.state !== "concluded") ? "badge-error" :
+                                                            (rent.isLate && rent.state !== "concluded") ? "In ritardo" :
                                                             rent.state ===
                                                             "pending"
-                                                                ? " badge-warning"
+                                                                ? "Pendente"
                                                                 : rent.state ===
                                                                   "accepted"
-                                                                ? "badge-info"
-                                                                : "badge-success"
+                                                                ? "Accettato"
+                                                                : "Concluso"
                                                         }
                                                     </div>{" "}
                                                 </Descriptions.Item>
