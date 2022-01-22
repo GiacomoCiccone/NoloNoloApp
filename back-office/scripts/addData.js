@@ -2,13 +2,13 @@ $('#add-menu').on('click','#sendPickupData', function () { // jquery delegation
     //sendPickupData(); // l'ho messo qui così non ci sono problemi se uno volessi fare una query premento invio
 });
 
-$(document).on('click','.remove', function () { // fake deletion
-    var user_token = window.localStorage.getItem('token');
-    if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
-    console.log(user_token);
-    var id = $(this.closest("[data-entryid]")).data("entryid");
-    deleteElement("",'pickups/' + id + '/', user_token);
-});
+// $(document).on('click','.remove', function () { // fake deletion
+//     var user_token = window.localStorage.getItem('token');
+//     if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
+//     console.log(user_token);
+//     var id = $(this.closest("[data-entryid]")).data("entryid");
+//     deleteElement("",'pickups/' + id + '/', user_token);
+// });
 
 
 function sendPickupData(){
@@ -21,8 +21,6 @@ function sendPickupData(){
     var payload = {point : data, type : type};
     sendPayload(payload, 'pickups/', user_token);
     fetchDataFromServer();
-    $('#add-menu').removeClass('active');
-    $('.overlay').removeClass('active');
 }
 
 // versione momentanea del codice di login in base a dati in json.
@@ -47,7 +45,7 @@ function sendPayload(payload, url, user){
                 fetchDataFromServer();
             }
         } catch(error) {
-            alert("Error sending data...");
+            alert("Error sending data... " + error);
         }
     }
 
@@ -74,7 +72,7 @@ function deleteElement(payload, url, user){
                 fetchDataFromServer();
             }
         } catch(error) {
-            alert("Error sending data...");
+            alert("Error sending data... " + error);
         }
     }
     return sendData();

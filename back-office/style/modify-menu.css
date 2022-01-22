@@ -1,0 +1,21 @@
+.value-container
+{
+    margin-bottom: 1vh;
+    display: flex;
+}
+.modify-text
+{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.modify-button
+{
+    margin-left: auto;
+    float: right;    
+}
+
+.hidden
+{
+    display: none;
+}

@@ -18,6 +18,7 @@ function fetchDataFromServer(){
                 if (!res.ok) throw new Error("erroraccio");
                 else {
                     fetchedData = await res.json();
+                    window.sessionStorage.setItem("latest_fetch", fetchedData.data);
                     displayData(fetchedData.data, page_context);
                 }
             } catch(error) {
@@ -32,13 +33,13 @@ function fetchDataFromServer(){
                 var element =             
                 '<div tabindex="0" class="entry" data-entryid="' + val.id + '">' +
                 '<span class="sr-only"> Entri di ' + val.car.model + '. Contiene: </span>' + 
-                    '<div class="entry-image"><img src="' + val.image + '" alt=""></div>' + 
+                    '<div class="entry-image"><img src="' + val.image + '" alt=""></div>' +  
                         '<div class="entry-body">' +
-                        '<h5 class="entry-title">' + val.car.model + '</h5>' + 
+                        '<h5 class="entry-title">' + val.car.model + '</h5>' + //had to add id="entry-title" for closest
                         '<p class="entry-text">' + val.car.description + '</p>' + 
                         '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
                         '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
-                        '<a href="#" class="btn btn-danger remove"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi</a>' +
+                        '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi</a>' +
                     '</div>' +
                 '</div>';
                 $("#elements").append(element);
@@ -62,12 +63,19 @@ function displayData(data, context){
                 '<p class="entry-text">' + val.type + '</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
                 '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
-                '<a href="#" class="btn btn-danger remove"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi</a>' +
+                '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi</a>' +
             '</div>' +
         '</div>';
         $("#elements").append(element);
     });
 }
 
+// verifies if the user can make a certain action
+function verifyAction(){
+    if (window.localStorage.getItem('token') == null){
+        window.location.replace("./login.html");
+        return false;
+    }
+}
 
 

@@ -20,6 +20,7 @@
 
     
     <link href="style/general.css" rel="stylesheet">
+    <link href="style/modify-menu.css" rel="stylesheet">
     <link href="style/list.css" rel="stylesheet">
     <link href="style/sidebar.css" rel="stylesheet">
     <link href="style/context-menu.css" rel="stylesheet">
@@ -42,18 +43,20 @@
 
       <!-- Sidebar -->
       <div id="sidebar"></div>
-      
-      <!-- Menu for modifications -->
-      <div id="add-menu">
-        <div id="add-fields">
-        AAAAAAAAAAAAAAAAAAAAAH;
-        </div>
-      </div>
 
       <!-- BackOffice content -->
       <div id="content">
 
         <div id="content-header"></div>
+        
+        <div id="add-modal">
+        <!-- Modal -->
+          <div class="modal fade" id="multiUseModal" tabindex="-1" role="dialog" aria-labelledby="multiUseModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content"></div>
+            </div>
+          </div>
+        </div>
 
         <div id="list-wrapper" data-type="pickups">
           <div class="ui divShadow">
@@ -61,25 +64,6 @@
             </div>  
           </div>
         </div>
-        
-        <div id="context-menu" aria-hidden="true">
-            <div id="cntx-header"><h2 id="ex-title">Title here</h2>
-              <div id="dismiss">
-                  <i class="fas fa-times"></i>
-              </div>
-            </div>
-    
-            <div id="cntx-content">
-                <h3>Content</h3>
-                <p id="ex-data">Info here</p>
-            </div>
-            <div id="context-wrapper">
-              <div id="cntx-footer">
-                <a href="#" class="btn btn-primary modify"><i class="fas fa-edit"></i>&nbsp; Modifica</a>
-              </div>
-            </div>
-      </div>
-
     </div>
     <div class="overlay"></div>
     </div>

@@ -18,5 +18,4 @@ $(document).ready(() => {
         $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + context);
     });
     console.log("test: " + page);
-    $('#add-fields').load("components/userform.html");
 });

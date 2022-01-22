@@ -1,19 +1,30 @@
-<form>
+<div class="modal-header">
+  <h5 class="modal-title" id="multiUseModalLabel">Aggiungi un luogo di ritiro</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form>
     <div class="form-group m-2">
       <label for="pickupPlace">Zona del luogo di ritiro</label>
       <input type="text" class="form-control" id="pickupName" aria-describedby="Nome luogo ritiro" placeholder="Via nolonolo...">
     </div>
     <div class="form-check m-2">
-        <input class="form-check-input" type="radio" name="selezioneTipoPickup" id="pulsanteStazione" value="station" checked>
-        <label class="form-check-label" for="pulsanteStazione">
-            Stazione
-        </label>
-      </div>
-      <div class="form-check m-2">
-        <input class="form-check-input" type="radio" name="selezioneTipoPickup" id="pulsanteAereoporto" value="airport">
-        <label class="form-check-label" for="pulsanteAereoporto">
-            Aereoporto
-        </label>
-      </div>
-    <button type="button" id="send-pickup" class="btn btn-primary m-2" onclick="sendPickupData()">Crea</button>
-</form>
+      <input class="form-check-input" type="radio" name="selezioneTipoPickup" id="pulsanteStazione" value="station" checked>
+      <label class="form-check-label" for="pulsanteStazione">
+          Stazione
+      </label>
+    </div>
+    <div class="form-check m-2">
+      <input class="form-check-input" type="radio" name="selezioneTipoPickup" id="pulsanteAereoporto" value="airport">
+      <label class="form-check-label" for="pulsanteAereoporto">
+          Aereoporto
+      </label>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+  <button type="button" id="send-pickup" class="btn btn-primary m-2" onclick="sendPickupData()" data-dismiss="modal">Crea</button>
+</div>
