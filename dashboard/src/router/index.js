@@ -13,7 +13,13 @@ Vue.use(VueRouter)
     path: '/forgot-password',
     name: 'forgot-password',
     component: () => import('../components/ForgotPwd.vue')
+  },
+  {
+    path: '*',
+    name: 'Error',
+    component: () => import('../components/HelloWorld.vue')
   }
+  
 ]
 
 const router = new VueRouter({

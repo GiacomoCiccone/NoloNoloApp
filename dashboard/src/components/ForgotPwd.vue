@@ -7,7 +7,7 @@
                 <label>Email address</label>
                 <input type="email" class="form-control form-control-lg" />
             </div>
-
+            <br>
             <button type="submit" class="btn btn-dark btn-lg btn-block">Reset password</button>
 
         </form>
