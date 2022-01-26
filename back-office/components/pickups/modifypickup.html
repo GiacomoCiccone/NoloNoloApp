@@ -14,14 +14,14 @@
             <p class="modify-text" id="pickup-title-value">null</p>
             <p>&nbsp;</p>
             <div class="modify-button">
-              <a href="#" class="btn btn-sm btn-primary modify"><i class="fas fa-edit"></i></a>
+              <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
               <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
-              <a href="#" class="btn btn-sm btn-success confirm hidden"><i class="fas fa-check"></i></a>
+              <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
               <!-- Add button for confirming here -->
             </div>
         </div>
         <div id="pickup-title-input" class="modify-input hidden">
-          <input class="form-control form-control-small" type="text" placeholder="Nome pickup">
+          <input class="form-control form-control-small modify-input-text" type="text" placeholder="Nome pickup">
         </div>
     </div>
     <div id="pickup-type-modify" class="modify-container" style="margin-bottom: 3vh;">
@@ -30,9 +30,9 @@
           <p class="modify-text" id="pickup-type-value">null</p>
           <p>&nbsp;</p>
           <div class="modify-button">
-            <a href="#" class="btn btn-sm btn-primary modify"><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
             <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
-            <a href="#" class="btn btn-sm btn-success confirm hidden"><i class="fas fa-check"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-radio hidden"><i class="fas fa-check"></i></a>
           </div>
       </div>
       <div id="pickup-type-input" class="modify-input hidden">
@@ -52,6 +52,6 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-    <button type="button" id="apply-pickup-modifications" class="btn btn-primary m-2 hidden" data-dismiss="modal">Applica</button>
+    <button type="button" id="apply-modifications" class="btn btn-primary m-2 hidden" data-dismiss="modal">Applica</button>
   </div>
   
