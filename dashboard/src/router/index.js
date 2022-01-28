@@ -18,6 +18,11 @@ Vue.use(VueRouter)
     path: '*',
     name: 'Error',
     component: () => import('../components/HelloWorld.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    component: () => import('../components/Dashboard.vue')
   }
   
 ]
