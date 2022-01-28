@@ -63,6 +63,33 @@ function fetchDataFromServer(url){
 }
 
 
+function fetchProtectedDataFromServer(url, user){
+    const fetchdata = async () => {
+        try {
+            let res = await fetch('http://localhost:8000/api/' + url, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json',
+                        'Authorization': "Bearer " + user   
+                },
+                mode: 'cors',
+                cache: 'default',
+            });
+            if (!res.ok) throw new Error("erroraccio");
+            else {
+                fetchedData = await res.json(); 
+                console.log(JSON.stringify(fetchedData.data));
+                // window.sessionStorage.setItem("latest_fetch", JSON.stringify(fetchedData.data));
+
+                displayData(fetchedData.data);
+            }
+        } catch(error) {
+            console.log("couldnt fetch data");
+        }
+    }
+    return fetchdata();
+}
+
+
 
 
 //// FUNZIONI LEGACY, VERRANNO ELIMINATE QUASI SUBITO ///////

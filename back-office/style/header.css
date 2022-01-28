@@ -5,6 +5,11 @@
     padding: 1vw;
 }
 
+#search-bar {
+    flex: 90%; 
+}
+
+
 #search-keyword {
     flex: 90%; 
     display: flex;

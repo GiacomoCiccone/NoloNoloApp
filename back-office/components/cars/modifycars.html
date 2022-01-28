@@ -50,7 +50,7 @@
   <div id="car-desc-modify" class="modify-container" style="margin-bottom: 3vh;">
     <div id="car-desc-info" class="value-container">
         <p>Descrizione:&nbsp;</p>
-        <p class="modify-text" id="car-desc-value" style="white-space: nowrap;text-overflow: ellipsis;">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+        <p class="modify-text" id="car-desc-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
         <p>&nbsp;</p>
         <div class="modify-button">
           <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
@@ -109,7 +109,6 @@
           <a href="#" class="btn btn-sm btn-primary modify modify-car-pickup-btn"><i class="fas fa-edit"></i></a>
           <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
           <a href="#" class="btn btn-sm btn-success confirm confirm-pickup-car hidden"><i class="fas fa-check"></i></a>
-          <!-- TODO: Special confirm for this -->
         </div>
     </div>
     <div id="car-pickup-modify-input" class="modify-input hidden">
@@ -261,13 +260,43 @@
   </div>
 
   <!-- Prenotazione data -->
-  <div id="car-rent-date" class="modify-container" style="margin-bottom: 3vh;" hidden>
-    <div id="car-rent-date-info" class="value-container">
-        <p>Prenotato dal&nbsp;</p>
+  <div id="car-unavail-date" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-unavail-date-info" class="value-container">
+        <p id="avail">Non disponibile dal&nbsp;</p>
         <p class="modify-text" id="car-date-from" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;al&nbsp;</p>
+        <p id="to-text">&nbsp;al&nbsp;</p>
         <p class="modify-text" id="car-date-to" style="text-overflow: ellipsis;">null</p>
         <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-avail-car hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-avail-modify-input" class="modify-input hidden">
+      <div class="form-group m-3">
+        <div class="form-check">
+          <label class="form-check-label" for="notAvail">
+            Auto non disponibile
+          </label>
+          <input class="form-check-input" type="checkbox" value="" id="notAvail">
+
+          <div class="row hidden" id="dateNavail">
+            <div class="col-sm m-2">
+              <label class="form-check-label" for="fromDate">
+                Dal
+              </label>
+              <input type="text" class="form-control" id="fromDate" aria-describedby="Dal" placeholder="YYYY-MM-DD" required>
+            </div>
+            <div class="col-sm m-2">
+              <label class="form-check-label" for="toDate">
+                al
+              </label>
+              <input type="text" class="form-control" id="toDate" aria-describedby="Al" placeholder="YYYY-MM-DD">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 

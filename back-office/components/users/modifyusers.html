@@ -1,0 +1,250 @@
+<!-- TODO: aggiungi span per descrivere modifiche etc-->
+
+
+  <div class="modal-header">
+    <h5 class="modal-title" id="multiUseModalLabel">Dettagli dell'utente</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <!-- Nome e congnome -->
+  <div class="modal-body">
+    <div id="user-title-modify" class="modify-container" style="margin-bottom: 3vh;">
+        <div id="user-title-info" class="value-container">
+            <p>Nome e congnome:&nbsp;</p>
+            <p class="modify-text" id="name-value">null</p>
+            <p>&nbsp;</p>
+            <div class="modify-button">
+              <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+              <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+              <a href="#" class="btn btn-sm btn-success confirm confirm-car-title-btn hidden"><i class="fas fa-check"></i></a>
+            </div>
+        </div>
+        <div id="user-title-modify-input" class="modify-input hidden">
+          <div class="form-group m-2">
+            <div class="input-group">
+              <input type="text" id="name_" class="form-control" aria-describedby="Nome utente" placeholder="Inserisci il nome" required>
+              <input type="text" id="surname_" class="form-control" aria-describedby="Cognome utente" placeholder="Inserisci il cognome" required>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- Username -->
+    <div id="username-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="username-info" class="value-container">
+          <p>Username: &nbsp;</p>
+          <p class="modify-text" id="username-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
+          <p>&nbsp;</p>
+          <div class="modify-button">
+            <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+          </div>
+      </div>
+      <div id="username-modify-input" class="modify-input hidden">
+        <div class="form-group m-2">
+          <input type="text" class="form-control" id="username" aria-describedby="Username" placeholder="Inserisci lo username" required>
+        </div>      
+      </div>
+  </div>
+  
+  <!-- Email -->
+  <div id="email-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="email-info" class="value-container">
+        <p>Email:&nbsp;</p>
+        <p class="modify-text" id="email-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="email-modify-input" class="modify-input hidden">
+      <div class="form-group m-2">
+        <input type="text" class="form-control" id="userEmail" aria-describedby="Email" placeholder="Inserisci l'email" required>
+      </div>    
+    </div>
+  </div>
+
+  <!-- Sesso -->
+    <div id="sex-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="sex-info" class="value-container">
+          <p>Sesso:&nbsp;</p>
+          <p class="modify-text" id="sex-value">null</p>
+          <p>&nbsp;</p>
+          <div class="modify-button">
+            <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-radio hidden"><i class="fas fa-check"></i></a>
+          </div>
+      </div>
+      <div id="sex-input" class="modify-input hidden">
+        <div class="form-group m-2">
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="userSex" id="maleSex" value="male" checked>
+            <label class="form-check-label" for="userSex">
+              Maschio
+            </label>
+          </div>
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="userSex" id="femaleSex" value="female">
+            <label class="form-check-label" for="userSex">
+              Femmina
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Ruolo -->
+    <div id="role-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="role-info" class="value-container">
+          <p>Ruolo:&nbsp;</p>
+          <p class="modify-text" id="role-value">null</p>
+          <p>&nbsp;</p>
+          <div class="modify-button">
+            <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-radio hidden"><i class="fas fa-check"></i></a>
+          </div>
+      </div>
+      <div id="role-input" class="modify-input hidden">
+        <div class="form-group m-2">
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="userRole" id="userRole" value="user" checked>
+            <label class="form-check-label" for="userRole">
+                User
+            </label>
+          </div>
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="userRole" id="adminRole" value="admin">
+            <label class="form-check-label" for="userRole">
+              Admin
+            </label>
+          </div>
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="userRole" id="managerRole" value="manager">
+            <label class="form-check-label" for="userRole">
+              Manager
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <!-- Indirizzo -->
+  <div id="address-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="address-info" class="value-container">
+        <p>Indirizzo:&nbsp;</p>
+        <p class="modify-text" id="address-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+          <!-- TODO: Special confirm for this -->
+        </div>
+    </div>
+    <div id="address-modify-input" class="modify-input hidden">
+      <div class="form-group m-2">
+        <div class="input-group row">
+          <div class="col-md-6">
+          <input type="text" id="addressStreet" class="col-md-4 form-control" aria-describedby="Via" placeholder="Via" required>
+          </div>
+          <div class="col-md-4">
+          <input type="text" id="addressCity" class="col-md-3 form-control" aria-describedby="Città" placeholder="Città" required>
+          </div>
+          <div class="col-md-2">
+          <input type="text" id="addressZip" class="col-md-2 form-control" aria-describedby="Codice ZIP" placeholder="Zip" required>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Booleans -->
+  <div id="car-bool-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-bool-info" class="value-container">
+        <div  style="display: block;">
+          <div style=" display: inline-block; vertical-align: top;">
+            <p style="float: left;">Elettrica:&nbsp;</p>
+            <p class="modify-text" id="car-bool-value-electric" style="float: right;">null</p>
+          </div>
+          <div style=" display: inline-block; vertical-align: top;">
+            <p style="float: left;">| Cambio automatico:&nbsp;</p>
+            <p class="modify-text" id="car-bool-value-automatic" style="float: right;">null</p>
+          </div>
+          <div style=" display: inline-block; vertical-align: top;">
+            <p style="float: left;">| Tre porte:&nbsp;</p>
+            <p class="modify-text" id="car-bool-value-doors" style="float: right;">null</p>
+          </div>
+        </div>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn "><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-checkbox-car hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-bool-modify-input" class="modify-input hidden">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="isElectric">
+          <label class="form-check-label" for="isElectric">
+            È elettrica
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="hasAutomaticTransmission">
+          <label class="form-check-label" for="hasAutomaticTransmission">
+            Ha una trasmissione automatica
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="hasThreeDoors">
+          <label class="form-check-label" for="hasThreeDoors">
+            Ha tre porte
+          </label>
+        </div>
+    </div>
+  </div>
+
+  <!-- Data di nascita -->
+  <div id="birth-date" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="birth-date-info" class="value-container">
+        <p>Data di nascita:&nbsp;</p>
+        <p class="modify-text" id="birthdate" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+          <!-- Change to user related-->
+        </div>
+    </div>
+    <div id="birthdate-modify-input" class="modify-input hidden">
+      <div class="form-group m-2">
+          <div class="col-md-3">
+            <input type="text" class="form-control" id="birthDate" aria-describedby="Data di nascita" placeholder="YYYY-MM-DD" required>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Id -->
+  <div id="user-id" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="user-id-info" class="value-container">
+        <p>Id:&nbsp;</p>
+        <p class="modify-text" id="user-id-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+    </div>
+  </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+    <button type="button" id="apply-modifications" class="btn btn-primary m-2 hidden" data-dismiss="modal">Applica</button>
+  </div>
+  

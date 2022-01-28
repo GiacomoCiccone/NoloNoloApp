@@ -8,7 +8,7 @@ $(document).ready(function(){
  *  Chiamato dentro load_ui_essentials.js
  */
  function highlightSidebarEntry(){
-    $("#sidebar-cars").addClass("selected");
+    $("#sidebar-users").addClass("selected");
 }
 
 
@@ -16,15 +16,8 @@ $(document).ready(function(){
  *
  */
 function loadAddButton(){
-    $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi auto");
-    $('#search-bar').load('components/cars/carssearchbar.html');
-}
-
-/** Carica la searchbar
- * 
- */
-function loadSearchBar(){
-    $('#search-bar').load('components/cars/carssearch.html');
+    $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi utente");
+    // $('#search-bar').load('components/users/userssearchbar.html');
 }
 
 /** Carica i modali per l'aggiunta delle auto
@@ -32,27 +25,14 @@ function loadSearchBar(){
 $(document).ready(function () { // jquery delegation
     verifyAction();
 
+    $('.modal-dialog').addClass('modal-lg');
     $(document).on('click','#add-button', function () { // jquery delegation
-        // mostra i pickup nel select relativo
-        (async () => { 
-            let pickups = await fetchPickupsFromServer();
-            // loading form html
-            $('.modal-content').load("components/cars/carsform.html", () => {
+        // loading form html
+        $('.modal-content').load("components/users/usersform.html", () => {
 
-                // aggiungi event listener per mostrare la data di non disponibilità
-                $('input[id=notAvail]').change(function() {
-                    if ($(this).is(':checked')) {
-                        $('#dateNavail').removeClass('hidden');
-                    } else {
-                        $('#dateNavail').addClass('hidden');
-                    }
-                });
-
-                displayPickupsSelect(pickups.data);
-                // opening menu
-                $('#multiUseModal').modal('toggle');
-            })
-        })();
+        // opening menu
+        $('#multiUseModal').modal('toggle');
+        })
     });
 });
 
@@ -62,126 +42,114 @@ $(document).ready(function () { // jquery delegation
  *  Versione delle auto.
  */
 function loadDetailsById(id){ 
-    (async () => { let pickups = await fetchPickupsFromServer();
-        $('.modal-dialog').addClass('modal-lg');
-        $('.modal-content').load("components/cars/modifycars.html", () => {
+    $('.modal-dialog').addClass('modal-lg');
 
-            // aggiunge l'event listener per il checkbox
-            $('input[id=notAvail]').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#dateNavail').removeClass('hidden');
-                } else {
-                    $('#dateNavail').addClass('hidden');
+    $('.modal-content').load("components/users/modifyusers.html", () => {
+        
+        // prendi la variabile di stato dalla sessione
+        let data = window.sessionStorage.getItem("latest_fetch"); 
+        
+        // riempi ogni campo del menu della descrizioni
+        $.each(JSON.parse(data), function(key, val) {
+            if (false){
+                
+                // immagine auto
+                $("#car-image-value").text(val.image);
+                $("#autoImage").val(val.image);
+                // Modello e marca
+                let car_model = val.model.split(' ');
+                car_model = car_model.slice(1, car_model.length + 1);
+                $("#car-title-value").text(val.model);
+                $("#autoModel").val(car_model.join(' '));
+                $("#autoBrand").val(val.brand);
+                // Descrizione
+                $("#car-desc-value").text(val.description);
+                $("#autoDescription").val(val.description);
+
+                // Condizioni
+                $("#car-cond-value").text(val.condition);
+                $("input[name=selezioneCondizAuto][value=" + val.condition + "]").attr('checked', 'checked');
+
+
+                // Pickup
+                if (val.place != null){
+                    $("#car-pickup-value").text(val.place.point);
+                    $("#car-pickup-value").data("pickup_id", val.place._id);
+                    $("#pickupPlace").val(val.place._id);
                 }
-            });
-            
-            // prendi la variabile di stato dalla sessione
-            let data = window.sessionStorage.getItem("latest_fetch"); 
-            
-            displayPickupsSelect(pickups.data);
+                // Tag
+                $("#car-tag-value").text(val.tag);
+                $("#carTag").val(val.tag);
+                // Booleans
+                $("#car-bool-value-electric").text(val.isElectric)
+                $("#isElectric").attr('checked', val.isElectric);
+                $("#car-bool-value-automatic").text(val.hasAutomaticTransmission)
+                $("#hasAutomaticTransmission").attr('checked', val.hasAutomaticTransmission)
+                $("#car-bool-value-doors").text(val.hasThreeDoors)
+                $("#hasThreeDoors").attr('checked', val.hasThreeDoors);
+                
+                // posti
+                $("#car-seats-value").text(val.seats);
+                $("#seatsNumber").val(val.seats);
+                
+                // Bagagli
+                $("#car-bag-value").text(val.baggageSize);
+                $("#baggagesNumber").val(val.baggageSize);
 
-            // riempi ogni campo del menu della descrizioni
-            $.each(JSON.parse(data), function(key, val) {
-                if (val._id === id.toString()){
+                // Prezzo
+                $("#car-price-value").text(val.basePrice);
+                $("#basePrice").val(val.basePrice);
+
+                // Id 
+                $("#car-id-value").text(val._id);
+
+                // Info prenotazione
+                if (val.unavaiable != null){
+                    // mostra checkbox e date corrette
+                    $("#notAvail").attr('checked', 'true')
+                    $('#dateNavail').removeClass('hidden');
+
+                    // mostra i campi delle date in modo corretto
+                    let from_date = new Date(val.unavaiable.from);
+                    var year = from_date.getUTCFullYear();
+
+                    if (year < 1970) from_date.setFullYear(1969);
                     
-                    // immagine auto
-                    $("#car-image-value").text(val.image);
-                    $("#autoImage").val(val.image);
-                    // Modello e marca
-                    let car_model = val.model.split(' ');
-                    car_model = car_model.slice(1, car_model.length + 1);
-                    $("#car-title-value").text(val.model);
-                    $("#autoModel").val(car_model.join(' '));
-                    $("#autoBrand").val(val.brand);
-                    // Descrizione
-                    $("#car-desc-value").text(val.description);
-                    $("#autoDescription").val(val.description);
+                    let date_string = from_date.toISOString();
+                    date_string = date_string.split('T')[0];
+                    $('#fromDate').val(date_string);
 
-                    // Condizioni
-                    $("#car-cond-value").text(val.condition);
-                    $("input[name=selezioneCondizAuto][value=" + val.condition + "]").attr('checked', 'checked');
+                    $("#car-unavail-date").addClass('text-danger');
+                    $("#car-unavail-date").removeClass('text-success');
+                    $("#avail").val("Non disponibile dal &nbsp;");
+                    $("#car-date-from").text(date_string);
 
+                    if (val.unavaiable.to != null) {
+                        $('#to-text').removeClass('hidden');
+                        let to_date = new Date(val.unavaiable.to);
 
-                    // Pickup
-                    if (val.place != null){
-                        $("#car-pickup-value").text(val.place.point);
-                        $("#car-pickup-value").data("pickup_id", val.place._id);
-                        $("#pickupPlace").val(val.place._id);
-                    }
-                    // Tag
-                    $("#car-tag-value").text(val.tag);
-                    $("#carTag").val(val.tag);
-                    // Booleans
-                    $("#car-bool-value-electric").text(val.isElectric)
-                    $("#isElectric").attr('checked', val.isElectric);
-                    $("#car-bool-value-automatic").text(val.hasAutomaticTransmission)
-                    $("#hasAutomaticTransmission").attr('checked', val.hasAutomaticTransmission)
-                    $("#car-bool-value-doors").text(val.hasThreeDoors)
-                    $("#hasThreeDoors").attr('checked', val.hasThreeDoors);
-                    
-                    // posti
-                    $("#car-seats-value").text(val.seats);
-                    $("#seatsNumber").val(val.seats);
-                    
-                    // Bagagli
-                    $("#car-bag-value").text(val.baggageSize);
-                    $("#baggagesNumber").val(val.baggageSize);
-
-                    // Prezzo
-                    $("#car-price-value").text(val.basePrice);
-                    $("#basePrice").val(val.basePrice);
-
-                    // Id 
-                    $("#car-id-value").text(val._id);
-
-                    // Info prenotazione
-                    if (val.unavaiable != null){
-                        // mostra checkbox e date corrette
-                        $("#notAvail").attr('checked', 'true')
-                        $('#dateNavail').removeClass('hidden');
-
-                        // mostra i campi delle date in modo corretto
-                        let from_date = new Date(val.unavaiable.from);
-                        var year = from_date.getUTCFullYear();
-
-                        if (year < 1970) from_date.setFullYear(1969);
+                        var year = to_date.getUTCFullYear();
                         
-                        let date_string = from_date.toISOString();
+                        if (year < 1970) to_date.setFullYear(1969);
+                        date_string = to_date.toISOString();
                         date_string = date_string.split('T')[0];
-                        $('#fromDate').val(date_string);
-
-                        $("#car-unavail-date").addClass('text-danger');
-                        $("#car-unavail-date").removeClass('text-success');
-                        $("#avail").val("Non disponibile dal &nbsp;");
-                        $("#car-date-from").text(date_string);
-
-                        if (val.unavaiable.to != null) {
-                            $('#to-text').removeClass('hidden');
-                            let to_date = new Date(val.unavaiable.to);
-
-                            var year = to_date.getUTCFullYear();
-                            
-                            if (year < 1970) to_date.setFullYear(1969);
-                            date_string = to_date.toISOString();
-                            date_string = date_string.split('T')[0];
-                            $("#car-date-to").text(date_string);
-                            $('#toDate').val(date_string);
-                        } else {
-                            $('#to-text').addClass('hidden');
-                            $("#car-date-to").text("");
-                        }
+                        $("#car-date-to").text(date_string);
+                        $('#toDate').val(date_string);
                     } else {
                         $('#to-text').addClass('hidden');
-                        $("#car-unavail-date").addClass('text-success');
-                        $("#car-unavail-date").removeClass('text-danger');
-                        $("#avail").text("Disponibile nel nostro magazzino");
-                        $("#car-date-from").text("");
                         $("#car-date-to").text("");
                     }
+                } else {
+                    $('#to-text').addClass('hidden');
+                    $("#car-unavail-date").addClass('text-success');
+                    $("#car-unavail-date").removeClass('text-danger');
+                    $("#avail").text("Disponibile nel nostro magazzino");
+                    $("#car-date-from").text("");
+                    $("#car-date-to").text("");
                 }
-            })
-        });
-    })();
+            }
+        })
+    });
 }
 
 
@@ -228,7 +196,7 @@ function createCar(){
 
     console.log(JSON.stringify(payload));
     
-    sendPayload(payload, 'cars/', user_token, 'POST');
+    sendPayload(payload, 'users/', user_token, 'POST');
     updateDisplayedEntries();
 }
 
@@ -306,16 +274,16 @@ function displayData(data){
     $("#elements").html("");
     $.each(data, function(key, val) { 
         var image;
-        if (val.image == null) image = 'https://www.mountaineers.org/activities/routes-and-places/default-route-place/activities-and-routes-places-default-image/image' ;
+        if (val.image == null) image = 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ;
         else image = val.image;
         var element =             
-        '<div tabindex="0" class="entry" data-entryid="' + val._id + '" data-avail="' + carAvailability(val.unavaiable) + '" >' +
-        '<span class="sr-only"> Entri di ' + val.model + '. Contiene: </span>' + 
+        '<div tabindex="0" class="entry" data-entryid="' + val._id + '" data-avail="' + '" >' +
+        '<span class="sr-only"> Entri di ' + val.username + '. Contiene: </span>' + 
             '<div class="entry-image"><img src="' + image + '" alt=""></div>' + 
             '<div class="entry-body">' +
-                '<h5 class="entry-title">' + val.model + '&nbsp; ' + showAvaiabilityBadge(val.unavaiable) +
+                '<h5 class="entry-title">' + val.username + '&nbsp; ' +
                 '</h5>' + 
-                '<p class="entry-text">Condizioni: ' + val.condition + '</p>' + 
+                '<p class="entry-text">Ruolo: ' + val.role + '</p>' + 
                 '<p class="entry-text id-text">id: ' + val._id + '</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
                 '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
@@ -331,8 +299,9 @@ function displayData(data){
  */
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
+    var user_token = window.localStorage.getItem('token');
     $("#elements").load("components/loading-animation.html");
-    return fetchDataFromServer('cars/');
+    return fetchProtectedDataFromServer('users/', user_token);
 }
 
 /** Rimuove un pickup.
@@ -345,7 +314,7 @@ $(document).on('click','.remove',(e) => {
     var id = $('#multiUseModal').data('id');
 
     // elimina e chiudi la modale
-    sendPayload("", 'cars/' + id + '/', user_token, 'DELETE');
+    sendPayload("", 'users/' + id + '/', user_token, 'DELETE');
     $('#multiUseModal').modal('toggle');
     }
 );
@@ -395,7 +364,7 @@ $(document).on('click','#apply-modifications', (e) => {
         basePrice : _price,
         unavaiable : _unavaiable != null ? _unavaiable : null
     };
-    sendPayload(payload, 'cars/' + id, user_token, 'PUT');
+    sendPayload(payload, 'users/' + id, user_token, 'PUT');
     updateDisplayedEntries();
     }
 );

@@ -26,6 +26,7 @@ $(document).on('click','.modify-basic',(e) => {
     // nascondi il bottone, mostra gli altri
     // mostra anche l'input di modifica
     ignore_button.removeClass("hidden");
+    ignore_button.focus(); // mette il focus sul bottone di modify
     confirm_button.removeClass("hidden");
     input_form.removeClass("hidden"); // shows input forms and buttons
     $(e.currentTarget).addClass("hidden"); // hides modify button
@@ -50,6 +51,7 @@ $(document).on('click','.modify-basic',(e) => {
     // nascondi il bottone, mostra gli altri
     // mostra anche il form di input per la modifica
     ignore_button.removeClass("hidden");
+    ignore_button.focus(); // mette il focus sul bottone di modify
     confirm_button.removeClass("hidden");
     input_form.removeClass("hidden"); // shows input forms and buttons
     $(e.currentTarget).addClass("hidden"); // hides modify button
@@ -66,10 +68,12 @@ $(document).on('click','.ignore',(e) => {
     let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
     let modify_button = $(e.currentTarget).siblings(".modify"); 
     let confirm_button = $(e.currentTarget).siblings(".confirm"); 
-
+    
+    
     // nascondi bottoni, mostra altri
     // nasconde anche il form di input per la modifica
     modify_button.removeClass("hidden");
+    modify_button.focus(); // mette il focus sul bottone di modify
     input_form.addClass("hidden"); // shows input forms and buttons
     confirm_button.addClass("hidden");
     $(e.currentTarget).addClass("hidden"); // hides ignore button
@@ -100,6 +104,7 @@ $(document).on('click','.confirm-basic',(e) => {
     // nascondi bottoni, mostra altri
     // nasconde anche il form di input per la modifica
     modify_button.removeClass("hidden");
+    modify_button.focus(); 
     input_form.addClass("hidden"); // shows input forms and buttons
     ignore_button.addClass("hidden");
     $(e.currentTarget).addClass("hidden"); // hides ignore button
@@ -131,6 +136,7 @@ $(document).on('click','.confirm-basic',(e) => {
     // nascondi bottoni, mostra altri
     // nasconde anche il form di input per la modifica
     modify_button.removeClass("hidden");
+    modify_button.focus(); 
     input_form.addClass("hidden"); // shows input forms and buttons
     ignore_button.addClass("hidden");
     $(e.currentTarget).addClass("hidden"); // hides ignore button
