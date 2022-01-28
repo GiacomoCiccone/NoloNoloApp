@@ -8,14 +8,15 @@ $(document).ready(function(){
  *  Chiamato dentro load_ui_essentials.js
  */
 function highlightSidebarEntry(){
-    $("#sidebar-pickups").addClass("selected");
+    $("#sidebar-kits").addClass("selected");
 }
+
 
 /**  Crea il bottone di aggiunta in base al contesto della pagina (in questo caso pickups)
  *
  */
 function loadAddButton(){
-    $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Agg. luoghi di ritiro");
+    $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi kit");
 }
 
 /** Carica la modale per l'aggiunta dei pickups
@@ -63,8 +64,8 @@ function createPickup(){
     if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
     
     var payload = {point : data, type : type};
-    sendPayload(payload, 'pickups/', user_token, 'POST');
-    fetchDataFromServer('pickups/');
+    sendPayload(payload, 'kits/', user_token, 'POST');
+    fetchDataFromServer('kits/');
 }
 
 

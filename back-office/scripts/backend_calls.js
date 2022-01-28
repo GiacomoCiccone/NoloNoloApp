@@ -7,8 +7,9 @@
 /** Invia un payload con i dati, in base a una determinata richiesta http.
  *  Questa funzione sostituirà i 3 metodi scritti prima, prima o poi
  */
- function sendPayload(payload, url, user, _method){
+function sendPayload(payload, url, user, _method){
     console.log("Bearer " + user);
+
     const sendData = async () => {
         try {
             let object_pickup = await fetch('http://localhost:8000/api/' + url, {
@@ -21,14 +22,15 @@
                 cache: 'default',
                 body: (payload === "") ? "" : JSON.stringify(payload)
             });
-            if (!object_pickup.ok) throw new Error("erroraccio");
+            if (!object_pickup.ok) throw new Error();
             else {
                 fetched_object = await object_pickup.json();
                 console.log("action returned: " + JSON.stringify(fetched_object));
                 updateDisplayedEntries(); // aggiorna le entry su schermo
             }
         } catch(error) {
-            alert("Error sending data... " + error);
+            console.log(error);
+            alert("Error sending data... " + error.code);
         }
     }
     return sendData();

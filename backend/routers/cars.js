@@ -11,11 +11,11 @@ const mongoose = require("mongoose");
 //CRUD
 
 //create
-router.route("/").post(async (req, res, next) => {
+router.route("/").post(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
     try {
       const car = new Cars({
-        ...req.body.car,
+        ...req.body,
       });
 
       await car.save();
@@ -63,7 +63,7 @@ router.route("/").get(async (req, res, next) => {
     : false;
 
   let query = {}
-  req.query.place ? query.place = req.query.place : query.place = {}
+  req.query.place ? query.place = req.query.place : query = {}
   try {
     let data = await Cars.find(query).populate("place")
 
@@ -99,7 +99,7 @@ router.route("/").get(async (req, res, next) => {
 });
 
 //se si cercano le auto per posto si puo' usare questa passando l'id del posto
-router.route("/place/:id").get(async (req, res, next) => {
+router.route("/place/:id").get(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
     try {
       const data = await Cars.find({  place: req.params.id }).populate("place")

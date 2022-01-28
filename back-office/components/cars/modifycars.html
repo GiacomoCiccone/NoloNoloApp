@@ -1,0 +1,289 @@
+<!-- TODO: aggiungi span per descrivere modifiche etc-->
+
+
+  <div class="modal-header">
+    <h5 class="modal-title" id="multiUseModalLabel">Dettagli dell'auto</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <!-- Modello e marca -->
+  <div class="modal-body">
+    <div id="car-title-modify" class="modify-container" style="margin-bottom: 3vh;">
+        <div id="car-title-info" class="value-container">
+            <p>Modello e marca:&nbsp;</p>
+            <p class="modify-text" id="car-title-value">null</p>
+            <p>&nbsp;</p>
+            <div class="modify-button">
+              <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+              <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+              <a href="#" class="btn btn-sm btn-success confirm confirm-car-title-btn hidden"><i class="fas fa-check"></i></a>
+            </div>
+        </div>
+        <div id="car-title-modify-input" class="modify-input hidden">
+          <div class="input-group">
+            <input type="text" id="autoBrand" class="form-control" aria-describedby="Marca auto" placeholder="Inserisci la marca" required>
+            <input type="text" id="autoModel" class="form-control" aria-describedby="Modello auto" placeholder="Inserisci il modello" required>
+          </div>
+        </div>
+    </div>
+
+    <!-- Immagine -->
+    <div id="car-image-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="car-image-info" class="value-container">
+          <p>URL Immagine:&nbsp;</p>
+          <p class="modify-text" id="car-image-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
+          <p>&nbsp;</p>
+          <div class="modify-button">
+            <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+          </div>
+      </div>
+      <div id="car-image-modify-input" class="modify-input hidden">
+        <input type="text" class="form-control modify-input-text" id="autoImage" aria-describedby="Link immagine" placeholder="Inserisci l'URL dell'immagine" required>
+      </div>
+  </div>
+  
+  <!-- Descrizione -->
+  <div id="car-desc-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-desc-info" class="value-container">
+        <p>Descrizione:&nbsp;</p>
+        <p class="modify-text" id="car-desc-value" style="white-space: nowrap;text-overflow: ellipsis;">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-desc-modify-input" class="modify-input hidden">
+      <textarea class="form-control modify-input-text" id="autoDescription" rows="3" placeholder="Inserisci una descrizione" required></textarea>
+    </div>
+  </div>
+
+  <!-- Condizioni -->
+    <div id="car-cond-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="car-cond-info" class="value-container">
+          <p>Condizioni:&nbsp;</p>
+          <p class="modify-text" id="car-cond-value">null</p>
+          <p>&nbsp;</p>
+          <div class="modify-button">
+            <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-radio hidden"><i class="fas fa-check"></i></a>
+          </div>
+      </div>
+      <div id="car-cond-input" class="modify-input hidden">
+        <div class="form-group m-2">
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizPerfette" value="perfect" checked>
+            <label class="form-check-label" for="pulsanteCondizPerfette">
+                Perfette
+            </label>
+          </div>
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizBuone" value="good">
+            <label class="form-check-label" for="pulsanteCondizBuone">
+                Buone
+            </label>
+          </div>
+          <div class="form-check form-check-inline m-1">
+            <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizWeak" value="weak">
+            <label class="form-check-label" for="pulsanteCondizWeak">
+                Funzionante
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <!-- Luogo di ritiro -->
+  <div id="car-pickup-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-pickup-info" class="value-container">
+        <p>Luogo di ritiro:&nbsp;</p>
+        <p class="modify-text" id="car-pickup-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-car-pickup-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-pickup-car hidden"><i class="fas fa-check"></i></a>
+          <!-- TODO: Special confirm for this -->
+        </div>
+    </div>
+    <div id="car-pickup-modify-input" class="modify-input hidden">
+      <select id="pickupPlace" class="form-select" aria-label="Scegli un luogo di ritiro" required>
+        <option value="1" disabled selected hidden>Immetti un luogo di ritiro</option>
+      </select>    
+    </div>
+  </div>
+
+  <!-- Tag -->
+  <div id="car-tag-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-tag-info" class="value-container">
+        <p>Tag:&nbsp;</p>
+        <p class="modify-text" id="car-tag-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-tag-modify-input" class="modify-input hidden">
+        <select id="carTag" class="form-select modify-input-text" aria-label="Seleziona un tag" required>
+        <option value="1" disabled selected hidden>Seleziona un tag</option>
+        <option value="sportiva" >Sportiva</option>
+        <option value="elegante">Elegante</option>
+        <option value="famiglia">Famiglia</option>
+        <option value="viaggio">Viaggio</option>
+        </select>    
+    </div>
+  </div>
+
+    <!-- Booleans -->
+  <div id="car-bool-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-bool-info" class="value-container">
+        <div  style="display: block;">
+          <div style=" display: inline-block; vertical-align: top;">
+            <p style="float: left;">Elettrica:&nbsp;</p>
+            <p class="modify-text" id="car-bool-value-electric" style="float: right;">null</p>
+          </div>
+          <div style=" display: inline-block; vertical-align: top;">
+            <p style="float: left;">| Cambio automatico:&nbsp;</p>
+            <p class="modify-text" id="car-bool-value-automatic" style="float: right;">null</p>
+          </div>
+          <div style=" display: inline-block; vertical-align: top;">
+            <p style="float: left;">| Tre porte:&nbsp;</p>
+            <p class="modify-text" id="car-bool-value-doors" style="float: right;">null</p>
+          </div>
+        </div>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn "><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-checkbox-car hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-bool-modify-input" class="modify-input hidden">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="isElectric">
+          <label class="form-check-label" for="isElectric">
+            È elettrica
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="hasAutomaticTransmission">
+          <label class="form-check-label" for="hasAutomaticTransmission">
+            Ha una trasmissione automatica
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="hasThreeDoors">
+          <label class="form-check-label" for="hasThreeDoors">
+            Ha tre porte
+          </label>
+        </div>
+    </div>
+  </div>
+
+
+  <!-- bagagli -->
+  <div id="car-bag-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-bag-info" class="value-container">
+        <p>Bagagli:&nbsp;</p>
+        <p class="modify-text" id="car-bag-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-bag-modify-input" class="modify-input hidden">
+      <div class="col-md-3">
+        <select id="baggagesNumber" class="form-select modify-input-text" aria-label="Seleziona la quantità di bagagli">
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- posti -->
+  <div id="car-seats-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-seats-info" class="value-container">
+        <p>Posti:&nbsp;</p>
+        <p class="modify-text" id="car-seats-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-seats-modify-input" class="modify-input hidden">
+      <div class="col-md-3">
+        <select id="seatsNumber" class="form-select modify-input-text" aria-label="Seleziona la quantità dei posti">
+          <option value="3" selected>3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="7">7</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Prezzo -->
+  <div id="car-price-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-price-info" class="value-container">
+        <p>Prezzo:&nbsp;</p>
+        <p class="modify-text" id="car-price-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;€&nbsp;</p>
+        <div class="modify-button">
+          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+        </div>
+    </div>
+    <div id="car-price-modify-input" class="modify-input hidden">
+      <div class="col-md-4">
+        <div class="input-group">
+          <input id="basePrice" type="number" placeholder="Prezzo" class="form-control modify-input-text" aria-label="Prezzo base">
+          <div class="input-group-append">
+            <span class="input-group-text">€</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prenotazione data -->
+  <div id="car-rent-date" class="modify-container" style="margin-bottom: 3vh;" hidden>
+    <div id="car-rent-date-info" class="value-container">
+        <p>Prenotato dal&nbsp;</p>
+        <p class="modify-text" id="car-date-from" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;al&nbsp;</p>
+        <p class="modify-text" id="car-date-to" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+    </div>
+  </div>
+
+  <!-- Id -->
+  <div id="car-id" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="car-id-info" class="value-container">
+        <p>Id:&nbsp;</p>
+        <p class="modify-text" id="car-id-value" style="text-overflow: ellipsis;">null</p>
+        <p>&nbsp;</p>
+    </div>
+  </div>
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+    <button type="button" id="apply-modifications" class="btn btn-primary m-2 hidden" data-dismiss="modal">Applica</button>
+  </div>
+  

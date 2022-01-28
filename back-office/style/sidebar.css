@@ -30,7 +30,7 @@
     background: #fff;
 }
 
-#sidebar ul li a:selected {
+#sidebar ul li a.selected {
     color: #FFFFFF;
     background: #4f5c94;
 }

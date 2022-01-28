@@ -86,7 +86,6 @@ $(document).on('click','.confirm-basic',(e) => {
     // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
     if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
         sessionStorage.setItem('hasMadeChanges', 1);
-        let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input')
         $("#apply-modifications").removeClass('hidden');
     }
 
@@ -118,7 +117,6 @@ $(document).on('click','.confirm-basic',(e) => {
     // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
     if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
         sessionStorage.setItem('hasMadeChanges', 1);
-        let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input')
         $("#apply-modifications").removeClass('hidden');
     }
 

@@ -1,3 +1,6 @@
+/** TODO: cambiare nome del css ad entries **/
+
+
 #elements {
     display: grid;
     grid-template-columns: 1fr;  
@@ -55,4 +58,12 @@
 
 .entry:hover {
     background-color: lightgrey;
+}
+
+.entry .id-text {
+    font-size: 0.7em;
+    color: grey;
+    white-space: nowrap; 
+    overflow: hidden;
+    font-style: italic;
 }

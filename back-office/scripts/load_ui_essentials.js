@@ -7,7 +7,10 @@ $(document).ready(() => {
     let page;
     $('#sidebar').load("components/sidebar.html", () => {
         // codice per l'highlight dell'entry della sidebar
+        highlightSidebarEntry();
     });
+
+    $("#elements").load("components/loading-animation.html");
 
     $('#content-header').load("components/header.html", () => {
         
@@ -19,15 +22,8 @@ $(document).ready(() => {
             $(document.body).css('visibility', 'visible');
         }
         
+        loadAddButton();
         $(".modal-content").load("components/loading-animation.html");
-        // questo codice sarà rimpiazzato con una versione dipendente dalla pagina
-        page = $('#list-wrapper').data("type");
-        var context;
-        console.log("page: " + page);
-
-        if (page === "users") context = "Agg. utenti";
-        else if (page === "pickups") context = "Agg. luoghi di ritiro";
-        $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + context);
     });
 });
 
