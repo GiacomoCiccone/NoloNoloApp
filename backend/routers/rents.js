@@ -111,7 +111,7 @@ router.route("/").post(protect, async (req, res, next) => {
 
 //read all
 router.route("/").get(protect, async (req, res, next) => {
-    if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
+    if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
         try {
             const rents = await Rents.find()
                 .populate("customer")
@@ -153,7 +153,7 @@ router.route("/:id").get(protect, async (req, res, next) => {
 router.route("/users/:id").get(protect, async (req, res, next) => {
     if (
         req.userInfo._id == req.params.id ||
-        (req.userInfo.role === "admin" && req.userInfo.role === "manager")
+        (req.userInfo.role === "admin" || req.userInfo.role === "manager")
     ) {
         try {
             const rents = await Rents.find({ customer: req.params.id })
@@ -178,7 +178,7 @@ router.route("/users/:id").get(protect, async (req, res, next) => {
 
 //read by car id
 router.route("/cars/:id").get(protect, async (req, res, next) => {
-    if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
+    if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
         try {
             const rents = await Rents.find({ "rentObj.car": req.params.id })
                 .populate("customer")
@@ -204,7 +204,7 @@ router.route("/cars/:id").get(protect, async (req, res, next) => {
  * Nel body si mettono i campi da modificare con riferimento a '../models/Rents'
  */
 router.route("/:id").put(protect, async (req, res, next) => {
-    if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
+    if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
 
         let changeState = req.query.changeState; //visto che i noleggi cambiano stato anche quando sono in corso questo parametro di query permette di far capire che si sta cambiando stato e quindi e' ammesso sempre
 
@@ -531,7 +531,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
 
 //delete id rent
 router.route("/:id").delete(protect, async (req, res, next) => {
-    if (req.userInfo.role === "admin" && req.userInfo.role === "manager") {
+    if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
         try {
             const rentToDelete = await Rents.findById(req.params.id);
 
