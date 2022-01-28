@@ -79,7 +79,7 @@ router.route("/").get(async (req, res, next) => {
         if (history.length > 0 && checkAvailability(history, car, dateRange)) {
           avaiableCar.push(car);
           //se non ha noleggi va bene sempre
-        } else if (history.length === 0) {
+        } else if (history.length === 0 && checkAvailability(null, car, dateRange)) {
           avaiableCar.push(car);
         }
       }

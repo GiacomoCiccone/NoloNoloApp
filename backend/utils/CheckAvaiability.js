@@ -86,9 +86,8 @@ function checkAvailability(history, car, rentRequest) {
     rentRequest.classic.from = new Date(rentRequest.classic.from);
     rentRequest.classic.to = new Date(rentRequest.classic.to);
   }
-
   //controlla con le date di non disponibilita della macchina
-  if (car.unavaiable.from) {
+  if (car.unavaiable && car.unavaiable.from) {
     switch (rentRequest.type) {
       case "period":
         const arrayDates = genArrayOfDates(
@@ -103,7 +102,7 @@ function checkAvailability(history, car, rentRequest) {
             !dateRangeOverlaps(
               date.period.from.getTime(),
               date.period.to.getTime(),
-              car.unavaiable.from.getTime(),
+              car.unavaiable.from.getTime() || new Date(-8640000000000000).getTime(),
               car.unavaiable.to.getTime() || new Date(8640000000000000).getTime()
             )
           ) {
@@ -117,7 +116,7 @@ function checkAvailability(history, car, rentRequest) {
           !dateRangeOverlaps(
             rentRequest.classic.from.getTime(),
             rentRequest.classic.to.getTime(),
-            car.unavaiable.from.getTime(),
+            car.unavaiable.from.getTime() || new Date(-8640000000000000).getTime(),
             car.unavaiable.to.getTime() || new Date(8640000000000000).getTime()
           )
         ) {
@@ -128,114 +127,117 @@ function checkAvailability(history, car, rentRequest) {
   }
 
   //controlla per ogni rent nella history dell'auto
-  history.forEach((rent) => {
-    rent = rent.toObject();
-    //salta il rent in questione che dev'essere modificato
-    if (rentRequest.id && rentRequest.id.equals(rent._id));
-    else {
-      switch (rent.type) {
-        case "period":
-          switch (rentRequest.type) {
-            //periodico - periodico
-            case "period":
-              const arrayDates1 = genArrayOfDates(
-                rent.period.from,
-                rent.period.to,
-                rent.period.since,
-                rent.period.for,
-                rent.period.singleDay
-              );
-              const arrayDates2 = genArrayOfDates(
-                rentRequest.period.from,
-                rentRequest.period.to,
-                rentRequest.period.since,
-                rentRequest.period.for,
-                rentRequest.period.singleDay
-              );
-              arrayDates1.forEach((date1) => {
-                arrayDates2.forEach((date2) => {
+  if (history) {
+    history.forEach((rent) => {
+      rent = rent.toObject();
+      //salta il rent in questione che dev'essere modificato
+      if (rentRequest.id && rentRequest.id.equals(rent._id));
+      else {
+        switch (rent.type) {
+          case "period":
+            switch (rentRequest.type) {
+              //periodico - periodico
+              case "period":
+                const arrayDates1 = genArrayOfDates(
+                  rent.period.from,
+                  rent.period.to,
+                  rent.period.since,
+                  rent.period.for,
+                  rent.period.singleDay
+                );
+                const arrayDates2 = genArrayOfDates(
+                  rentRequest.period.from,
+                  rentRequest.period.to,
+                  rentRequest.period.since,
+                  rentRequest.period.for,
+                  rentRequest.period.singleDay
+                );
+                arrayDates1.forEach((date1) => {
+                  arrayDates2.forEach((date2) => {
+                    if (
+                      !dateRangeOverlaps(
+                        date1.from.getTime(),
+                        date1.to.getTime(),
+                        date2.from.getTime(),
+                        date2.to.getTime()
+                      )
+                    ) {
+                      available = false;
+                    }
+                  });
+                });
+                break;
+  
+              //classico - periodico
+              default:
+                const arrayDates = genArrayOfDates(
+                  rent.period.from,
+                  rent.period.to,
+                  rent.period.since,
+                  rent.period.for,
+                  rent.period.singleDay
+                );
+                arrayDates.forEach((date) => {
                   if (
                     !dateRangeOverlaps(
-                      date1.from.getTime(),
-                      date1.to.getTime(),
-                      date2.from.getTime(),
-                      date2.to.getTime()
+                      rentRequest.classic.from.getTime(),
+                      rentRequest.classic.to.getTime(),
+                      date.from.getTime(),
+                      date.to.getTime()
                     )
                   ) {
                     available = false;
                   }
                 });
-              });
-              break;
-
-            //classico - periodico
-            default:
-              const arrayDates = genArrayOfDates(
-                rent.period.from,
-                rent.period.to,
-                rent.period.since,
-                rent.period.for,
-                rent.period.singleDay
-              );
-              arrayDates.forEach((date) => {
+                break;
+            }
+            break;
+  
+          default:
+            switch (rentRequest.type) {
+              //classico - periodico
+              case "period":
+                const arrayDates = genArrayOfDates(
+                  rentRequest.period.from,
+                  rentRequest.period.to,
+                  rentRequest.period.since,
+                  rentRequest.period.for,
+                  rentRequest.period.singleDay
+                );
+                arrayDates.forEach((date) => {
+                  if (
+                    !dateRangeOverlaps(
+                      date.from.getTime(),
+                      date.to.getTime(),
+                      rent.classic.from.getTime(),
+                      rent.classic.to.getTime()
+                    )
+                  ) {
+                    available = false;
+                  }
+                });
+  
+                break;
+              //classico - classico
+              default:
                 if (
                   !dateRangeOverlaps(
                     rentRequest.classic.from.getTime(),
                     rentRequest.classic.to.getTime(),
-                    date.from.getTime(),
-                    date.to.getTime()
-                  )
-                ) {
-                  available = false;
-                }
-              });
-              break;
-          }
-          break;
-
-        default:
-          switch (rentRequest.type) {
-            //classico - periodico
-            case "period":
-              const arrayDates = genArrayOfDates(
-                rentRequest.period.from,
-                rentRequest.period.to,
-                rentRequest.period.since,
-                rentRequest.period.for,
-                rentRequest.period.singleDay
-              );
-              arrayDates.forEach((date) => {
-                if (
-                  !dateRangeOverlaps(
-                    date.from.getTime(),
-                    date.to.getTime(),
                     rent.classic.from.getTime(),
                     rent.classic.to.getTime()
                   )
                 ) {
                   available = false;
                 }
-              });
-
-              break;
-            //classico - classico
-            default:
-              if (
-                !dateRangeOverlaps(
-                  rentRequest.classic.from.getTime(),
-                  rentRequest.classic.to.getTime(),
-                  rent.classic.from.getTime(),
-                  rent.classic.to.getTime()
-                )
-              ) {
-                available = false;
-              }
-              break;
-          }
-          break;
+                break;
+            }
+            break;
+        }
       }
-    }
-  });
+    });
+  }
+  
 
   return available;
 }

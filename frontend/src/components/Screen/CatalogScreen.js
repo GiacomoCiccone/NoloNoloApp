@@ -31,6 +31,10 @@ const CatalogScreen = () => {
 
     const [filterPanelOpen, setFilterPanelOpen] = useState(false);
     const width = useWindowSize();
+    useEffect(() => {
+        
+      console.log(maxPrice)
+    });
 
     useEffect(() => {
         const fetchCars = async () => {
@@ -73,7 +77,7 @@ const CatalogScreen = () => {
                     for (let i = 0; i < data.data.length; i++) {
                         const car = data.data[i];
                         if (car.basePrice < min) min = car.basePrice;
-                        else if (car.basePrice > max) max = car.basePrice;
+                        if (car.basePrice > max) max = car.basePrice;
                     }
                     setMinPrice(min);
                     setMaxPrice(max);

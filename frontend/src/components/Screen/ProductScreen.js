@@ -267,8 +267,9 @@ const ProductScreen = (props) => {
                                             </div>
                                         </div>
 
-                                        <div>
+                                        <div className="w-full lg:w-1/2">
                                             <Space
+                                                style={{width: '100%'}}
                                                 direction="vertical"
                                                 size={20}
                                             >

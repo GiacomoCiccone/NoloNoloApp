@@ -49,8 +49,8 @@ function checkLogin(){
                 if (!token.ok) throw new Error("erroraccio");
                 else { // Se l'utente c'è, allora lo trasformo in un admin...
                     fetchedToken = await token.json();
-                    mystorage.setItem('token', fetchedToken.authToken);
-                    mystorage.setItem('user_info', JSON.stringify(fetchedToken.userInfo));
+                    mystorage.setItem('token', fetchedToken.data.authToken);
+                    mystorage.setItem('user_info', JSON.stringify(fetchedToken.data.userInfo));
                     alert("Nuovo admin registrato con successo!");
                     window.location.replace("./");
                 }
