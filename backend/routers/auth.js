@@ -93,7 +93,7 @@ router.route("/registerManager").post(async (req, res, next) => {
   }
   try {
     //cerca l'user e ritorna anche la password eludendo select: false nello schema
-    const user = await Users.findOne({ email: email, role: 'admin' }).select("+password");
+    const user = await Users.findOne({ email: email}).select("+password");
 
     if (!user) {
       return next(new ErrorResponse("Credenziali non corrette", 404));

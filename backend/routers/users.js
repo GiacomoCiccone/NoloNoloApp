@@ -21,9 +21,7 @@ router.route("/").get(protect, async (req, res, next) => {
             );
             res.status(200).json({
                 success: true,
-                data: {
-                    userInfo: user._doc,
-                },
+                data: user
             });
         } catch (error) {
             next(error);

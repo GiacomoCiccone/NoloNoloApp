@@ -63,7 +63,7 @@ router.route("/").get(async (req, res, next) => {
     : false;
 
   let query = {}
-  req.query.place ? query.place = req.query.place : query.place = {}
+  req.query.place ? query.place = req.query.place : query = {}
   try {
     let data = await Cars.find(query).populate("place")
 
