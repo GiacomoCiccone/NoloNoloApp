@@ -17,8 +17,7 @@
             <p>&nbsp;</p>
             <div class="modify-button">
               <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-              <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
-              <a href="#" class="btn btn-sm btn-success confirm confirm-car-title-btn hidden"><i class="fas fa-check"></i></a>
+              <a href="#" class="btn btn-sm btn-success confirm confirm-user-title-btn hidden"><i class="fas fa-check"></i></a>
             </div>
         </div>
         <div id="user-title-modify-input" class="modify-input hidden">
@@ -31,42 +30,36 @@
         </div>
     </div>
 
+      <!-- Username -->
+      <div id="username-modify" class="modify-container" style="margin-bottom: 3vh;">
+        <div id="username-info" class="value-container">
+            <p>Username:&nbsp;</p>
+            <p class="modify-text" id="username-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
+            <p>&nbsp;</p>
+            <div class="modify-button">
+              <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
+              <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
+            </div>
+        </div>
+        <div id="username-modify-input" class="modify-input hidden">
+          <input type="text" class="form-control modify-input-text" id="username" aria-describedby="Username" placeholder="Inserisci lo username" required>
+        </div>
+    </div>
+
     <!-- Username -->
-    <div id="username-modify" class="modify-container" style="margin-bottom: 3vh;">
-      <div id="username-info" class="value-container">
-          <p>Username: &nbsp;</p>
-          <p class="modify-text" id="username-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
+    <div id="email-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="email-info" class="value-container">
+          <p>Email:&nbsp;</p>
+          <p class="modify-text" id="email-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
           <p>&nbsp;</p>
           <div class="modify-button">
             <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
             <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
           </div>
       </div>
-      <div id="username-modify-input" class="modify-input hidden">
-        <div class="form-group m-2">
-          <input type="text" class="form-control" id="username" aria-describedby="Username" placeholder="Inserisci lo username" required>
-        </div>      
+      <div id="email-modify-input" class="modify-input hidden">
+        <input type="email" class="form-control modify-input-text" id="userEmail" aria-describedby="Email" placeholder="Inserisci l'email" required>
       </div>
-  </div>
-  
-  <!-- Email -->
-  <div id="email-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="email-info" class="value-container">
-        <p>Email:&nbsp;</p>
-        <p class="modify-text" id="email-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="email-modify-input" class="modify-input hidden">
-      <div class="form-group m-2">
-        <input type="text" class="form-control" id="userEmail" aria-describedby="Email" placeholder="Inserisci l'email" required>
-      </div>    
-    </div>
   </div>
 
   <!-- Sesso -->
@@ -77,7 +70,6 @@
           <p>&nbsp;</p>
           <div class="modify-button">
             <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
             <a href="#" class="btn btn-sm btn-success confirm confirm-radio hidden"><i class="fas fa-check"></i></a>
           </div>
       </div>
@@ -108,14 +100,13 @@
           <p>&nbsp;</p>
           <div class="modify-button">
             <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
             <a href="#" class="btn btn-sm btn-success confirm confirm-radio hidden"><i class="fas fa-check"></i></a>
           </div>
       </div>
       <div id="role-input" class="modify-input hidden">
         <div class="form-group m-2">
           <div class="form-check form-check-inline m-1">
-            <input class="form-check-input" type="radio" name="userRole" id="userRole" value="user" checked>
+            <input class="form-check-input" type="radio" name="userRole" id="normalUserRole" value="user" checked>
             <label class="form-check-label" for="userRole">
                 User
             </label>
@@ -144,9 +135,7 @@
         <p>&nbsp;</p>
         <div class="modify-button">
           <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-          <!-- TODO: Special confirm for this -->
+          <a href="#" class="btn btn-sm btn-success confirm confirm-address-btn hidden"><i class="fas fa-check"></i></a>
         </div>
     </div>
     <div id="address-modify-input" class="modify-input hidden">
@@ -166,46 +155,47 @@
     </div>
   </div>
 
-    <!-- Booleans -->
-  <div id="car-bool-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-bool-info" class="value-container">
+
+
+    <!-- Commenti utente -->
+  <div id="user-bool-modify" class="modify-container" style="margin-bottom: 3vh;">
+    <div id="user-bool-info" class="value-container">
         <div  style="display: block;">
           <div style=" display: inline-block; vertical-align: top;">
-            <p style="float: left;">Elettrica:&nbsp;</p>
-            <p class="modify-text" id="car-bool-value-electric" style="float: right;">null</p>
+            <p style="float: left;">Rompiscatole:&nbsp;</p>
+            <p class="modify-text" id="user-bool-value-rompiscatole" style="float: right;">null</p>
           </div>
           <div style=" display: inline-block; vertical-align: top;">
-            <p style="float: left;">| Cambio automatico:&nbsp;</p>
-            <p class="modify-text" id="car-bool-value-automatic" style="float: right;">null</p>
+            <p style="float: left;">| Ritardatario:&nbsp;</p>
+            <p class="modify-text" id="user-bool-value-ritardatario" style="float: right;">null</p>
           </div>
           <div style=" display: inline-block; vertical-align: top;">
-            <p style="float: left;">| Tre porte:&nbsp;</p>
-            <p class="modify-text" id="car-bool-value-doors" style="float: right;">null</p>
+            <p style="float: left;">| Guastatore:&nbsp;</p>
+            <p class="modify-text" id="user-bool-value-guastatore" style="float: right;">null</p>
           </div>
         </div>
         <div class="modify-button">
           <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn "><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-checkbox-car hidden"><i class="fas fa-check"></i></a>
+          <a href="#" class="btn btn-sm btn-success confirm confirm-checkbox-user hidden"><i class="fas fa-check"></i></a>
         </div>
     </div>
-    <div id="car-bool-modify-input" class="modify-input hidden">
+    <div id="user-bool-modify-input" class="modify-input hidden">
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="isElectric">
-          <label class="form-check-label" for="isElectric">
-            È elettrica
+          <input class="form-check-input" type="checkbox" value="" id="isRompiscatole">
+          <label class="form-check-label" for="isRompiscatole">
+            Rompiscatole
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="hasAutomaticTransmission">
-          <label class="form-check-label" for="hasAutomaticTransmission">
-            Ha una trasmissione automatica
+          <input class="form-check-input" type="checkbox" value="" id="isRitardatario">
+          <label class="form-check-label" for="isRitardatario">
+            Ritardatario
           </label>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="hasThreeDoors">
-          <label class="form-check-label" for="hasThreeDoors">
-            Ha tre porte
+          <input class="form-check-input" type="checkbox" value="" id="isGuastatore">
+          <label class="form-check-label" for="isGuastatore">
+            Guastatore
           </label>
         </div>
     </div>
@@ -215,11 +205,10 @@
   <div id="birth-date" class="modify-container" style="margin-bottom: 3vh;">
     <div id="birth-date-info" class="value-container">
         <p>Data di nascita:&nbsp;</p>
-        <p class="modify-text" id="birthdate" style="text-overflow: ellipsis;">null</p>
+        <p class="modify-text" id="birthdate-value" style="text-overflow: ellipsis;">null</p>
         <p>&nbsp;</p>
         <div class="modify-button">
           <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-secondary ignore hidden"><i class="fas fa-times"></i></a>
           <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
           <!-- Change to user related-->
         </div>
@@ -227,7 +216,7 @@
     <div id="birthdate-modify-input" class="modify-input hidden">
       <div class="form-group m-2">
           <div class="col-md-3">
-            <input type="text" class="form-control" id="birthDate" aria-describedby="Data di nascita" placeholder="YYYY-MM-DD" required>
+            <input type="text" class="form-control modify-input-text" id="birthDate" aria-describedby="Data di nascita" placeholder="YYYY-MM-DD" required>
           </div>
       </div>
     </div>

@@ -8,26 +8,20 @@ $(document).ready(function(){
  *  Chiamato dentro load_ui_essentials.js
  */
  function highlightSidebarEntry(){
-    $("#sidebar-cars").addClass("selected");
+    $("#sidebar-rents").addClass("selected");
 }
 
 
-/**  Crea il bottone di aggiunta in base al contesto della pagina (in questo caso auto)
+/**  Crea il bottone di aggiunta in base al contesto della pagina (in questo caso prentoazioni)
+ *   Aggiunge anche una bellissima barra di ricerca.
  *
  */
 function loadAddButton(){
-    $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi auto");
-    $('#search-bar').load('components/cars/carssearchbar.html');
+    $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Agg. prenotazione");
+    $('#search-bar').load('components/rents/rentssearchbar.html');
 }
 
-/** Carica la searchbar
- * 
- */
-function loadSearchBar(){
-    $('#search-bar').load('components/cars/carssearch.html');
-}
-
-/** Carica i modali per l'aggiunta delle auto
+/** Carica i modali per l'aggiunta delle prenotazioni
  */
 $(document).ready(function () { // jquery delegation
     verifyAction();
@@ -37,7 +31,7 @@ $(document).ready(function () { // jquery delegation
         (async () => { 
             let pickups = await fetchPickupsFromServer();
             // loading form html
-            $('.modal-content').load("components/cars/carsform.html", () => {
+            $('.modal-content').load("components/rents/rentsform.html", () => {
                 $('.modal-dialog').addClass('modal-lg');
 
                 // aggiungi event listener per mostrare la data di non disponibilità
@@ -65,7 +59,7 @@ $(document).ready(function () { // jquery delegation
 function loadDetailsById(id){ 
     (async () => { let pickups = await fetchPickupsFromServer();
         $('.modal-dialog').addClass('modal-lg');
-        $('.modal-content').load("components/cars/modifycars.html", () => {
+        $('.modal-content').load("components/rents/modifyrents.html", () => {
 
             // aggiunge l'event listener per il checkbox
             $('input[id=notAvail]').change(function() {
@@ -229,7 +223,7 @@ function createCar(){
 
     console.log(JSON.stringify(payload));
     
-    sendPayload(payload, 'cars/', user_token, 'POST');
+    sendPayload(payload, 'rents/', user_token, 'POST');
 }
 
 /** Ritona la data di disponibilità in modo corretto
@@ -332,7 +326,7 @@ function displayData(data){
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
     $("#elements").load("components/loading-animation.html");
-    return fetchDataFromServer('cars/');
+    return fetchDataFromServer('rents/');
 }
 
 /** Rimuove un pickup.
@@ -345,7 +339,7 @@ $(document).on('click','.remove',(e) => {
     var id = $('#multiUseModal').data('id');
 
     // elimina e chiudi la modale
-    sendPayload("", 'cars/' + id + '/', user_token, 'DELETE');
+    sendPayload("", 'rentsù/' + id + '/', user_token, 'DELETE');
     $('#multiUseModal').modal('toggle');
     }
 );
@@ -395,7 +389,7 @@ $(document).on('click','#apply-modifications', (e) => {
         basePrice : _price,
         unavaiable : _unavaiable != null ? _unavaiable : null
     };
-    sendPayload(payload, 'cars/' + id, user_token, 'PUT');
+    sendPayload(payload, 'rents/' + id, user_token, 'PUT');
     updateDisplayedEntries();
     }
 );

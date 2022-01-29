@@ -78,7 +78,7 @@ function fetchProtectedDataFromServer(url, user){
             else {
                 fetchedData = await res.json(); 
                 console.log(JSON.stringify(fetchedData.data));
-                // window.sessionStorage.setItem("latest_fetch", JSON.stringify(fetchedData.data));
+                window.sessionStorage.setItem("latest_fetch", JSON.stringify(fetchedData.data));
 
                 displayData(fetchedData.data);
             }

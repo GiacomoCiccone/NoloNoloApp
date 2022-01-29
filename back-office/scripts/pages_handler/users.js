@@ -17,17 +17,18 @@ $(document).ready(function(){
  */
 function loadAddButton(){
     $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi utente");
+    $('#add-button').attr('hidden', 'hidden');
     // $('#search-bar').load('components/users/userssearchbar.html');
 }
 
-/** Carica i modali per l'aggiunta delle auto
+/** Carica i modali per l'aggiunta degli utenti
  */
 $(document).ready(function () { // jquery delegation
     verifyAction();
 
-    $('.modal-dialog').addClass('modal-lg');
     $(document).on('click','#add-button', function () { // jquery delegation
         // loading form html
+        $('.modal-dialog').addClass('modal-lg');
         $('.modal-content').load("components/users/usersform.html", () => {
 
         // opening menu
@@ -39,114 +40,60 @@ $(document).ready(function () { // jquery delegation
 
 /** Carica la ui del modale e i dati prendendoli dalla sessione corrente.
  *  Dopodiché, lo apre.
- *  Versione delle auto.
+ *  Versione degli utenti.
  */
 function loadDetailsById(id){ 
     $('.modal-dialog').addClass('modal-lg');
-
+    
     $('.modal-content').load("components/users/modifyusers.html", () => {
-        
         // prendi la variabile di stato dalla sessione
         let data = window.sessionStorage.getItem("latest_fetch"); 
         
         // riempi ogni campo del menu della descrizioni
         $.each(JSON.parse(data), function(key, val) {
-            if (false){
+            if (val._id === id.toString()){
+                // Nome e congnome utente
+                $("#name-value").text(val.first_name + ' ' + val.last_name);
+                $("#name_").val(val.first_name);
+                $("#surname_").val(val.last_name);
                 
-                // immagine auto
-                $("#car-image-value").text(val.image);
-                $("#autoImage").val(val.image);
-                // Modello e marca
-                let car_model = val.model.split(' ');
-                car_model = car_model.slice(1, car_model.length + 1);
-                $("#car-title-value").text(val.model);
-                $("#autoModel").val(car_model.join(' '));
-                $("#autoBrand").val(val.brand);
-                // Descrizione
-                $("#car-desc-value").text(val.description);
-                $("#autoDescription").val(val.description);
+                // Username
+                $("#username-value").text(val.username);
+                $("#username").val(val.username);
+                
+                // Email
+                $("#email-value").text(val.email);
+                $("#userEmail").val(val.email);
 
-                // Condizioni
-                $("#car-cond-value").text(val.condition);
-                $("input[name=selezioneCondizAuto][value=" + val.condition + "]").attr('checked', 'checked');
+                // Ruolo
+                $("#role-value").text(val.role);
+                $("input[name=userRole][value=" + val.role + "]").attr('checked', 'checked');
+                
+                // Sesso
+                $("#sex-value").text(val.gender);
+                $("input[name=userSex][value=" + val.gender + "]").attr('checked', 'checked');
+                
+                // Address
+                $("#address-value").text(val.address.via +', ' + val.address.city + ', ' + val.address.postal_code);
+                $("#addressStreet").val(val.address.via);
+                $("#addressCity").val(val.address.city);
+                $("#addressZip").val(val.address.postal_code);
+                
+                // Birthdate
+                let date_string = val.birth.split('T')[0];
+                $("#birthdate-value").text(date_string);
+                $("#birthDate").val(date_string);
 
-
-                // Pickup
-                if (val.place != null){
-                    $("#car-pickup-value").text(val.place.point);
-                    $("#car-pickup-value").data("pickup_id", val.place._id);
-                    $("#pickupPlace").val(val.place._id);
-                }
-                // Tag
-                $("#car-tag-value").text(val.tag);
-                $("#carTag").val(val.tag);
                 // Booleans
-                $("#car-bool-value-electric").text(val.isElectric)
-                $("#isElectric").attr('checked', val.isElectric);
-                $("#car-bool-value-automatic").text(val.hasAutomaticTransmission)
-                $("#hasAutomaticTransmission").attr('checked', val.hasAutomaticTransmission)
-                $("#car-bool-value-doors").text(val.hasThreeDoors)
-                $("#hasThreeDoors").attr('checked', val.hasThreeDoors);
-                
-                // posti
-                $("#car-seats-value").text(val.seats);
-                $("#seatsNumber").val(val.seats);
-                
-                // Bagagli
-                $("#car-bag-value").text(val.baggageSize);
-                $("#baggagesNumber").val(val.baggageSize);
-
-                // Prezzo
-                $("#car-price-value").text(val.basePrice);
-                $("#basePrice").val(val.basePrice);
+                $("#user-bool-value-rompiscatole").text((val.comments.includes('RO')))
+                $("#isRompiscatole").attr('checked', (val.comments.includes('RO')));
+                $("#user-bool-value-ritardatario").text((val.comments.includes('RI')))
+                $("#isRitardatario").attr('checked', (val.comments.includes('RI')))
+                $("#user-bool-value-guastatore").text((val.comments.includes('GU')))
+                $("#isGuastatore").attr('checked', (val.comments.includes('GU')));
 
                 // Id 
-                $("#car-id-value").text(val._id);
-
-                // Info prenotazione
-                if (val.unavaiable != null){
-                    // mostra checkbox e date corrette
-                    $("#notAvail").attr('checked', 'true')
-                    $('#dateNavail').removeClass('hidden');
-
-                    // mostra i campi delle date in modo corretto
-                    let from_date = new Date(val.unavaiable.from);
-                    var year = from_date.getUTCFullYear();
-
-                    if (year < 1970) from_date.setFullYear(1969);
-                    
-                    let date_string = from_date.toISOString();
-                    date_string = date_string.split('T')[0];
-                    $('#fromDate').val(date_string);
-
-                    $("#car-unavail-date").addClass('text-danger');
-                    $("#car-unavail-date").removeClass('text-success');
-                    $("#avail").val("Non disponibile dal &nbsp;");
-                    $("#car-date-from").text(date_string);
-
-                    if (val.unavaiable.to != null) {
-                        $('#to-text').removeClass('hidden');
-                        let to_date = new Date(val.unavaiable.to);
-
-                        var year = to_date.getUTCFullYear();
-                        
-                        if (year < 1970) to_date.setFullYear(1969);
-                        date_string = to_date.toISOString();
-                        date_string = date_string.split('T')[0];
-                        $("#car-date-to").text(date_string);
-                        $('#toDate').val(date_string);
-                    } else {
-                        $('#to-text').addClass('hidden');
-                        $("#car-date-to").text("");
-                    }
-                } else {
-                    $('#to-text').addClass('hidden');
-                    $("#car-unavail-date").addClass('text-success');
-                    $("#car-unavail-date").removeClass('text-danger');
-                    $("#avail").text("Disponibile nel nostro magazzino");
-                    $("#car-date-from").text("");
-                    $("#car-date-to").text("");
-                }
+                $("#user-id-value").text(val._id);
             }
         })
     });
@@ -154,120 +101,7 @@ function loadDetailsById(id){
 
 
 
-/** Formula i dati di una nuova auto e li invia al server
- *  Versione delle auto.
- */
-function createCar(){
-    let _img_url = $('#autoImage').val();
-    let _model = $('#autoModel').val();
-    let _brand = $('#autoBrand').val();
-    let _cond = document.querySelector('input[name="selezioneCondizAuto"]:checked').value;
-    let _pickup = $('#pickupPlace').val();
-    let _tag =  $('#carTag').val();
-    let _desc = $('#autoDescription').val();
-    let _seats = $('#seatsNumber').val();
-    let _isAutomatic = document.getElementById('hasAutomaticTransmission').checked;
-    let _isThreeDoors = document.getElementById('hasThreeDoors').checked;
-    let _bags = $('#baggagesNumber').val();
-    let _isElec = document.getElementById('isElectric').checked;
-    let _price = $('#basePrice').val();
-    let _unavaiable = getUnavailDate();
-
-
-    var user_token = window.localStorage.getItem('token');
-    if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
-    
-    let payload = {
-        image : _img_url, 
-        model : _brand + " " + _model,
-        brand : _brand,
-        condition : _cond,
-        place : _pickup,
-        tag : _tag,
-        description : _desc,
-        seats : _seats,
-        hasAutomaticTransmission : _isAutomatic,
-        hasThreeDoors : _isThreeDoors,
-        baggageSize : _bags,
-        isElectric : _isElec,
-        basePrice : _price,
-        unavaiable : _unavaiable != null ? _unavaiable : undefined
-    };
-
-    console.log(JSON.stringify(payload));
-    
-    sendPayload(payload, 'users/', user_token, 'POST');
-    updateDisplayedEntries();
-}
-
-/** Ritona la data di disponibilità in modo corretto
- * 
- */
-function getUnavailDate(){
-    let _unavaiable = {from : null, to: null};
-    if (document.getElementById('notAvail').checked) { 
-        _unavaiable.from = new Date($('#fromDate').val());
-        if ($('#toDate').val() != ""){
-            _unavaiable.to = new Date($('#toDate').val());
-            if (_unavaiable.from > _unavaiable.to){
-                // data non corretta... inizio > fine
-                alert("invalid date: ignored");
-                return null;
-            }   
-        }
-        return _unavaiable;
-    }
-    return null;
-}
-
-/** Dice se una macchina è disponibile o no 
- * 
- */
-function carAvailability(val){
-    if (val == null || Date.now() < new Date(val.from)){
-        return 'available';
-    } else {
-        // se la data è minore 
-        if (new Date(val.from) <= Date.now() && new Date(val.from) > new Date(1970, 1, 1))
-        {
-            if (val.to == null || new Date(val.to) >= Date.now())
-                return 'unavailable';
-            else
-                return 'available';
-        }
-        else {
-            return 'deprecato';
-        }
-    }
-
-}
-
-/** Mostra il badge di disponibilità
- * 
- */
- function showAvaiabilityBadge(val){
-    if (val == null || Date.now() < new Date(val.from)){
-        return '<span class="badge rounded-pill bg-success">In locazione</span>';
-    } else {
-        // se la data è minore 
-        if (new Date(val.from) <= Date.now() && new Date(val.from) > new Date(1970, 1, 1))
-        {
-            if (val.to == null || new Date(val.to) >= Date.now())
-                return '<span class="badge rounded-pill bg-danger">Fuori magazzino</span>';
-            else
-                return '<span class="badge rounded-pill bg-success">In locazione</span>';
-        }
-        else {
-            return '<span class="badge rounded-pill bg-secondary">Deprecato</span>';
-        }
-    }
-
-}
-
-
-
-
-/** Mostra i dati relativi ai macchine nella pagina.
+/** Mostra i dati relativi agli utenti nella pagina.
  * 
  */
 function displayData(data){
@@ -277,7 +111,7 @@ function displayData(data){
         if (val.image == null) image = 'https://cdn-icons-png.flaticon.com/512/149/149071.png' ;
         else image = val.image;
         var element =             
-        '<div tabindex="0" class="entry" data-entryid="' + val._id + '" data-avail="' + '" >' +
+        '<div tabindex="0" class="entry" data-entryid="' + val._id + '">' +
         '<span class="sr-only"> Entri di ' + val.username + '. Contiene: </span>' + 
             '<div class="entry-image"><img src="' + image + '" alt=""></div>' + 
             '<div class="entry-body">' +
@@ -287,14 +121,14 @@ function displayData(data){
                 '<p class="entry-text id-text">id: ' + val._id + '</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
                 '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
-                '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi/Depreca</a>' +
+                '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi account</a>' +
             '</div>' +
         '</div>';
         $("#elements").append(element);
     });
 }
 
-/** Aggiorna le entries dei macchine sullo schermo
+/** Aggiorna le entries degli utenti sullo schermo
  * 
  */
 function updateDisplayedEntries(){
@@ -304,7 +138,7 @@ function updateDisplayedEntries(){
     return fetchProtectedDataFromServer('users/', user_token);
 }
 
-/** Rimuove un pickup.
+/** Rimuove un utente.
  *  Viene applicato quando si preme "si" al modale di rimozione.
  */
 $(document).on('click','.remove',(e) => {
@@ -320,87 +154,62 @@ $(document).on('click','.remove',(e) => {
 );
 
 
-
-/** Modifica una macchina.
+/** Modifica le informazioni di un utente
  * 
  */
 $(document).on('click','#apply-modifications', (e) => {
     // autorizza utente
     verifyAction();
 
-    let _img_url = $('#autoImage').val();
-    let _model = $('#autoModel').val();
-    let _brand = $('#autoBrand').val();
-    let _cond = document.querySelector('input[name="selezioneCondizAuto"]:checked').value;
-    let _pickup = $('#pickupPlace').val();
-    let _tag =  $('#carTag').val();
-    let _desc = $('#autoDescription').val();
-    let _seats = $('#seatsNumber').val();
-    let _isAutomatic = document.getElementById('hasAutomaticTransmission').checked;
-    let _isThreeDoors = document.getElementById('hasThreeDoors').checked;
-    let _bags = $('#baggagesNumber').val();
-    let _isElec = document.getElementById('isElectric').checked;
-    let _price = $('#basePrice').val();
-    let id = $('#multiUseModal').data('id');
-    let _unavaiable = getUnavailDate();
+    // prendi i campi che servono
+    let name_ = $("#name_").val();
+    let surname_ = $("#surname_").val();
+    let username_ = $("#username").val();
+    let email_ = $("#userEmail").val();
+    let role_ = document.querySelector('input[name="userRole"]:checked').value;
+    let gender_ = document.querySelector('input[name="userSex"]:checked').value;
+    let birth_ = new Date($("#birthDate").val());    
+    let via_ = $("#addressStreet").val();
+    let city_ = $("#addressCity").val();
+    let postal_code_ = $("#addressZip").val();
+
+    let address_ = {
+        via : via_,
+        city : city_,
+        postal_code : postal_code_
+    }
+
+    let elements = [] 
+    if (document.getElementById('isRitardatario').checked) elements.push('RI');
+    if (document.getElementById('isRompiscatole').checked) elements.push('RO');
+    if (document.getElementById('isGuastatore').checked) elements.push('GU');
 
 
     var user_token = window.localStorage.getItem('token');
     if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
     
     let payload = {
-        image : _img_url, 
-        model : _brand + " " + _model,
-        brand : _brand,
-        condition : _cond,
-        place : _pickup,
-        tag : _tag,
-        description : _desc,
-        seats : _seats,
-        hasAutomaticTransmission : _isAutomatic,
-        hasThreeDoors : _isThreeDoors,
-        baggageSize : _bags,
-        isElectric : _isElec,
-        basePrice : _price,
-        unavaiable : _unavaiable != null ? _unavaiable : null
+        first_name : name_, 
+        last_name : surname_,
+        username : username_,
+        email : email_,
+        birth : birth_,
+        address : address_,
+        role : role_,
+        gender : gender_,
+        comments : elements
     };
+
+    // id per specificare a quale user fare la modifica
+    let id = $('#multiUseModal').data('id');
+
+    console.log(JSON.stringify(payload));
+    
     sendPayload(payload, 'users/' + id, user_token, 'PUT');
-    updateDisplayedEntries();
     }
 );
 
 
-/** Popola il select menu dedicato ai pickups
- * 
- */
-function displayPickupsSelect(data){
-    $("#pickupPlace").html('<option value="1" disabled selected hidden>Immetti un luogo di ritiro</option>');
-    $.each(data, function(key, val) { 
-        var element =   
-        '<option value="' + val._id +'">' + val.point + '</option>';
-        $("#pickupPlace").append(element);
-    });
-}
-
-/** Fetcha i pickups dal server
- * 
- */
-async function fetchPickupsFromServer(){
-    try {
-        let res = await fetch('http://localhost:8000/api/pickups/', {
-            method: 'GET',
-            headers: {'Content-Type': 'application/json'},
-            mode: 'cors',
-            cache: 'default',
-        });
-        if (!res.ok) throw new Error("erroraccio");
-        else {
-            return await res.json();
-        }
-    } catch(error) {
-        console.log("couldnt fetch data");
-    }
-}
 
 /** Riprisitna le dimensioni del modale quando viene chiuso
  * 
@@ -413,7 +222,7 @@ $(document).on('hidden.bs.modal','#multiUseModal', function () {
 /** Azioni da eseguire quando si preme il tasto conferma per il checkbox
  * 
  */
- $(document).on('click','.confirm-checkbox-car',(e) => {
+ $(document).on('click','.confirm-checkbox-user',(e) => {
     // autorizza utente
     verifyAction();
 
@@ -425,12 +234,11 @@ $(document).on('hidden.bs.modal','#multiUseModal', function () {
 
     let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
     let modify_button = $(e.currentTarget).siblings(".modify"); 
-    let ignore_button = $(e.currentTarget).siblings(".ignore"); 
 
     // cambia i valori della UI
-    $("#car-bool-value-electric").text($('#isElectric').is(":checked"))
-    $("#car-bool-value-automatic").text($('#hasAutomaticTransmission').is(":checked"))
-    $("#car-bool-value-doors").text($('#hasThreeDoors').is(":checked"))
+    $("#user-bool-value-rompiscatole").text($('#isRompiscatole').is(":checked"))
+    $("#user-bool-value-ritardatario").text($('#isRitardatario').is(":checked"))
+    $("#user-bool-value-guastatore").text($('#isGuastatore').is(":checked"))
 
 
     // nascondi bottoni, mostra altri
@@ -438,89 +246,16 @@ $(document).on('hidden.bs.modal','#multiUseModal', function () {
     modify_button.removeClass("hidden");
     modify_button.focus(); 
     input_form.addClass("hidden"); // shows input forms and buttons
-    ignore_button.addClass("hidden");
-    $(e.currentTarget).addClass("hidden"); // hides ignore button
+    $(e.currentTarget).addClass("hidden"); // hides confirm button
     }
 );
 
-/** Conferma la modifica dei dati per la data e la disponibilità
- * 
- * 
- */
-$(document).on('click','.confirm-avail-car',(e) => {
-    // autorizza utente
-    verifyAction();
-
-    // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
-    if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
-        sessionStorage.setItem('hasMadeChanges', 1);
-        $("#apply-modifications").removeClass('hidden');
-    }
-
-    // roba per codice UI
-    let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
-    let modify_button = $(e.currentTarget).siblings(".modify"); 
-    let ignore_button = $(e.currentTarget).siblings(".ignore"); 
-
-    // cambia i valori della UI 
-    try {
-        if ($("#notAvail").is(":checked")){
-
-            // mostra i campi delle date in modo corretto
-            let from_date = new Date($('#fromDate').val());
-            var year = from_date.getUTCFullYear();
-            if (year < 1970) from_date.setFullYear(1969);
-            let date_string = from_date.toISOString();
-            date_string = date_string.split('T')[0];
-            $("#car-date-from").html(date_string);
-            $("#car-unavail-date").addClass('text-danger');
-            $("#car-unavail-date").removeClass('text-success');
-            $("#avail").html("Non disponibile dal &nbsp;");
-
-            let to_date_text = $('#toDate').val();
-            if (to_date_text != "" && to_date_text != null) {
-                $('#to-text').removeClass('hidden');
-                let to_date = new Date(to_date_text);
-                var year = to_date.getUTCFullYear();
-                if (year < 1970) to_date.setFullYear(1969);
-                date_string = to_date.toISOString();
-                date_string = date_string.split('T')[0];
-                $("#car-date-to").html(date_string);
-            } else {
-                $('#to-text').addClass('hidden');
-                $("#car-date-to").html("");
-            }
-        } else {
-            $("#car-unavail-date").addClass('text-success');
-            $("#car-unavail-date").removeClass('text-danger');
-            $("#avail").html("Disponibile nel nostro magazzino");
-            $("#car-date-from").html("");
-            $('#to-text').addClass('hidden');
-            $("#car-date-to").html("");
-        }
-    } catch (e) {
-        alert("date error");
-    }
-
-    // nascondi bottoni, mostra altri
-    // nasconde anche il form di input per la modifica
-    modify_button.removeClass("hidden");
-    modify_button.focus(); 
-    input_form.addClass("hidden"); // shows input forms and buttons
-    ignore_button.addClass("hidden");
-    $(e.currentTarget).addClass("hidden"); // hides ignore button
-    }
-);
-
-
-
-/** Azioni da eseguire quando si preme il tasto conferma per il luogo di ritiro
+/** Azioni da eseguire quando si preme il tasto modifica in caso del nome e cognome
  * 
  */
- $(document).on('click','.confirm-pickup-car',(e) => {
+ $(document).on('click','.confirm-user-title-btn',(e) => {
     // autorizza utente
     verifyAction();
-
     // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
     if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
         sessionStorage.setItem('hasMadeChanges', 1);
@@ -529,70 +264,43 @@ $(document).on('click','.confirm-avail-car',(e) => {
 
     let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
     let modify_button = $(e.currentTarget).siblings(".modify"); 
-    let ignore_button = $(e.currentTarget).siblings(".ignore"); 
-
-    // cambia i valori della UI
-    $("#car-pickup-value").text($('#pickupPlace option:selected').text())
-    $("#car-pickup-value").data("pickup_id", $('#pickupPlace').val());
-
-    // nascondi bottoni, mostra altri
-    // nasconde anche il form di input per la modifica
-    modify_button.removeClass("hidden");
-    modify_button.focus(); 
-    input_form.addClass("hidden"); // shows input forms and buttons
-    ignore_button.addClass("hidden");
-    $(e.currentTarget).addClass("hidden"); // hides ignore button
-    }
-);
-
-/** Azioni da eseguire quando si preme il tasto modifica in caso di input testuali
- * 
- */
- $(document).on('click','.modify-car-pickup-btn',(e) => {
-    // autorizza utente
-    verifyAction();
-    let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
-    let ignore_button = $(e.currentTarget).siblings(".ignore"); 
-    let confirm_button = $(e.currentTarget).siblings(".confirm"); 
 
     // immetti il valore iniziale nel form
-    $("#pickupPlace").val($("#car-pickup-value").data("pickup_id"))
-
-    // nascondi il bottone, mostra gli altri
-    // mostra anche il form di input per la modifica
-    ignore_button.removeClass("hidden");
-    ignore_button.focus(); 
-    confirm_button.removeClass("hidden");
-    input_form.removeClass("hidden"); // shows input forms and buttons
-    $(e.currentTarget).addClass("hidden"); // hides modify button
-    }
-);
-
-/** Azioni da eseguire quando si preme il tasto modifica in caso di input testuali
- * 
- */
- $(document).on('click','.confirm-car-title-btn',(e) => {
-    // autorizza utente
-    verifyAction();
-    // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
-    if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
-        sessionStorage.setItem('hasMadeChanges', 1);
-        $("#apply-modifications").removeClass('hidden');
-    }
-
-    let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
-    let modify_button = $(e.currentTarget).siblings(".modify"); 
-    let ignore_button = $(e.currentTarget).siblings(".ignore"); 
-
-    // immetti il valore iniziale nel form
-    $("#car-title-value").text($("#autoBrand").val() + ' ' + $("#autoModel").val());    
+    $("#name-value").html($("#name_").val() + ' ' + $("#surname_").val());    
     
     // nascondi il bottone, mostra gli altri
     // mostra anche il form di input per la modifica
     modify_button.removeClass("hidden");
     modify_button.focus(); 
     input_form.addClass("hidden"); // shows input forms and buttons
-    ignore_button.addClass("hidden");
-    $(e.currentTarget).addClass("hidden"); // hides ignore button
+    $(e.currentTarget).addClass("hidden"); // hides confirm button
+    }
+);
+
+/** Azioni da eseguire quando si preme il tasto modifica in caso dell'indirizzo
+ * 
+ */
+ $(document).on('click','.confirm-address-btn',(e) => {
+    // autorizza utente
+    verifyAction();
+    // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
+    if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
+        sessionStorage.setItem('hasMadeChanges', 1);
+        $("#apply-modifications").removeClass('hidden');
+    }
+
+    let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
+    let modify_button = $(e.currentTarget).siblings(".modify"); 
+
+    // immetti il valore iniziale nel form
+    $("#address-value").text($("#addressStreet").val() +', ' + $("#addressCity").val() + ', ' + $("#addressZip").val() );
+ 
+    
+    // nascondi il bottone, mostra gli altri
+    // mostra anche il form di input per la modifica
+    modify_button.removeClass("hidden");
+    modify_button.focus(); 
+    input_form.addClass("hidden"); // shows input forms and buttons
+    $(e.currentTarget).addClass("hidden"); // hides confirm button
     }
 );

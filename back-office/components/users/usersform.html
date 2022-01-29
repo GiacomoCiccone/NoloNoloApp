@@ -23,11 +23,13 @@
     </div>
     <div class="m-3">
       <label for="password_">La password del nuovo utente sarà:</label>
-      <p id="password_">password123!</p>
+      <p id="password_">Password123!</p>
     </div>
     <div class="form-group m-2">
       <label for="birthDate">Data di nascita:</label>
-      <duet-date-picker identifier="birthDate" aria-describedby="Data di nascita" required></duet-date-picker>
+      <div class="col-md-3">
+        <input class="form-control" id="birthDate" aria-describedby="Data di nascita" placeholder="YYYY-MM-DD" required>
+      </div>
     </div>
     <div class="form-group m-2">
       <label for="userSex">Sesso:</label>
@@ -79,6 +81,26 @@
         </div>
       </div>
     </div>
+    <div class="form-group m-3">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="isRompiscatole">
+        <label class="form-check-label" for="isRompiscatole">
+          Rompiscatole
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="isRitardatario">
+        <label class="form-check-label" for="isRitardatario">
+          Ritardatario
+        </label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="isGuastatore">
+        <label class="form-check-label" for="isGuastatore">
+          Guastatore
+        </label>
+      </div>
+  </div>
   </form>
 </div>
 <div class="modal-footer">
