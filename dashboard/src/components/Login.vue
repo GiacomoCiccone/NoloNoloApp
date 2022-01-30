@@ -13,7 +13,7 @@
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input name="password" v-model="password" class="form-control form-control-lg" />
+                        <input  name="password" v-model="password" class="form-control form-control-lg" />
                     </div>
                     <br>
                     <button type="submit" class="btn btn-dark btn-lg btn-block">Sign In</button>
@@ -35,16 +35,14 @@
     import axios from 'axios'
     export default {
         name: 'Login',
-        data () {
-            return {
-                email: '',
-                password: '',
-                error: null,
-            }
-        },
+        data: () => ({
+          email: '',
+          password: '',
+          error: null,
+        }),
 
-        beforeMount() {
-            if (window.localStorage.getItem("authTokenManager")) this.$router.push({path: '/dashboard'});
+        beforeMount(){
+            if (window.localStorage.getItem("authTokenManager")) this.$router.push({path: '/'});
         },
         methods: {
         async onSubmit() {
@@ -56,20 +54,20 @@
 
         try {
 
-            const {data} = await axios.put('http://localhost:8000/api/auth/loginManager', body);
+            const {data} = await axios.post('http://localhost:8000/api/auth/loginManager', body);
             window.localStorage.setItem("authTokenManager", data.data.authToken);
-            window.localStorage.setItem("userInfoManager", data.data.userInfo);
+            window.localStorage.setItem("userInfoManager", JSON.stringify(data.data.userInfo));
 
-            this.$router.push({path: '/dashboard'});
+            this.$router.push({path: '/'});
 
         } catch(error) {
             try {
                 const {data} = await axios.post('http://localhost:8000/api/auth/registerManager', body);
 
                 window.localStorage.setItem("authTokenManager", data.data.authToken);
-                window.localStorage.setItem("userInfoManager", data.data.userInfo);
+                window.localStorage.setItem("userInfoManager", JSON.stringify(data.data.userInfo));
 
-                this.$router.push({path: '/dashboard'});
+                this.$router.push({path: '/'});
 
             } catch (error) {
                 this.error = error.response.data.error
@@ -78,7 +76,7 @@
                 }, 5000)
             }
         }
-    }
+        }
         }
     }
 </script>

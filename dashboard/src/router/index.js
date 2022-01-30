@@ -5,22 +5,17 @@ Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'login',
     component: () => import('../components/Login.vue')
   },
   {
-    path: '/forgot-password',
-    name: 'forgot-password',
-    component: () => import('../components/ForgotPwd.vue')
-  },
-  {
     path: '*',
     name: 'Error',
-    component: () => import('../components/HelloWorld.vue')
+    component: () => import('../components/Login.vue')
   },
   {
-    path: '/dashboard',
+    path: '/',
     name: 'dashboard',
     component: () => import('../components/Dashboard.vue')
   }
@@ -29,7 +24,7 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: "/dashboard/",
   routes
 })
 
