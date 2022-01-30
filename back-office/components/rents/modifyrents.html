@@ -7,297 +7,188 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-
-  <!-- Modello e marca -->
   <div class="modal-body">
-    <div id="car-title-modify" class="modify-container" style="margin-bottom: 3vh;">
-        <div id="car-title-info" class="value-container">
-            <p>Modello e marca:&nbsp;</p>
-            <p class="modify-text" id="car-title-value">null</p>
-            <p>&nbsp;</p>
-            <div class="modify-button">
-              <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-              <a href="#" class="btn btn-sm btn-success confirm confirm-car-title-btn hidden"><i class="fas fa-check"></i></a>
-            </div>
-        </div>
-        <div id="car-title-modify-input" class="modify-input hidden">
-          <div class="input-group">
-            <input type="text" id="autoBrand" class="form-control" aria-describedby="Marca auto" placeholder="Inserisci la marca" required>
-            <input type="text" id="autoModel" class="form-control" aria-describedby="Modello auto" placeholder="Inserisci il modello" required>
-          </div>
-        </div>
+    
+    <!-- Utente -->
+    <div id="username-rent-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="username-rent-info" class="value-container">
+        <p>Utente:&nbsp;</p>
+        <p class="modify-text" id="username-rent-value" style="text-overflow: ellipsis;">null</p>
+      </div>
+    </div>
+    
+    <!-- Informazioni di fatturazione -->
+    <div id="user-info-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="user-info-info" class="value-container">
+        <p>Informazioni di fatturazione:&nbsp;</p>
+        <ul id="user-rent-info-value" style="list-style-type: none">
+          <li id="user-name">null</li>
+          <li id="user-address">null</li>
+          <li id="user-email">null</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Immagine -->
-    <div id="car-image-modify" class="modify-container" style="margin-bottom: 3vh;">
-      <div id="car-image-info" class="value-container">
-          <p>URL Immagine:&nbsp;</p>
-          <p class="modify-text" id="car-image-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
-          <p>&nbsp;</p>
-          <div class="modify-button">
-            <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-          </div>
-      </div>
-      <div id="car-image-modify-input" class="modify-input hidden">
-        <input type="text" class="form-control modify-input-text" id="autoImage" aria-describedby="Link immagine" placeholder="Inserisci l'URL dell'immagine" required>
-      </div>
-  </div>
-  
-  <!-- Descrizione -->
-  <div id="car-desc-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-desc-info" class="value-container">
-        <p>Descrizione:&nbsp;</p>
-        <p class="modify-text" id="car-desc-value" style="white-space: nowrap;text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-desc-modify-input" class="modify-input hidden">
-      <textarea class="form-control modify-input-text" id="autoDescription" rows="3" placeholder="Inserisci una descrizione" required></textarea>
-    </div>
-  </div>
+    <!-- Id utente -->
+    <p class="disclaimer-text">Id utente: <span id="user-id">null</span></p>
 
-  <!-- Condizioni -->
-    <div id="car-cond-modify" class="modify-container" style="margin-bottom: 3vh;">
-      <div id="car-cond-info" class="value-container">
-          <p>Condizioni:&nbsp;</p>
-          <p class="modify-text" id="car-cond-value">null</p>
-          <p>&nbsp;</p>
+    <hr>
+    
+    <!-- Auto -->
+    <div id="car-rent-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="car-rent-info" class="value-container">
+          <p>Modello auto:&nbsp;</p>
+          <p class="modify-text" id="car-rent-value" style="text-overflow: ellipsis;">null</p>
+      </div>
+    </div>
+
+    <!-- Kits -->
+    <div id="car-rent-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="car-rent-info" class="value-container">
+        <p>Kit inclusi:&nbsp;</p>
+        <div id="kits-value">
+        <ul id="kits-list">
+          <li>null</li>
+          <li>null</li>
+          <li>null</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Luogo di ritiro dell'auto -->
+    <div id="pickup-rent-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="pickup-rent-info" class="value-container">
+          <p>Luogo di ritiro:&nbsp;</p>
+          <p class="modify-text" id="pickup-rent-value" style="text-overflow: ellipsis;">null</p>
+      </div>
+    </div>
+
+    <!-- Id auto -->
+    <p class="disclaimer-text">Id auto: <span id="car-id">null</span></p>
+
+    <hr>
+
+    <!-- isLate -->
+    <div id="car-bool-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="car-bool-info" class="value-container">
+          <div style=" display: inline-block; vertical-align: top;">
+            <p style="float: left;">In ritardo:&nbsp;</p>
+            <p class="modify-text" id="rent-late-value" style="float: right;">null</p>
+          </div>
           <div class="modify-button">
-            <a href="#" class="btn btn-sm btn-primary modify modify-basic"><i class="fas fa-edit"></i></a>
-            <a href="#" class="btn btn-sm btn-success confirm confirm-radio hidden"><i class="fas fa-check"></i></a>
+            <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn "><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-checkbox-car hidden"><i class="fas fa-check"></i></a>
           </div>
       </div>
-      <div id="car-cond-input" class="modify-input hidden">
+      <div id="rent-late-modify-input" class="modify-input hidden">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="isLate">
+            <label class="form-check-label" for="isLate">
+              In ritardo
+            </label>
+          </div>
+      </div>
+    </div>
+
+    <!-- Tipo di prenotazione -->
+    <div id="rent-type-modify" class="modify-container" style="margin-bottom: 3vh;">
+      <div id="rent-type-info" class="value-container">
+          <div style="display: block;">
+            <p>Tipologia di prenotazione:&nbsp; <span id="rent-type-value">null</span></p>
+            <p>Tempo:&nbsp; <span id="rent-time-value">null</span></p>
+          </div>
+          <div class="modify-button">
+            <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn "><i class="fas fa-edit"></i></a>
+            <a href="#" class="btn btn-sm btn-success confirm confirm-checkbox-car hidden"><i class="fas fa-check"></i></a>
+          </div>
+      </div>
+      <div id="rent-late-modify-input" class="modify-input hidden">
         <div class="form-group m-2">
+          <label for="rentType">Tipo prenotazione:</label>
           <div class="form-check form-check-inline m-1">
-            <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizPerfette" value="perfect" checked>
-            <label class="form-check-label" for="pulsanteCondizPerfette">
-                Perfette
+            <input class="form-check-input" type="radio" name="rentType" id="classic_rent" value="classic" checked>
+            <label class="form-check-label" for="classic_rent">
+              Classico
             </label>
           </div>
           <div class="form-check form-check-inline m-1">
-            <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizBuone" value="good">
-            <label class="form-check-label" for="pulsanteCondizBuone">
-                Buone
+            <input class="form-check-input" type="radio" name="rentType" id="periodic_rent" value="period">
+            <label class="form-check-label" for="periodic_rent">
+              Periodico
             </label>
           </div>
-          <div class="form-check form-check-inline m-1">
-            <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizWeak" value="weak">
-            <label class="form-check-label" for="pulsanteCondizWeak">
-                Funzionante
-            </label>
+        </div>
+        <div class="form-group m-3">
+          <div id="classicRentDiv" class="form-check">      
+            <div class="row" id="classicRentForm">
+              <div class="col-sm m-2">
+                <label class="form-check-label" for="fromDate">
+                  Dal
+                </label>
+                <duet-date-picker identifier="fromDate" aria-describedby="Dal" required ></duet-date-picker>
+              </div>
+              <div class="col-sm m-2">
+                <label class="form-check-label" for="toDate">
+                  al
+                </label>
+                <duet-date-picker identifier="toDate" aria-describedby="Al" required></duet-date-picker>
+              </div>
+            </div>
+          </div>
+          <div id="periodicRentDiv" class="form-check hidden">
+            <div class="row" id="periodicRentForm">
+              <div class="col-sm m-2">
+                <label class="form-check-label col-form-label col-form-label-sm" for="fromDatePeriod">
+                  Dal
+                </label>
+                <duet-date-picker identifier="fromDatePeriod" aria-describedby="Dal" required ></duet-date-picker>
+              </div>
+              <div class="col-sm m-2">
+                <label class="form-check-label col-form-label col-form-label-sm" for="fromWeekDate">
+                  dal giorno della settimana
+                </label>
+                <input type="number" class="form-control form-control-sm" id="fromWeekDate" aria-describedby="dal giorno della settimana" required>
+              </div>
+              <div class="col-sm m-2">
+                <label class="form-check-label col-form-label col-form-label-sm" for="toWeekDate">
+                  al giorno della settimana
+                </label>
+                <input type="number" class="form-control form-control-sm" id="toWeekDate" aria-describedby="al giorno della settimana" required>
+              </div>
+              <div class="col-sm m-2">
+                <label class="form-check-label col-form-label col-form-label-sm" for="weekPeriod">
+                  Numero settimane:
+                </label>
+                <input type="number" class="form-control form-control-sm" id="weekPeriod" aria-describedby="Numero settimane" required>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  
-  <!-- Luogo di ritiro -->
-  <div id="car-pickup-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-pickup-info" class="value-container">
-        <p>Luogo di ritiro:&nbsp;</p>
-        <p class="modify-text" id="car-pickup-value" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-car-pickup-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-pickup-car hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-pickup-modify-input" class="modify-input hidden">
-      <select id="pickupPlace" class="form-select" aria-label="Scegli un luogo di ritiro" required>
-        <option value="1" disabled selected hidden>Immetti un luogo di ritiro</option>
-      </select>    
-    </div>
+    
+  <!-- Data conclusione -->
+  <div id="conclusion-date" class="value-container hidden text-success" style="margin-bottom: 3vh;">
+    <p>Data conclusione:&nbsp;<span id="conclusion-date-value">null</span></p>
   </div>
-
-  <!-- Tag -->
-  <div id="car-tag-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-tag-info" class="value-container">
-        <p>Tag:&nbsp;</p>
-        <p class="modify-text" id="car-tag-value" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-tag-modify-input" class="modify-input hidden">
-        <select id="carTag" class="form-select modify-input-text" aria-label="Seleziona un tag" required>
-        <option value="1" disabled selected hidden>Seleziona un tag</option>
-        <option value="sportiva" >Sportiva</option>
-        <option value="elegante">Elegante</option>
-        <option value="famiglia">Famiglia</option>
-        <option value="viaggio">Viaggio</option>
-        </select>    
-    </div>
-  </div>
-
-    <!-- Booleans -->
-  <div id="car-bool-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-bool-info" class="value-container">
-        <div  style="display: block;">
-          <div style=" display: inline-block; vertical-align: top;">
-            <p style="float: left;">Elettrica:&nbsp;</p>
-            <p class="modify-text" id="car-bool-value-electric" style="float: right;">null</p>
-          </div>
-          <div style=" display: inline-block; vertical-align: top;">
-            <p style="float: left;">| Cambio automatico:&nbsp;</p>
-            <p class="modify-text" id="car-bool-value-automatic" style="float: right;">null</p>
-          </div>
-          <div style=" display: inline-block; vertical-align: top;">
-            <p style="float: left;">| Tre porte:&nbsp;</p>
-            <p class="modify-text" id="car-bool-value-doors" style="float: right;">null</p>
-          </div>
-        </div>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn "><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-checkbox-car hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-bool-modify-input" class="modify-input hidden">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="isElectric">
-          <label class="form-check-label" for="isElectric">
-            È elettrica
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="hasAutomaticTransmission">
-          <label class="form-check-label" for="hasAutomaticTransmission">
-            Ha una trasmissione automatica
-          </label>
-        </div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="hasThreeDoors">
-          <label class="form-check-label" for="hasThreeDoors">
-            Ha tre porte
-          </label>
-        </div>
-    </div>
-  </div>
-
-
-  <!-- bagagli -->
-  <div id="car-bag-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-bag-info" class="value-container">
-        <p>Bagagli:&nbsp;</p>
-        <p class="modify-text" id="car-bag-value" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-bag-modify-input" class="modify-input hidden">
-      <div class="col-md-3">
-        <select id="baggagesNumber" class="form-select modify-input-text" aria-label="Seleziona la quantità di bagagli">
-          <option value="1" selected>1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <!-- posti -->
-  <div id="car-seats-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-seats-info" class="value-container">
-        <p>Posti:&nbsp;</p>
-        <p class="modify-text" id="car-seats-value" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-seats-modify-input" class="modify-input hidden">
-      <div class="col-md-3">
-        <select id="seatsNumber" class="form-select modify-input-text" aria-label="Seleziona la quantità dei posti">
-            <option value="2" selected>2</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
 
   <!-- Prezzo -->
-  <div id="car-price-modify" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-price-info" class="value-container">
-        <p>Prezzo:&nbsp;</p>
-        <p class="modify-text" id="car-price-value" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;€&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-basic hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-price-modify-input" class="modify-input hidden">
-      <div class="col-md-4">
-        <div class="input-group">
-          <input id="basePrice" type="number" placeholder="Prezzo" class="form-control modify-input-text" aria-label="Prezzo base">
-          <div class="input-group-append">
-            <span class="input-group-text">€</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Prenotazione data -->
-  <div id="car-unavail-date" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-unavail-date-info" class="value-container">
-        <p id="avail">Non disponibile dal&nbsp;</p>
-        <p class="modify-text" id="car-date-from" style="text-overflow: ellipsis;">null</p>
-        <p id="to-text">&nbsp;al&nbsp;</p>
-        <p class="modify-text" id="car-date-to" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-        <div class="modify-button">
-          <a href="#" class="btn btn-sm btn-primary modify modify-input-text-btn"><i class="fas fa-edit"></i></a>
-          <a href="#" class="btn btn-sm btn-success confirm confirm-avail-car hidden"><i class="fas fa-check"></i></a>
-        </div>
-    </div>
-    <div id="car-avail-modify-input" class="modify-input hidden">
-      <div class="form-group m-3">
-        <div class="form-check">
-          <label class="form-check-label" for="notAvail">
-            Auto non disponibile
-          </label>
-          <input class="form-check-input" type="checkbox" value="" id="notAvail">
-
-          <div class="row hidden" id="dateNavail">
-            <div class="col-sm m-2">
-              <label class="form-check-label" for="fromDate">
-                Dal
-              </label>
-              <input type="text" class="form-control" id="fromDate" aria-describedby="Dal" placeholder="YYYY-MM-DD" required>
-            </div>
-            <div class="col-sm m-2">
-              <label class="form-check-label" for="toDate">
-                al
-              </label>
-              <input type="text" class="form-control" id="toDate" aria-describedby="Al" placeholder="YYYY-MM-DD">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div id="rent-price" class="value-container" style="margin-bottom: 3vh;">
+    <p>Prezzo:&nbsp;<span id="rent-price-value">null</span>€</p>
   </div>
 
   <!-- Id -->
-  <div id="car-id" class="modify-container" style="margin-bottom: 3vh;">
-    <div id="car-id-info" class="value-container">
-        <p>Id:&nbsp;</p>
-        <p class="modify-text" id="car-id-value" style="text-overflow: ellipsis;">null</p>
-        <p>&nbsp;</p>
-    </div>
+  <div id="rent-id" class="value-container" style="margin-bottom: 3vh;">
+    <p>Id prenotazione:&nbsp;<span id="rent-id-value">null</span></p>
   </div>
 
+  <p class="disclaimer-text">Il prezzo finale verrà aggiornato una volta confermata la modifica.</p>
+
+  <!-- Data crezione -->
+  <p class="disclaimer-text">Data creazione: <span id="creation-date"> </span></p>
+
+  <!-- Data ultima modifica -->
+  <p class="disclaimer-text">Data ultima modifica: <span id="change-date"> </span></p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>

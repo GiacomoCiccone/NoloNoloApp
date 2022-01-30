@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="multiUseModalLabel">Aggiungi un'auto</h5>
+  <h5 class="modal-title" id="multiUseModalLabel">Aggiungi una prenotazione</h5>
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -7,133 +7,49 @@
 <div class="modal-body">
   <form id="carsForm">
     <div class="form-group m-2">
-      <label for="autoModel">Modello e marca</label>
-      <div class="input-group">
-        <input type="text" id="autoBrand" class="form-control" aria-describedby="Marca auto" placeholder="Inserisci la marca" required>
-        <input type="text" id="autoModel" class="form-control" aria-describedby="Modello auto" placeholder="Inserisci il modello" required>
-      </div>
-    </div>
-    <div class="form-group m-2">
-      <label for="autoImage">Immagine</label>
-      <input type="text" class="form-control" id="autoImage" aria-describedby="Link immagine" placeholder="Inserisci l'URL dell'immagine" required>
-    </div>
-    <div class="form-group m-2">
-      <label for="autoDescription">Descrizione:</label>
-      <textarea class="form-control" id="autoDescription" rows="3" placeholder="Inserisci una descrizione" required></textarea>
-    </div>
-    <div class="form-group m-2">
-      <label for="selezioneCondizAuto">Condizioni:</label>
-      <div class="form-check form-check-inline m-1">
-        <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizPerfette" value="perfect" checked>
-        <label class="form-check-label" for="pulsanteCondizPerfette">
-            Perfette
-        </label>
-      </div>
-      <div class="form-check form-check-inline m-1">
-        <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizBuone" value="good">
-        <label class="form-check-label" for="pulsanteCondizBuone">
-            Buone
-        </label>
-      </div>
-      <div class="form-check form-check-inline m-1">
-        <input class="form-check-input" type="radio" name="selezioneCondizAuto" id="pulsanteCondizWeak" value="weak">
-        <label class="form-check-label" for="pulsanteCondizWeak">
-            Funzionante
-        </label>
-      </div>
-    </div>
-    <div class="form-group m-2">
-      <label for="pickupPlace">Luogo di ritiro:</label>
-        <select id="pickupPlace" class="form-select" aria-label="Scegli un luogo di ritiro" required>
-        <option value="1" disabled selected hidden>Immetti un luogo di ritiro</option>
+      <label for="autoRent">Macchina:</label>
+        <select id="autoRent" class="form-select" aria-label="Scegli un auto" required>
+        <option value="1" disabled selected hidden>Scegli una macchina</option>
         </select>
     </div>
     <div class="form-group m-2">
-      <label for="carTag">Tag:</label>
-        <select id="carTag" class="form-select" aria-label="Seleziona un tag" required>
-        <option value="1" disabled selected hidden>Seleziona un tag</option>
-        <option value="sportiva" >Sportiva</option>
-        <option value="elegante">Elegante</option>
-        <option value="famiglia">Famiglia</option>
-        <option value="viaggio">Viaggio</option>
+      <label for="kitsRent">Kit della prenotazione:</label>
+      <select id="kitsRent" class="form-select" multiple aria-label="multiple select example">
+      </select>
+    </div>
+    <div class="form-group m-2">
+      <label for="userRent">Utente:</label>
+        <select id="userRent" class="form-select" aria-label="Scegli un utente" required>
+        <option value="1" disabled selected hidden>Scegli un utente</option>
         </select>
     </div>
-    <div class="form-group m-3">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="isElectric">
-        <label class="form-check-label" for="isElectric">
-          È elettrica
+    <div class="form-group m-2">
+      <label for="rentStatus">Stato prenotazione:</label>
+        <select id="rentStatus" class="form-select" aria-label="Seleziona uno stato della prenotazione" required>
+        <option value="1" disabled selected hidden>Seleziona uno stato</option>
+        <option value="pending" >Pendente</option>
+        <option value="accepted">Accettata</option>
+        <option value="concluded">Conclusa</option>
+      </select>
+    </div>
+    <div class="form-group m-2">
+      <label for="rentType">Tipo prenotazione:</label>
+      <div class="form-check form-check-inline m-1">
+        <input class="form-check-input" type="radio" name="rentType" id="classic_rent" value="classic" checked>
+        <label class="form-check-label" for="classic_rent">
+          Classico
         </label>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="hasAutomaticTransmission">
-        <label class="form-check-label" for="hasAutomaticTransmission">
-          Ha una trasmissione automatica
-        </label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="hasThreeDoors">
-        <label class="form-check-label" for="hasThreeDoors">
-          Ha tre porte
+      <div class="form-check form-check-inline m-1">
+        <input class="form-check-input" type="radio" name="rentType" id="periodic_rent" value="period">
+        <label class="form-check-label" for="periodic_rent">
+          Periodico
         </label>
       </div>
     </div>
     <div class="form-group m-3">
-      <div class="row">
-        <div class="col-md-4 align-middle">
-          <label for="seatsNumber">
-            Numero posti:
-          </label>
-        </div>
-        <div class="col-md-3">
-          <select id="seatsNumber" class="form-select" style="float:left;" aria-label="Seleziona la quantità dei posti">
-            <option value="2" selected>2</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="form-group m-3">
-      <div class="row">
-        <div class="col-md-4 align-middle">
-          <label for="baggagesNumber">
-            Numero bagagli:
-          </label>
-        </div>
-        <div class="col-md-3">
-          <select id="baggagesNumber" class="form-select" style="float:left;" aria-label="Seleziona la quantità di bagagli">
-            <option value="1" selected>1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="form-group m-3">
-      <div class="row">
-        <div class="col-md-4 align-middle">
-          <label for="basePrice">Prezzo base:</label>
-        </div>
-        <div class="col-md-4">
-          <div class="input-group">
-            <input id="basePrice" type="number"  placeholder="Prezzo" class="form-control" aria-label="Prezzo base">
-            <div class="input-group-append">
-              <span class="input-group-text">€</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-      <div class="form-group m-3">
-        <div class="form-check">
-          <label class="form-check-label" for="notAvail">
-            Auto non disponibile
-          </label>
-          <input class="form-check-input" type="checkbox" value="" id="notAvail">
-
-          <div class="row hidden" id="dateNavail">
+        <div id="classicRentDiv" class="form-check">      
+          <div class="row" id="classicRentForm">
             <div class="col-sm m-2">
               <label class="form-check-label" for="fromDate">
                 Dal
@@ -148,10 +64,39 @@
             </div>
           </div>
         </div>
+        <div id="periodicRentDiv" class="form-check hidden">
+          <div class="row" id="periodicRentForm">
+            <div class="col-sm m-2">
+              <label class="form-check-label col-form-label col-form-label-sm" for="fromDatePeriod">
+                Dal
+              </label>
+              <duet-date-picker identifier="fromDatePeriod" aria-describedby="Dal" required ></duet-date-picker>
+            </div>
+            <div class="col-sm m-2">
+              <label class="form-check-label col-form-label col-form-label-sm" for="fromWeekDate">
+                dal giorno della settimana
+              </label>
+              <input type="number" class="form-control form-control-sm" id="fromWeekDate" aria-describedby="dal giorno della settimana" required>
+            </div>
+            <div class="col-sm m-2">
+              <label class="form-check-label col-form-label col-form-label-sm" for="toWeekDate">
+                al giorno della settimana
+              </label>
+              <input type="number" class="form-control form-control-sm" id="toWeekDate" aria-describedby="al giorno della settimana" required>
+            </div>
+            <div class="col-sm m-2">
+              <label class="form-check-label col-form-label col-form-label-sm" for="weekPeriod">
+                Numero settimane:
+              </label>
+              <input type="number" class="form-control form-control-sm" id="weekPeriod" aria-describedby="Numero settimane" required>
+            </div>
+          </div>
+        </div>
       </div>
-  </form>
+      <p class="disclaimer-text">Il prezzo totale verrà calcolato automaticamente dopo la creazione.</p>
+    </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-  <button type="submit" form="myform" id="send-pickup" class="btn btn-primary m-2" onclick="createCar();" data-dismiss="modal">Crea</button>
+  <button type="submit" form="myform" id="send-pickup" class="btn btn-primary m-2" onclick="createRent();" data-dismiss="modal">Crea</button>
 </div>

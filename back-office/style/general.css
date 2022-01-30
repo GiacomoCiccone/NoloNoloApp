@@ -39,3 +39,7 @@ body, html {
 .hidden_elem {
     display: none;
 }
+
+.btn {
+    margin-right: 0.4em;
+}

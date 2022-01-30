@@ -18,6 +18,7 @@ $(document).ready(function(){
 function loadAddButton(){
     $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi utente");
     $('#add-button').attr('hidden', 'hidden');
+    $("#search-input").attr('placeholder', 'Cerca lo username di un utente...');
     // $('#search-bar').load('components/users/userssearchbar.html');
 }
 
@@ -94,6 +95,10 @@ function loadDetailsById(id){
 
                 // Id 
                 $("#user-id-value").text(val._id);
+
+                // data creazione e ultima modifica
+                $('#creation-date').text(val.createdAt);
+                $('#change-date').text(val.updatedAt);
             }
         })
     });
@@ -115,12 +120,12 @@ function displayData(data){
         '<span class="sr-only"> Entri di ' + val.username + '. Contiene: </span>' + 
             '<div class="entry-image"><img src="' + image + '" alt=""></div>' + 
             '<div class="entry-body">' +
-                '<h5 class="entry-title">' + val.username + '&nbsp; ' +
+                '<h5 class="entry-title">' + val.username +
                 '</h5>' + 
                 '<p class="entry-text">Ruolo: ' + val.role + '</p>' + 
                 '<p class="entry-text id-text">id: ' + val._id + '</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
-                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
+                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' +
                 '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi account</a>' +
             '</div>' +
         '</div>';

@@ -31,14 +31,15 @@ function loadSearchBar(){
  */
 $(document).ready(function () { // jquery delegation
     verifyAction();
-
+    
     $(document).on('click','#add-button', function () { // jquery delegation
         // mostra i pickup nel select relativo
+        $('.modal-dialog').addClass('modal-lg');
+        $('#multiUseModal').modal('toggle');
         (async () => { 
             let pickups = await fetchPickupsFromServer();
             // loading form html
             $('.modal-content').load("components/cars/carsform.html", () => {
-                $('.modal-dialog').addClass('modal-lg');
 
                 // aggiungi event listener per mostrare la data di non disponibilità
                 $('input[id=notAvail]').change(function() {
@@ -51,7 +52,6 @@ $(document).ready(function () { // jquery delegation
 
                 displayPickupsSelect(pickups.data);
                 // opening menu
-                $('#multiUseModal').modal('toggle');
             })
         })();
     });
@@ -63,8 +63,8 @@ $(document).ready(function () { // jquery delegation
  *  Versione delle auto.
  */
 function loadDetailsById(id){ 
+    $('.modal-dialog').addClass('modal-lg');
     (async () => { let pickups = await fetchPickupsFromServer();
-        $('.modal-dialog').addClass('modal-lg');
         $('.modal-content').load("components/cars/modifycars.html", () => {
 
             // aggiunge l'event listener per il checkbox
@@ -134,6 +134,10 @@ function loadDetailsById(id){
 
                     // Id 
                     $("#car-id-value").text(val._id);
+
+                    console.log(val)
+                    // data ultima modifica
+                    $('#change-date').text(val.updatedAt);
 
                     // Info prenotazione
                     if (val.unavaiable != null){
@@ -278,22 +282,12 @@ function carAvailability(val){
  * 
  */
  function showAvaiabilityBadge(val){
-    if (val == null || Date.now() < new Date(val.from)){
+    if (val === 'deprecato')
+        return '<span class="badge rounded-pill bg-secondary">Deprecato</span>';
+    else if (val === 'available')
         return '<span class="badge rounded-pill bg-success">In locazione</span>';
-    } else {
-        // se la data è minore 
-        if (new Date(val.from) <= Date.now() && new Date(val.from) > new Date(1970, 1, 1))
-        {
-            if (val.to == null || new Date(val.to) >= Date.now())
-                return '<span class="badge rounded-pill bg-danger">Fuori magazzino</span>';
-            else
-                return '<span class="badge rounded-pill bg-success">In locazione</span>';
-        }
-        else {
-            return '<span class="badge rounded-pill bg-secondary">Deprecato</span>';
-        }
-    }
-
+    else if (val === 'unavailable')
+        return '<span class="badge rounded-pill bg-danger">Fuori magazzino</span>';
 }
 
 
@@ -305,20 +299,26 @@ function carAvailability(val){
 function displayData(data){
     $("#elements").html("");
     $.each(data, function(key, val) { 
-        var image;
+        let image;
+        let availability = carAvailability(val.unavaiable);
         if (val.image == null) image = 'https://www.mountaineers.org/activities/routes-and-places/default-route-place/activities-and-routes-places-default-image/image' ;
         else image = val.image;
+        let condition;
+        if (val.condition === 'weak') condition = 'accettabili'
+        else if (val.condition === 'good') condition = 'buone'
+        else if (val.condition === 'perfect') condition = 'perfette'
+
         var element =             
-        '<div tabindex="0" class="entry" data-entryid="' + val._id + '" data-avail="' + carAvailability(val.unavaiable) + '" >' +
+        '<div tabindex="0" class="entry" data-entryid="' + val._id + '" data-avail="' + availability + '" >' +
         '<span class="sr-only"> Entri di ' + val.model + '. Contiene: </span>' + 
             '<div class="entry-image"><img src="' + image + '" alt=""></div>' + 
             '<div class="entry-body">' +
-                '<h5 class="entry-title">' + val.model + '&nbsp; ' + showAvaiabilityBadge(val.unavaiable) +
+                '<h5 class="entry-title">' + val.model + '&nbsp; ' + showAvaiabilityBadge(availability) +
                 '</h5>' + 
-                '<p class="entry-text">Condizioni: ' + val.condition + '</p>' + 
+                '<p class="entry-text">Condizioni: ' + condition + '</p>' + 
                 '<p class="entry-text id-text">id: ' + val._id + '</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
-                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
+                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' +
                 '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi/Depreca</a>' +
             '</div>' +
         '</div>';

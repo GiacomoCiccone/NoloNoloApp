@@ -1,16 +1,16 @@
 <form class="form-group" id="search-keyword" onsubmit="search();return false">
-    <input id="search-input" class="form-control separator" aria-describedby="search" placeholder="Cerca una prenotazione...">
+    <input id="search-input" class="form-control separator" aria-describedby="search" placeholder="Cerca una prenotazione (per username)...">
   <div class="btn-group search-btn">
     <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fas fa-search"></i>
     </button>
     <div class="dropdown-menu">
-        <a id="search-all" class="dropdown-item" href="#">Mostra tutti</a>
+        <a id="search-submit" class="dropdown-item" href="#">Mostra tutti</a>
         <div class="dropdown-divider"></div>
-        <a id="search-avail" class="dropdown-item" href="#">Cerca per utente</a>
-        <a id="search-unavail" class="dropdown-item" href="#">Cerca per auto</a>
-        <a id="search-depr" class="dropdown-item" href="#">Solo pending</a>
-        <a id="search-depr" class="dropdown-item" href="#">Solo attivi</a>
+        <a id="search-bycar" class="dropdown-item" href="#">Cerca per auto</a>
+        <a id="search-pending" class="dropdown-item" href="#">Solo pending</a>
+        <a id="search-accepted" class="dropdown-item" href="#">Solo accettati</a>
+        <a id="search-concluded" class="dropdown-item" href="#">Solo conclusi</a>
     </div>
   </div>
   

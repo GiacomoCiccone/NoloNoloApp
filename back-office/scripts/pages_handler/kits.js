@@ -12,22 +12,25 @@ function highlightSidebarEntry(){
 }
 
 
-/**  Crea il bottone di aggiunta in base al contesto della pagina (in questo caso pickups)
- *
+/** Crea il bottone di aggiunta in base al contesto della pagina (in questo caso kits)
+ *  Inoltre, cambia il placeholder della ricerca.
  */
 function loadAddButton(){
     $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi kit");
+    $("#search-input").attr('placeholder', 'Cerca il nome del kit...');
 }
 
-/** Carica la modale per l'aggiunta dei pickups
+
+
+/** Carica la modale per l'aggiunta dei kitss
  */
 $(document).ready(function () { // jquery delegation
     verifyAction();
-
+    
     $(document).on('click','#add-button', function () { // jquery delegation
 
         // loading form html
-        $('.modal-content').load("components/pickups/pickupform.html");
+        $('.modal-content').load("components/kits/kitsform.html");
 
         // opening menu
         $('#multiUseModal').modal('toggle');
@@ -37,28 +40,28 @@ $(document).ready(function () { // jquery delegation
 
 /** Carica la ui del modale e i dati prendendoli dalla sessione corrente.
  *  Dopodiché, lo apre.
- *  Versione del pickup.
+ *  Versione del kits.
  */
 function loadDetailsById(id){ 
-    $('.modal-content').load("components/pickups/modifypickup.html", () => {
+    $('.modal-content').load("components/kits/modifykits.html", () => {
         let data = window.sessionStorage.getItem("latest_fetch"); 
-        
+        console.log(data)
         $.each(JSON.parse(data), function(key, val) {
             if (val._id === id.toString()){
-                $("#pickup-title-value").text(val.point);
-                $("#pickup-type-value").text(val.type);
+                $("#kit-title-value").text(val.point);
+                $("#kit-type-value").text(val.type);
             }
         })
     });
 }
 
 
-/** Formula i dati di un nuovo pickup e li invia al server
- *  Versione del pickup.
+/** Formula i dati di un nuovo kit e li invia al server
+ *  Versione del kit.
  */
-function createPickup(){
-    var data = $('#pickupName').val();
-    var type = document.querySelector('input[name="selezioneTipoPickup"]:checked').value;
+function createKit(){
+    var data = $('#kitName').val();
+    var type = document.querySelector('input[name="selezioneTipokit"]:checked').value;
 
     var user_token = window.localStorage.getItem('token');
     if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
@@ -81,13 +84,13 @@ function displayData(data){
         else image = val.image;
         var element =             
         '<div tabindex="0" class="entry" data-entryid="' + val._id + '">' +
-        '<span class="sr-only"> Entri di ' + val.point + '. Contiene: </span>' + 
+        '<span class="sr-only"> Entri di ' + val.name + '. Contiene: </span>' + 
             '<div class="entry-image"><img src="' + image + '" alt=""></div>' + 
                 '<div class="entry-body">' +
-                '<h5 class="entry-title">' + val.point + '</h5>' + 
-                '<p class="entry-text">' + val.type + '</p>' + 
+                '<h5 class="entry-title">' + val.name + '</h5>' + 
+                '<p class="entry-text">Costo al giorno:&nbsp;' + val.price + '€</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
-                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
+                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' +
                 '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi</a>' +
             '</div>' +
         '</div>';
@@ -95,16 +98,16 @@ function displayData(data){
     });
 }
 
-/** Aggiorna le entries dei pickups sullo schermo
+/** Aggiorna le entries dei kits sullo schermo
  * 
  */
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
     $("#elements").load("components/loading-animation.html");
-    return fetchDataFromServer('pickups/');
+    return fetchDataFromServer('kits/');
 }
 
-/** Rimuove un pickup.
+/** Rimuove un kit.
  *  Viene applicato quando si preme "si" al modale di rimozione.
  */
 $(document).on('click','.remove',(e) => {
@@ -114,12 +117,12 @@ $(document).on('click','.remove',(e) => {
     var id = $('#multiUseModal').data('id');
 
     // elimina e chiudi la modale
-    sendPayload("", 'pickups/' + id + '/', user_token, 'DELETE');
+    sendPayload("", 'kits/' + id + '/', user_token, 'DELETE');
     $('#multiUseModal').modal('toggle');
     }
 );
 
-/** Modifica un pickup.
+/** Modifica un kit.
  * 
  */
 $(document).on('click','#apply-modifications', (e) => {

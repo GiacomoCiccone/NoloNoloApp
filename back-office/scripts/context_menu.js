@@ -9,8 +9,8 @@
  */
 $(document).on('click','.details', function () { // jquery delegation
     var clickid = $(this.closest("[data-entryid]")).data("entryid");
-    loadDetailsById(clickid);
     $('#multiUseModal').data('id', clickid).modal('toggle'); // only way to pass id to modal...
+    loadDetailsById(clickid);
 });
 
 /** Azioni da eseguire quando si preme il tasto modifica.
@@ -123,7 +123,7 @@ $(document).on('click','.removeAlert', function (e) {
     var name = $(this.parentElement.querySelector('.entry-title')).text(); // name of entry, used only for ui
 
     $('.modal-content').load("components/warning_modal.html", () => {
-        $('.modal-body').html( "<p>Sei sicuro di voler eliminare " + name + "?</p>")}
+        $('.modal-body').html( "<p>Sei sicuro di voler eliminare \"" + name + "\"?</p>")}
     );
     
     // open modal and pass id
