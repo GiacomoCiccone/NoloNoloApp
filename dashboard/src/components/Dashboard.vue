@@ -8,9 +8,16 @@
           Dashboard
         </h1>
       </div>
-
+      
       <div style="height: 1px; background-color: #ccc; margin: 3rem 0 0 0" />
 
+      <div style="display:flex">
+        <h4 class="info">Noleggi <b>{{rents.length}}</b></h4>
+        <h4 class="info">Utenti <b>{{users.length}}</b></h4>
+        <h4 class="info">Luoghi <b>{{places.length}}</b></h4>
+        <h4 class="info">Macchine <b>{{cars.length}}</b></h4>
+    
+      </div>
       <div id="chartsContainer">
         <div class="barChartContainer">
           <h2 style="font-size: calc(15px + 0.2vw)">Clienti per fatturato</h2>
@@ -107,9 +114,99 @@ export default {
         mapFatturato.set("600-800", 0);
         mapFatturato.set("800-1000", 0);
         mapFatturato.set("1000+", 0);
+      
+        this.rents.forEach((rent) => {
 
+          let fatturato=rent.price;
+          
+          if (fatturato <= 200)
+            mapFatturato.set("0-200", mapFatturato.get("0-200") + 1);
+          else if (fatturato > 200 && fatturato <= 400)
+            mapFatturato.set("200-400", mapFatturato.get("200-400") + 1);
+          else if (fatturato > 400 && fatturato <= 600)
+            mapFatturato.set("400-600", mapFatturato.get("400-600") + 1);
+          else if (fatturato > 600 && fatturato <= 800)
+            mapFatturato.set("600-800", mapFatturato.get("600-800") + 1);
+          else if (fatturato > 800 && fatturato <= 1000)
+            mapFatturato.set("800-1000", mapFatturato.get("800-1000") + 1);
+          else mapFatturato.set("1000+", mapFatturato.get("1000+") + 1);
+        });
+
+        let iteratorRents=Array.from(mapFatturato.values());
+
+        //week
+        let today = new Date();
+        let day;
+        let stringDay;
+        let week=[];
+        let mapDateRent=new Map();
+
+
+        for(let n=0;n<7;n++){
+          day = new Date(today.getFullYear(),today.getMonth(), today.getDate()-(6-n));
+          week[n]=day.toLocaleDateString("it-IT");
+          mapDateRent.set(week[n],0);
+        }
+
+        this.rents.forEach((rent)=> {
+          //var subDate = rent.createdAt.split('T')[0];
+          day = new Date(rent.createdAt);
+          stringDay=day.toLocaleDateString("it-IT");
+          console.log(stringDay);
+          if(mapDateRent.has(stringDay)){
+            mapDateRent.set(stringDay,mapDateRent.get(stringDay)+1)
+          }
+        });
+
+        let iteratorDataRents=Array.from(mapDateRent.values());
+
+
+        let ctx1 = document.getElementById("rents-chart-fatturato");
+        new Chart(ctx1, {
+          type: "bar",
+          data: {
+            labels: ["0-200 €", "200-400 €", "400-600 €", "600-800 €", "800-1000 €" ,"1000+ €"],
+            datasets: [
+              {
+                label: "Noleggi / Fatturato",
+                data: iteratorRents,
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+        });
+
+        let ctx2 = document.getElementById("rents-chart-data");
+        new Chart(ctx2, {
+          type: "line",
+          data: {
+            labels: week,
+            datasets: [
+              {
+                label: "Noleggi / Data",
+                data: iteratorDataRents,
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+        });
 
       }
+      
 
     },
 
@@ -159,8 +256,8 @@ export default {
           else mapNumeroNoleggi.set("9-10+", mapNumeroNoleggi.get("9-10+") + 1);
         });
 
-        const ctx = document.getElementById("users-chart-fatturato");
-        new Chart(ctx, {
+        let ctx1 = document.getElementById("users-chart-fatturato");
+        new Chart(ctx1, {
           type: "bar",
           data: {
             labels: ["0-100 €", "100-300 €", "300-500 €", "500+ €"],
@@ -180,20 +277,13 @@ export default {
                   "rgba(75, 192, 192, 0.2)",
                   "rgba(153, 102, 255, 0.2)",
                 ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(153, 102, 255, 1)",
-                ],
                 borderWidth: 1,
               },
             ],
           },
         });
 
-        const ctx2 = document.getElementById("users-chart-noleggi");
+        let ctx2 = document.getElementById("users-chart-noleggi");
         new Chart(ctx2, {
           type: "doughnut",
           data: {
@@ -215,14 +305,6 @@ export default {
                   "rgba(75, 192, 192, 0.2)",
                   "rgba(153, 102, 255, 0.2)",
                   "rgba(0, 99, 132, 0.2)",
-                ],
-                borderColor: [
-                  "rgba(255, 99, 132, 1)",
-                  "rgba(54, 162, 235, 1)",
-                  "rgba(255, 206, 86, 1)",
-                  "rgba(75, 192, 192, 1)",
-                  "rgba(153, 102, 255, 1)",
-                  "rgba(0, 99, 132, 1)",
                 ],
                 borderWidth: 1,
               },
@@ -464,7 +546,6 @@ export default {
         for(i=0;i<iteratorCars.length;i++){
           iteratorDataNoleggi[i] = mapCarNoleggi.get(iteratorCars[i]);
         }
-        console.log(iteratorDataNoleggi);
 
         let iteratorDataCondizioni=[];  
         i=0;

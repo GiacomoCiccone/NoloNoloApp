@@ -160,6 +160,12 @@
     box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
   }
 
+  .info{
+    margin: auto;
+    color: lightblue;
+    font-family:'Courier New', Courier, monospace;
+  }
+
   @media screen and (max-width: 800px) {
     #chartsContainer {
       justify-content: center;
