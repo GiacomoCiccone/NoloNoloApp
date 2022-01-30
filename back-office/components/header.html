@@ -17,3 +17,21 @@
     <a id="login-exit" class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i>&nbsp; Esci</a>
   </div>
 </div>
+
+
+<script>
+  $( window ).resize(function() {
+  if ($(window).width() <= 600) {
+    if ($("#button-sidebar").length === 0) {
+      $("#content-header").append(
+        `<div style="position: absolute; bottom: 2rem; left: 2rem; z-index: 100; border: none; padding: 1.4rem" id="button-sidebar">
+            <button>ok</button>
+          </div>`
+      )
+    }
+      
+  } else {
+      $("#button-sidebar")?.remove()
+  }
+  });
+</script>

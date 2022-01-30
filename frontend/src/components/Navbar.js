@@ -165,7 +165,7 @@ const Navbar = () => {
                                             </Link>
                                         </Menu.Item>
                                         <Divider style={{ margin: "0" }} />
-                                        <Menu.Item style={{ padding: "1rem 1rem" }} key="logout">
+                                        <Menu.Item style={{ padding: "0" }} key="logout">
                                             <button
                                                 aria-label="Esci dal tuo account."
                                                 onClick={() => {
@@ -173,6 +173,8 @@ const Navbar = () => {
                                                         type: "LOGOUT_SUCCESS",
                                                     });
                                                 }}
+                                                style={{ padding: "1rem 1rem" }}
+                                                className="w-full h-full text-left"
                                             >
                                                 <span>
                                                     <i className="bi bi-door-open-fill mr-2" /> Esci

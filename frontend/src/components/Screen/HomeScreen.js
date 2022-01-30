@@ -93,7 +93,7 @@ const HomeScreen = () => {
                         </div>
                     <br />
                     <h3 style={{marginTop: '5px'}} className="text-center text-2xl">Periodico</h3>
-                    <p className="text-center">Il noleggio periodico è proprio ciò che dice il termine. Scegli una data di inizio, una durata e quanti giorni la settimana hai bisogno della tua auto. L'auto sarà tua per tutto il periodo scelto. Questa tipologia di noleggio è perfetta per lavoratori che non vogliono acquistare un'auto</p>
+                    <p className="text-center">Il noleggio periodico è proprio ciò che dice il termine. Scegli una data di inizio, una durata e quanti giorni la settimana hai bisogno della tua auto. L'auto sarà tua per tutto il periodo scelto. Questa tipologia di noleggio è perfetta per lavoratori che non vogliono acquistare un'auto.</p>
                     <p></p>
                     </div>
 
