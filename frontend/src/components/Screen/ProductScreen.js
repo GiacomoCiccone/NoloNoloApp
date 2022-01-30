@@ -15,6 +15,7 @@ import Protected from "../Protected";
 
 //media
 import noData from "../../assets/undraw_towing_-6-yy4.svg";
+import Tooltip from "../Tooltip";
 
 const ProductScreen = (props) => {
     const location = useLocation();
@@ -41,7 +42,7 @@ const ProductScreen = (props) => {
             const searchQuery = queryString.parse(location.search);
             var searchObj = {};
             //deve vedere la disponibilita'
-            if (authToken) { 
+            if (authToken) {
                 if (searchQuery.type === "period") {
                     searchObj = {
                         type: "period",
@@ -171,70 +172,69 @@ const ProductScreen = (props) => {
 
     const requestRent = async () => {
         const searchQuery = queryString.parse(location.search);
-            var rent = {};
+        var rent = {};
 
-            // Costruisce l'oggetto dell date + tipo
-            if (searchQuery.type === "period") {
-                rent = {
-                    type: "period",
-                    period: {
-                        from: searchQuery.from,
-                        to: searchQuery.to,
-                        since: searchQuery.since,
-                        singleDay: searchQuery.singleDay,
-                        for: searchQuery.for,
-                    }
-                    
-                };
-            } else {
-                rent = {
-                    type: "classic",
-                    classic: {
-                        from: searchQuery.from,
-                        to: searchQuery.to,
-                    }
-                };
-            }
+        // Costruisce l'oggetto dell date + tipo
+        if (searchQuery.type === "period") {
+            rent = {
+                type: "period",
+                period: {
+                    from: searchQuery.from,
+                    to: searchQuery.to,
+                    since: searchQuery.since,
+                    singleDay: searchQuery.singleDay,
+                    for: searchQuery.for,
+                },
+            };
+        } else {
+            rent = {
+                type: "classic",
+                classic: {
+                    from: searchQuery.from,
+                    to: searchQuery.to,
+                },
+            };
+        }
 
-            // Inserisce l'id della macchina ed eventuali id di kits
-            rent.rentObj = {}
-            rent.rentObj.car = cars.filter(
-                (car) => car.condition === selectedCondition
-            )[0]._id;
+        // Inserisce l'id della macchina ed eventuali id di kits
+        rent.rentObj = {};
+        rent.rentObj.car = cars.filter(
+            (car) => car.condition === selectedCondition
+        )[0]._id;
 
-            if (bagKits.length > 0) {
-                rent.rentObj.kits = []
-                bagKits.forEach((kitIn, i) => {
-                    rent.rentObj.kits.push(kitIn)
-                });
-            }
+        if (bagKits.length > 0) {
+            rent.rentObj.kits = [];
+            bagKits.forEach((kitIn, i) => {
+                rent.rentObj.kits.push(kitIn);
+            });
+        }
 
-            // Manda informazioni cliente + indirizzo di fatturazione
-            rent.customer = userInfo._id;
-            rent.address = userInfo.address;
+        // Manda informazioni cliente + indirizzo di fatturazione
+        rent.customer = userInfo._id;
+        rent.address = userInfo.address;
 
         try {
-            setIsLoading(true)
+            setIsLoading(true);
             const config = {
                 headers: {
-                  Authorization: `Bearer ${authToken}`,
+                    Authorization: `Bearer ${authToken}`,
                 },
-              };
-            await axios.post('/api/rents/', rent, config)
-            setIsLoading(false)
+            };
+            await axios.post("/api/rents/", rent, config);
+            setIsLoading(false);
             setRentSuccess(true);
         } catch (error) {
-            setIsLoading(false)
+            setIsLoading(false);
             message.error({
                 content: <span role="alert">{error.response.data.error}</span>,
                 duration: 5,
             });
         }
-    }
+    };
 
     return (
         <Protected history={props.history}>
-            {(authToken && !rentSuccess) ? (
+            {authToken && !rentSuccess ? (
                 <div
                     style={{ minHeight: "calc(100vh - 5rem)" }}
                     className="py-16 pt-8 relative"
@@ -269,7 +269,7 @@ const ProductScreen = (props) => {
 
                                         <div className="w-full lg:w-1/2">
                                             <Space
-                                                style={{width: '100%'}}
+                                                style={{ width: "100%" }}
                                                 direction="vertical"
                                                 size={20}
                                             >
@@ -470,7 +470,9 @@ const ProductScreen = (props) => {
                                                 }}
                                             >
                                                 {kits.map((kit, i) => (
-                                                    <SplideSlide key={"slide" + i}>
+                                                    <SplideSlide
+                                                        key={"slide" + i}
+                                                    >
                                                         <div
                                                             className="h-96 p-4"
                                                             key={kit._id}
@@ -954,6 +956,7 @@ const ProductScreen = (props) => {
                                                                                 {
                                                                                     priceInfo.modelPrice
                                                                                 }
+
                                                                                 €{" "}
                                                                                 <span className="text-xs">
                                                                                     /ora
@@ -985,6 +988,7 @@ const ProductScreen = (props) => {
                                                                                         {
                                                                                             priceInfo.kitsPrice
                                                                                         }
+
                                                                                         €{" "}
                                                                                         <span className="text-xs">
                                                                                             /ora
@@ -1027,27 +1031,35 @@ const ProductScreen = (props) => {
                                                                         </div>
 
                                                                         <div className="flex items-center gap-2">
-                                                                            <p
+                                                                            <div
                                                                                 style={{
                                                                                     margin: "0",
                                                                                     minWidth:
                                                                                         "7rem",
                                                                                 }}
-                                                                                className="font-medium text-2xl tracking-tight"
+                                                                                className="flex items-center"
                                                                             >
-                                                                                Totale
-                                                                            </p>
+                                                                                <span className="font-medium text-2xl tracking-tight">
+                                                                                    Totale
+                                                                                </span>
+                                                                                {/* Tooltip ritardo consegna*/}
+                                                                                <Tooltip
+                                                                                    color="blue"
+                                                                                    title="Il prezzo totale potrebbe variare se il noleggio viene modificato. Inoltre possono applicarsi penali nel caso in cui l'auto venga riconsegnata in ritardo."
+                                                                                    icon="bi-info-circle-fill"
+                                                                                    type="info"
+                                                                                />
+                                                                            </div>
+
                                                                             <p
                                                                                 style={{
                                                                                     margin: "0",
                                                                                 }}
                                                                                 className="font-medium text-xl tracking-tight"
                                                                             >
-                                                                                {
-                                                                                    priceInfo.finalPrice?.toFixed(
-                                                                                        2
-                                                                                    )
-                                                                                }{" "}
+                                                                                {priceInfo.finalPrice?.toFixed(
+                                                                                    2
+                                                                                )}{" "}
                                                                                 €
                                                                             </p>
                                                                         </div>
@@ -1057,7 +1069,9 @@ const ProductScreen = (props) => {
                                                                         <div className="relative w-full sm:w-auto">
                                                                             <div className=" bg-gradient-to-r from-accent to-primary absolute -inset-1 rounded-lg filter blur w-full sm:w-auto"></div>
                                                                             <button
-                                                                                onClick={requestRent}
+                                                                                onClick={
+                                                                                    requestRent
+                                                                                }
                                                                                 type="button"
                                                                                 aria-label="Clicca per confermare il noleggio"
                                                                                 className="btn btn-secondary btn-block sm:btn-wide z-20 relative"
@@ -1144,21 +1158,33 @@ const ProductScreen = (props) => {
                         </div>
                     </Loading>
                 </div>
-            ) : (authToken && rentSuccess) && (<div className="min-h-screen flex justify-center items-center">
-                <Result
-                style={{color: theme === "dark" ? "#00bda0" : "#009485"}}
-                status="success"
-                title="Richiesta di noleggio avvenuta con successo."
-                subTitle="Controlla la tua pagina dei noleggi per vedere quando sarà confermato da un nostro amministratore."
-                extra={[
-                <Link to="/">
-                    <button className="btn btn-secondary" type="button">
-                        <span className="text-secondary-content">Torna alla home</span>
-                    </button>
-                </Link>
-                ]}
-            />
-            </div>)}
+            ) : (
+                authToken &&
+                rentSuccess && (
+                    <div className="min-h-screen flex justify-center items-center">
+                        <Result
+                            style={{
+                                color: theme === "dark" ? "#00bda0" : "#009485",
+                            }}
+                            status="success"
+                            title="Richiesta di noleggio avvenuta con successo."
+                            subTitle="Controlla la tua pagina dei noleggi per vedere quando sarà confermato da un nostro amministratore."
+                            extra={[
+                                <Link to="/">
+                                    <button
+                                        className="btn btn-secondary"
+                                        type="button"
+                                    >
+                                        <span className="text-secondary-content">
+                                            Torna alla home
+                                        </span>
+                                    </button>
+                                </Link>,
+                            ]}
+                        />
+                    </div>
+                )
+            )}
         </Protected>
     );
 };

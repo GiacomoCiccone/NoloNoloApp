@@ -8,8 +8,8 @@ const HeroSection = () => {
     const handleModal = (val) => setSearchModalOpen(val)
 
     return (
-        <div style={{minHeight: '400px', height: '65vh', backgroundImage: 'url(https://images.unsplash.com/photo-1567239334464-95411e8c7c58?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80)'}} className='relative flex justify-center items-center bg-cover bg-center bg-fixed'>
-            <div className="absolute w-full h-full bg-base-300 backdrop-blur-sm bg-opacity-20"></div>
+        <div style={{minHeight: '400px', height: '75vh', backgroundImage: 'url(https://www.enterprise.com/content/dam/ecom/locations/us/ny/business/road-shawangunks.jpg)'}} className='relative flex justify-center items-center bg-cover bg-center bg-fixed'>
+            <div className="absolute w-full h-full bg-base-300 bg-opacity-20"></div>
             <div className='container px-4 sm:px-12 md:px-24 lg:px-36 mb-40 z-10'>
                 <h1 style={{fontSize: 'calc(30px + 2vw)', margin: '0'}} className='tracking-tighter'>Nolo<span className='font-bold'>Nolo<sup>+</sup></span></h1>
                 <h2 style={{fontSize: 'calc(18px + 0.7vw)'}} className=' tracking-tighter'>Noleggia <span className='font-bold'>dove vuoi</span> e <span className='font-bold'>quando vuoi</span></h2>

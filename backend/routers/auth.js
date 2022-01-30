@@ -174,7 +174,6 @@ router.route("/login").post(async (req, res, next) => {
 //login admin
 router.route("/loginAdmin").post(async (req, res, next) => {
   const { email, password } = req.body;
-  console.log(req);
 
   if (!email || !password) {
     return next(
@@ -242,6 +241,8 @@ router.route("/loginManager").post(async (req, res, next) => {
     }
 
     const authToken = user.getSignedToken();
+
+    console.log(authToken)
 
     //non mandiamo la password. password: not per evitare conflitti di nomi
     const { password: not, ...info } = user._doc;

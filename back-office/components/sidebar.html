@@ -18,4 +18,15 @@
     <li>
         <a id="sidebar-kits" href="./kits.html">Kit</a>
     </li>
-  </ul>  
+  </ul>
+
+
+<script>
+    $( window ).resize(function() {
+    if ($(window).width() <= 600) {
+        $("#sidebar").hide()
+    } else {
+        $("#sidebar").show()
+    }
+    });
+</script>

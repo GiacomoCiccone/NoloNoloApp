@@ -178,7 +178,7 @@ const RentInfoScreen = (props) => {
 
         try {
             setIsLoading(true);
-            setIsModifing(false)
+            setIsModifing(false);
             const config = {
                 headers: {
                     Authorization: `Bearer ${authToken}`,
@@ -225,7 +225,7 @@ const RentInfoScreen = (props) => {
 
     const deleteRent = async () => {
         try {
-            setIsDeleting(false)
+            setIsDeleting(false);
             setIsLoading(true);
             const config = {
                 headers: {
@@ -450,9 +450,12 @@ const RentInfoScreen = (props) => {
                                                 <Descriptions.Item label="Stato noleggio">
                                                     <div
                                                         className={`badge ${
-                                                            (rent.isLate && rent.state !== "concluded") ? "badge-error" :
-                                                            rent.state ===
-                                                            "pending"
+                                                            rent.isLate &&
+                                                            rent.state !==
+                                                                "concluded"
+                                                                ? "badge-error"
+                                                                : rent.state ===
+                                                                  "pending"
                                                                 ? " badge-warning"
                                                                 : rent.state ===
                                                                   "accepted"
@@ -460,16 +463,17 @@ const RentInfoScreen = (props) => {
                                                                 : "badge-success"
                                                         }`}
                                                     >
-                                                        {
-                                                            (rent.isLate && rent.state !== "concluded") ? "In ritardo" :
-                                                            rent.state ===
-                                                            "pending"
-                                                                ? "Pendente"
-                                                                : rent.state ===
-                                                                  "accepted"
-                                                                ? "Accettato"
-                                                                : "Concluso"
-                                                        }
+                                                        {rent.isLate &&
+                                                        rent.state !==
+                                                            "concluded"
+                                                            ? "In ritardo"
+                                                            : rent.state ===
+                                                              "pending"
+                                                            ? "Pendente"
+                                                            : rent.state ===
+                                                              "accepted"
+                                                            ? "Accettato"
+                                                            : "Concluso"}
                                                     </div>{" "}
                                                 </Descriptions.Item>
 
@@ -610,7 +614,7 @@ const RentInfoScreen = (props) => {
                                                     40126 Bologna BO
                                                     <br />
                                                     <span className="">
-                                                        https://site2021XX.tw.cs.unibo.it/
+                                                        https://site202121.tw.cs.unibo.it/
                                                     </span>
                                                 </div>
                                             </div>
@@ -708,7 +712,16 @@ const RentInfoScreen = (props) => {
                                                     </div>
 
                                                     <div className="flex justify-between mb-4 bg-base-200 px-3 py-2 text-error">
-                                                        <div>Penale</div>
+                                                        <div>
+                                                            <span>Penale</span>
+                                                            {/* Tooltip ritardo consegna*/}
+                                                            <Tooltip
+                                                                color="blue"
+                                                                title="Nel caso in cui l'auto venga riconsegnata in ritardo il conteggio delle ore totali aumenta del 25%."
+                                                                icon="bi-info-circle-fill"
+                                                                type="info"
+                                                            />
+                                                        </div>
                                                         <div className="text-right font-medium">
                                                             + {priceInfo.penal}{" "}
                                                             €
@@ -734,7 +747,7 @@ const RentInfoScreen = (props) => {
                                             </div>
 
                                             <div className="text-center text-sm px-3">
-                                                https://site2021XX.tw.cs.unibo.it/
+                                                https://site202121.tw.cs.unibo.it/
                                             </div>
                                         </div>
                                     )}

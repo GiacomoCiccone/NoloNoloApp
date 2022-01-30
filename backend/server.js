@@ -21,6 +21,10 @@ app.use(cors());
 
 //serve static file from react app
 app.use(express.static(path.join(__dirname, './frontend/build')));
+//serve static file from vue app
+app.use(express.static(path.join(__dirname, './dashboard/build')));
+//serve static file from jquery app
+app.use(express.static(path.join(__dirname, './back-office')));
 
 //redirect verso routers
 app.use("/api/auth", require("./routers/auth")); //tutte le richieste ad /api/auth vengono mandate a /routers/auth
@@ -30,6 +34,11 @@ app.use("/api/cars", require("./routers/cars"));
 app.use("/api/rents", require("./routers/rents"));
 app.use("/api/kits", require("./routers/kits"));
 
+
+// redirect to the dashboard
+app.get('/dashboard/*', function (req, res) {
+  res.sendFile(path.join(__dirname, './dashboard/build', 'index.html'));
+});
 
 // redirect everything else to the frontend
 app.get('/*', function (req, res) {

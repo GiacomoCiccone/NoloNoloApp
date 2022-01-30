@@ -34,3 +34,9 @@
     color: #FFFFFF;
     background: #4f5c94;
 }
+
+@media screen and (max-width: 400px) {
+    #sidebar {
+        display: none;
+    }
+}
