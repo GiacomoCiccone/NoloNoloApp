@@ -20,3 +20,12 @@
 {
     display: none;
 }
+
+.disclaimer-text
+{
+    font-size: 0.7em;
+    color: grey;
+    white-space: nowrap; 
+    overflow: hidden;
+    font-style: italic;
+}

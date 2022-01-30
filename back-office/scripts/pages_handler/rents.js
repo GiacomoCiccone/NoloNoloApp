@@ -18,7 +18,7 @@ $(document).ready(function(){
  */
 function loadAddButton(){
     $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Agg. prenotazione");
-    $('#search-bar').load('../components/rents/rentssearchbar.html');
+    $('#search-bar').load('components/rents/rentssearchbar.html');
 }
 
 /** Carica i modali per l'aggiunta delle prenotazioni
@@ -27,25 +27,32 @@ $(document).ready(function () { // jquery delegation
     verifyAction();
 
     $(document).on('click','#add-button', function () { // jquery delegation
-        // mostra i pickup nel select relativo
+        // apre menu e aggiunge classe
+        $('.modal-dialog').addClass('modal-lg');
+        $('#multiUseModal').modal('toggle');
+
         (async () => { 
-            let pickups = await fetchPickupsFromServer();
+            // riempie le select
+            let kits = await fetchSecondaryDataFromServer('kits/');
+            let cars = await fetchSecondaryDataFromServer('cars/');
+            let users = await fetchSecondaryDataFromServer('users/');
             // loading form html
-            $('.modal-content').load("../components/rents/rentsform.html", () => {
-                $('.modal-dialog').addClass('modal-lg');
+            $('.modal-content').load("components/rents/rentsform.html", () => {
 
                 // aggiungi event listener per mostrare la data di non disponibilità
-                $('input[id=notAvail]').change(function() {
-                    if ($(this).is(':checked')) {
-                        $('#dateNavail').removeClass('hidden');
+                $('input[name=rentType]').change(function() {
+                    if (this.value == 'period') {
+                        $('#classicRentDiv').addClass('hidden');
+                        $('#periodicRentDiv').removeClass('hidden');
                     } else {
-                        $('#dateNavail').addClass('hidden');
+                        $('#periodicRentDiv').addClass('hidden');
+                        $('#classicRentDiv').removeClass('hidden');
                     }
                 });
 
-                displayPickupsSelect(pickups.data);
-                // opening menu
-                $('#multiUseModal').modal('toggle');
+                displayAutoSelect(cars.data);
+                displayKitsSelect(kits.data);
+                displayUsersSelect(users.data);
             })
         })();
     });
@@ -57,126 +64,120 @@ $(document).ready(function () { // jquery delegation
  *  Versione delle auto.
  */
 function loadDetailsById(id){ 
-    (async () => { let pickups = await fetchPickupsFromServer();
-        $('.modal-dialog').addClass('modal-lg');
-        $('.modal-content').load("../components/rents/modifyrents.html", () => {
+    $('.modal-dialog').addClass('modal-lg');
 
-            // aggiunge l'event listener per il checkbox
-            $('input[id=notAvail]').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#dateNavail').removeClass('hidden');
-                } else {
-                    $('#dateNavail').addClass('hidden');
-                }
-            });
-            
-            // prendi la variabile di stato dalla sessione
-            let data = window.sessionStorage.getItem("latest_fetch"); 
-            
-            displayPickupsSelect(pickups.data);
-
-            // riempi ogni campo del menu della descrizioni
-            $.each(JSON.parse(data), function(key, val) {
-                if (val._id === id.toString()){
-                    
-                    // immagine auto
-                    $("#car-image-value").text(val.image);
-                    $("#autoImage").val(val.image);
-                    // Modello e marca
-                    let car_model = val.model.split(' ');
-                    car_model = car_model.slice(1, car_model.length + 1);
-                    $("#car-title-value").text(val.model);
-                    $("#autoModel").val(car_model.join(' '));
-                    $("#autoBrand").val(val.brand);
-                    // Descrizione
-                    $("#car-desc-value").text(val.description);
-                    $("#autoDescription").val(val.description);
-
-                    // Condizioni
-                    $("#car-cond-value").text(val.condition);
-                    $("input[name=selezioneCondizAuto][value=" + val.condition + "]").attr('checked', 'checked');
+    // turnaround per la presenza di solo l'id dentro mongodb
+    let full_kits_list = window.sessionStorage.getItem('latest_kits/_fetch');
+    let full_pickup_list = window.sessionStorage.getItem('latest_pickups/_fetch');
 
 
-                    // Pickup
-                    if (val.place != null){
-                        $("#car-pickup-value").text(val.place.point);
-                        $("#car-pickup-value").data("pickup_id", val.place._id);
-                        $("#pickupPlace").val(val.place._id);
-                    }
-                    // Tag
-                    $("#car-tag-value").text(val.tag);
-                    $("#carTag").val(val.tag);
-                    // Booleans
-                    $("#car-bool-value-electric").text(val.isElectric)
-                    $("#isElectric").attr('checked', val.isElectric);
-                    $("#car-bool-value-automatic").text(val.hasAutomaticTransmission)
-                    $("#hasAutomaticTransmission").attr('checked', val.hasAutomaticTransmission)
-                    $("#car-bool-value-doors").text(val.hasThreeDoors)
-                    $("#hasThreeDoors").attr('checked', val.hasThreeDoors);
-                    
-                    // posti
-                    $("#car-seats-value").text(val.seats);
-                    $("#seatsNumber").val(val.seats);
-                    
-                    // Bagagli
-                    $("#car-bag-value").text(val.baggageSize);
-                    $("#baggagesNumber").val(val.baggageSize);
+    $('.modal-content').load("components/rents/modifyrents.html", () => {
 
-                    // Prezzo
-                    $("#car-price-value").text(val.basePrice);
-                    $("#basePrice").val(val.basePrice);
-
-                    // Id 
-                    $("#car-id-value").text(val._id);
-
-                    // Info prenotazione
-                    if (val.unavaiable != null){
-                        // mostra checkbox e date corrette
-                        $("#notAvail").attr('checked', 'true')
-                        $('#dateNavail').removeClass('hidden');
-
-                        // mostra i campi delle date in modo corretto
-                        let from_date = new Date(val.unavaiable.from);
-                        var year = from_date.getUTCFullYear();
-
-                        if (year < 1970) from_date.setFullYear(1969);
-                        
-                        let date_string = from_date.toISOString();
-                        date_string = date_string.split('T')[0];
-                        $('#fromDate').val(date_string);
-
-                        $("#car-unavail-date").addClass('text-danger');
-                        $("#car-unavail-date").removeClass('text-success');
-                        $("#avail").val("Non disponibile dal &nbsp;");
-                        $("#car-date-from").text(date_string);
-
-                        if (val.unavaiable.to != null) {
-                            $('#to-text').removeClass('hidden');
-                            let to_date = new Date(val.unavaiable.to);
-
-                            var year = to_date.getUTCFullYear();
-                            
-                            if (year < 1970) to_date.setFullYear(1969);
-                            date_string = to_date.toISOString();
-                            date_string = date_string.split('T')[0];
-                            $("#car-date-to").text(date_string);
-                            $('#toDate').val(date_string);
-                        } else {
-                            $('#to-text').addClass('hidden');
-                            $("#car-date-to").text("");
-                        }
-                    } else {
-                        $('#to-text').addClass('hidden');
-                        $("#car-unavail-date").addClass('text-success');
-                        $("#car-unavail-date").removeClass('text-danger');
-                        $("#avail").text("Disponibile nel nostro magazzino");
-                        $("#car-date-from").text("");
-                        $("#car-date-to").text("");
-                    }
-                }
-            })
+        // aggiungi event listener per mostrare la data di non disponibilità
+        $('input[name=rentType]').change(function() {
+            if (this.value == 'period') {
+                $('#classicRentDiv').addClass('hidden');
+                $('#periodicRentDiv').removeClass('hidden');
+            } else {
+                $('#periodicRentDiv').addClass('hidden');
+                $('#classicRentDiv').removeClass('hidden');
+            }
         });
-    })();
+        
+        // prendi la variabile di stato dalla sessione
+        let data = window.sessionStorage.getItem("latest_fetch"); 
+        
+        // riempi ogni campo del menu della descrizioni
+        $.each(JSON.parse(data), function(key, val) {
+            if (val._id === id.toString()){
+                // data creazione e ultima modifica
+                $('#creation-date').text(val.createdAt);
+                $('#change-date').text(val.updatedAt);
+                
+                // Informazioni utente
+                $("#username-rent-value").text(val.customer.username);
+                
+                // Nome + info utente
+                $("#user-name").text(val.customer.first_name + ' ' + val.customer.last_name);
+                $("#user-address").text(val.customer.address.via + ', ' + val.customer.address.city + ', ' +val.customer.address.postal_code);
+                $("#user-email").text(val.customer.email);
+
+                //id utente
+                $('#user-id').text(val.customer._id);
+
+
+                // now, on to the next section: cars!
+                // Modello auto
+                $('#car-rent-value').text(val.rentObj.car.model);
+                
+                // pickups e kits
+                $('#kits-value').html("nessuno");
+                let noKits = true;
+                $.each(val.rentObj.kits, function(key, kit){
+                    if (noKits == true)
+                    {
+                        noKits = false;
+                        $('#kits-value').html('<ul id="kits-list"></ul>');
+                    }
+                    $.each(JSON.parse(full_kits_list), function(key, kit_store){
+                        if (kit_store._id === kit)
+                        $('#kits-list').append('<li>' + kit_store.name + '</li>');
+                    })
+                });
+
+                $.each(JSON.parse(full_pickup_list), function(key, pickup_store){
+                    if (pickup_store._id === val.rentObj.car.place)
+                    $('#pickup-rent-value').text(pickup_store.point);
+                })
+
+                $('#car-id').text(val.rentObj.car._id);
+        
+                // Tipo prenotazione
+                $("#rent-type-value").text(val.type);
+                $("input[name=rentType][value=" + val.type + "]").attr('checked', 'checked');
+
+                // informazione temporale
+                let days_week = [0, "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"]
+                if (val.type === 'classic') {
+                    let from_date = val.classic.from
+                    let to_date = val.classic.to
+                    from_date = from_date.split('T')[0]
+                    to_date = to_date.split('T')[0]
+                    $('#rent-time-value').text('Prenotato dal ' + from_date + ' al ' + to_date);
+                } else {
+                    let string_date = val.period.since
+                    string_date = string_date.split('T')[0]
+                    if (val.period.singleDay){
+                        $('#rent-time-value').text('Prenotato un giorno (' + days_week[val.period.from] + '), per ' + val.period.for + ' settimane, dal ' + string_date);
+                    } else {
+                        $('#rent-time-value').text('Prenotato da ' + days_week[val.period.from] + ' a ' + days_week[val.period.to] + ', per ' + val.period.for + ' settimane, dal ' + string_date);
+                    }
+                }
+                
+                // consegna in ritardo
+                let late = true;
+                if (val.isLate == null || val.isLate === false) late = false;
+
+                // data conclusione
+                if (val.state === 'concluded' && val.concludedAt != null){
+                    let string_date = val.concludedAt;
+                    string_date = string_date.split('T')[0]
+                    $("#conclusion-date").removeClass('hidden');
+                    $("#conclusion-date-value").text(string_date);
+                }
+
+                // Booleans
+                $("#rent-late-value").text(late)
+                $("#isLate").attr('checked', late);
+                
+                // prezzo
+                $("#rent-price-value").text(val.price);
+                
+                // id prenotazione
+                $("#rent-id-value").text(val._id);
+            }
+        })
+    });
 }
 
 
@@ -184,7 +185,7 @@ function loadDetailsById(id){
 /** Formula i dati di una nuova auto e li invia al server
  *  Versione delle auto.
  */
-function createCar(){
+function createRent(){
     let _img_url = $('#autoImage').val();
     let _model = $('#autoModel').val();
     let _brand = $('#autoBrand').val();
@@ -246,51 +247,39 @@ function getUnavailDate(){
     return null;
 }
 
-/** Dice se una macchina è disponibile o no 
+
+/** Mostra il badge di status della prenotazione
  * 
  */
-function carAvailability(val){
-    if (val == null || Date.now() < new Date(val.from)){
-        return 'available';
-    } else {
-        // se la data è minore 
-        if (new Date(val.from) <= Date.now() && new Date(val.from) > new Date(1970, 1, 1))
-        {
-            if (val.to == null || new Date(val.to) >= Date.now())
-                return 'unavailable';
-            else
-                return 'available';
-        }
-        else {
-            return 'deprecato';
-        }
-    }
-
+ function showStatusBadge(val){
+    if (val === 'concluded')
+        return '<span class="badge rounded-pill bg-success">Concluso</span>';
+    else if (val === 'pending')
+        return '<span class="badge rounded-pill bg-warning text-dark">Pending</span>';
+    else if (val === 'accepted')
+        return '<span class="badge rounded-pill bg-primary">Accettato</span>';
 }
 
-/** Mostra il badge di disponibilità
+/** Mostra il pulsante associato alla entry in base allo stato
  * 
  */
- function showAvaiabilityBadge(val){
-    if (val == null || Date.now() < new Date(val.from)){
-        return '<span class="badge rounded-pill bg-success">In locazione</span>';
-    } else {
-        // se la data è minore 
-        if (new Date(val.from) <= Date.now() && new Date(val.from) > new Date(1970, 1, 1))
-        {
-            if (val.to == null || new Date(val.to) >= Date.now())
-                return '<span class="badge rounded-pill bg-danger">Fuori magazzino</span>';
-            else
-                return '<span class="badge rounded-pill bg-success">In locazione</span>';
-        }
-        else {
-            return '<span class="badge rounded-pill bg-secondary">Deprecato</span>';
-        }
-    }
-
+ function showStatusButton(val){
+    if (val === 'accepted')
+        return '<a href="#" class="btn btn-success change-status-btn"><i class="fas fa-check"></i>&nbsp; Concludi</a>';
+    else if (val === 'pending')
+        return '<a href="#" class="btn btn-success change-status-btn"><i class="fas fa-check"></i>&nbsp; Accetta</a>';
+    else
+        return '';
 }
 
-
+/** Mostra il pulsante associato alla entry in base allo stato
+ * 
+ */
+ function showRentIsLate(val){
+    if (val === true && val != undefined)
+        return ' |<span class="text-danger"> In ritardo</span>';
+    else return ''
+}
 
 
 /** Mostra i dati relativi ai macchine nella pagina.
@@ -299,21 +288,27 @@ function carAvailability(val){
 function displayData(data){
     $("#elements").html("");
     $.each(data, function(key, val) { 
-        var image;
+        let image;
         if (val.image == null) image = 'https://www.mountaineers.org/activities/routes-and-places/default-route-place/activities-and-routes-places-default-image/image' ;
         else image = val.image;
+        
+        let type; 
+        if (val.type == 'classic') type = 'classico'; 
+        else type = 'periodico'
+        
         var element =             
-        '<div tabindex="0" class="entry" data-entryid="' + val._id + '" data-avail="' + carAvailability(val.unavaiable) + '" >' +
-        '<span class="sr-only"> Entri di ' + val.model + '. Contiene: </span>' + 
-            '<div class="entry-image"><img src="' + image + '" alt=""></div>' + 
+        '<div tabindex="0" class="entry" data-entryid="' + val._id + '" data-carmodel="' + val.rentObj.car.model + '" data-status="' + val.state + '" >' +
+        '<span class="sr-only"> Prenotazione di ' + val.customer.username + '. Contiene: </span>' + 
+            '<div class="entry-image"><img src="' + val.rentObj.car.image + '" alt=""></div>' + 
             '<div class="entry-body">' +
-                '<h5 class="entry-title">' + val.model + '&nbsp; ' + showAvaiabilityBadge(val.unavaiable) +
+                '<h5 class="entry-title">Prenotazione di \"' + val.customer.username + '\"&nbsp; ' + showStatusBadge(val.state) +
                 '</h5>' + 
-                '<p class="entry-text">Condizioni: ' + val.condition + '</p>' + 
+                '<p class="entry-text">Auto: '+ val.rentObj.car.model + ' | Tipo: ' + type + showRentIsLate(val.isLate) + '</p>' +
                 '<p class="entry-text id-text">id: ' + val._id + '</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
-                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' + '\n' +
-                '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi/Depreca</a>' +
+                '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' +
+                showStatusButton(val.state) +
+                '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi</a>' +
             '</div>' +
         '</div>';
         $("#elements").append(element);
@@ -325,8 +320,13 @@ function displayData(data){
  */
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
+
+    fetchDataFromServerBruteForce('kits/');
+    fetchDataFromServerBruteForce('pickups/');
+    
+    var user_token = window.localStorage.getItem('token');
     $("#elements").load("components/loading-animation.html");
-    return fetchDataFromServer('rents/');
+    return fetchProtectedDataFromServer('rents/', user_token);
 }
 
 /** Rimuove un pickup.
@@ -339,7 +339,7 @@ $(document).on('click','.remove',(e) => {
     var id = $('#multiUseModal').data('id');
 
     // elimina e chiudi la modale
-    sendPayload("", 'rentsù/' + id + '/', user_token, 'DELETE');
+    sendPayload("", 'rents/' + id + '/', user_token, 'DELETE');
     $('#multiUseModal').modal('toggle');
     }
 );
@@ -395,35 +395,79 @@ $(document).on('click','#apply-modifications', (e) => {
 );
 
 
-/** Popola il select menu dedicato ai pickups
+function carAvailability(val){
+    if (val == null || Date.now() < new Date(val.from)){
+        return 'available';
+    } else {
+        // se la data è minore 
+        if (new Date(val.from) <= Date.now() && new Date(val.from) > new Date(1970, 1, 1))
+        {
+            if (val.to == null || new Date(val.to) >= Date.now())
+                return 'unavailable';
+            else
+                return 'available';
+        }
+        else {
+            return 'deprecato';
+        }
+    }
+}
+
+/** Mostra gli auto nella select di creazione
  * 
  */
-function displayPickupsSelect(data){
-    $("#pickupPlace").html('<option value="1" disabled selected hidden>Immetti un luogo di ritiro</option>');
+function displayAutoSelect(data){
     $.each(data, function(key, val) { 
-        var element =   
-        '<option value="' + val._id +'">' + val.point + '</option>';
-        $("#pickupPlace").append(element);
+        if (carAvailability(val.unavaiable) != 'deprecato') {
+            var element =   
+            '<option value="' + val._id +'">' + val.model +', ' + val.condition + ', '+ val.place.point+ ', ' + val.basePrice + '€</option>';
+            $("#autoRent").append(element);
+        }
     });
 }
 
-/** Fetcha i pickups dal server
+/** Mostra gli utenti nella select di creazione
  * 
  */
-async function fetchPickupsFromServer(){
+function displayUsersSelect(data){
+    $.each(data, function(key, val) { 
+        var element =   
+        '<option value="' + val._id +'">' + val.username + '</option>';
+        $("#userRent").append(element);
+    });
+}
+
+/** Mostra i kit che può selezionare per creare la prenotazione
+ * 
+ */
+function displayKitsSelect(data){
+    $.each(data, function(key, val) { 
+        var element =   
+        '<option value="' + val._id +'">' + val.name + '</option>';
+        $("#kitsRent").append(element);
+    });
+}
+
+/** Fetcha dei dati diversi dai rent dal server
+ * 
+ */
+async function fetchSecondaryDataFromServer(url){
+    var user = window.localStorage.getItem('token');
     try {
-        let res = await fetch('http://localhost:8000/api/pickups/', {
+        let res = await fetch('http://localhost:8000/api/' + url, {
             method: 'GET',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + user   
+            },
             mode: 'cors',
             cache: 'default',
         });
         if (!res.ok) throw new Error("erroraccio");
         else {
-            return await res.json();
+            return await res.json(); 
         }
     } catch(error) {
-        console.log("couldnt fetch data");
+        console.log("couldnt fetch secondary data from " + url);
     }
 }
 
@@ -434,6 +478,29 @@ $(document).on('hidden.bs.modal','#multiUseModal', function () {
     $('.modal-dialog').removeClass("modal-lg");
 })
 
+/** Questa funzione è una copia trita delle altre funzioni di fetch. Cambia davvero di poco.
+ *  L'unica cosa è che mette le cose in session storage dopo averle fetchate. 
+ */
+function fetchDataFromServerBruteForce(url){
+    const fetchdata = async () => {
+        try {
+            let res = await fetch('http://localhost:8000/api/' + url, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+                cache: 'default',
+            });
+            if (!res.ok) throw new Error("erroraccio");
+            else {
+                fetchedData = await res.json();
+                window.sessionStorage.setItem("latest_" + url + "_fetch", JSON.stringify(fetchedData.data));
+            }
+        } catch(error) {
+            console.log("couldnt fetch data");
+        }
+    }
+    return fetchdata();
+}
 
 /** Azioni da eseguire quando si preme il tasto conferma per il checkbox
  * 
