@@ -13,13 +13,13 @@
 
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input  name="password" v-model="password" class="form-control form-control-lg" />
+                        <input type="password" name="password" v-model="password" class="form-control form-control-lg" />
                     </div>
                     <br>
                     <button type="submit" class="btn btn-dark btn-lg btn-block">Sign In</button>
 
                     <p class="forgot-password text-right mt-2 mb-4">
-                        <!-- <a href="/forgotPassword">Forgot password ?<a> -->
+                        <a href="/forgotPassword">Forgot password ?</a>
                     </p>
 
                 </form>

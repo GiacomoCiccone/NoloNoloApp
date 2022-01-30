@@ -636,7 +636,7 @@ export default {
     
   },
 
-  async beforeMount() {
+  async mounted() {
     if (!window.localStorage.getItem("authTokenManager"))
       this.$router.push({ path: "/login" });
     else {
@@ -696,24 +696,25 @@ export default {
       } catch (error) {
         alert("places not uploaded");
       }
-    }
 
-    //fetch users
-    try {
-      const token = window.localStorage.getItem("authTokenManager");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const { data } = await axios.get(
-        "http://localhost:8000/api/users",
-        config
-      );
-      this.users = data.data;
-      //console.log(this.users)
-    } catch (error) {
-      alert("users not uploaded");
+
+      //fetch users
+      try {
+        const token = window.localStorage.getItem("authTokenManager");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const { data } = await axios.get(
+          "http://localhost:8000/api/users",
+          config
+        );
+        this.users = data.data;
+        //console.log(this.users)
+      } catch (error) {
+        alert("users not uploaded");
+      }
     }
 
   },

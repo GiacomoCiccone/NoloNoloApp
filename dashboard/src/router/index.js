@@ -12,7 +12,7 @@ Vue.use(VueRouter)
   {
     path: '*',
     name: 'Error',
-    component: () => import('../components/Login.vue')
+    component: () => import('../components/Dashboard.vue')
   },
   {
     path: '/',
