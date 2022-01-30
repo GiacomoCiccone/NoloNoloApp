@@ -5,14 +5,14 @@
 
 $(document).ready(() => {
     let page;
-    $('#sidebar').load("components/sidebar.html", () => {
+    $('#sidebar').load("../components/sidebar.html", () => {
         // codice per l'highlight dell'entry della sidebar
         highlightSidebarEntry();
     });
 
-    $("#elements").load("components/loading-animation.html");
+    $("#elements").load("../components/loading-animation.html");
 
-    $('#content-header').load("components/header.html", () => {
+    $('#content-header').load("../components/header.html", () => {
         
         // caricamento dei dati dell'utente loggato
         if (window.localStorage.getItem('token') != null){
@@ -23,7 +23,7 @@ $(document).ready(() => {
         }
         
         loadAddButton();
-        $(".modal-content").load("components/loading-animation.html");
+        $(".modal-content").load("../components/loading-animation.html");
     });
 });
 
@@ -31,6 +31,6 @@ $(document).ready(() => {
  * 
  */
 $(document).on('hidden.bs.modal','#multiUseModal', function () {
-    $(".modal-content").load("components/loading-animation.html");
+    $(".modal-content").load("../components/loading-animation.html");
     sessionStorage.setItem('hasMadeChanges', 0);
 })

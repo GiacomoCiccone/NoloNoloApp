@@ -29,7 +29,7 @@ $(document).ready(function () { // jquery delegation
     $(document).on('click','#add-button', function () { // jquery delegation
         // loading form html
         $('.modal-dialog').addClass('modal-lg');
-        $('.modal-content').load("components/users/usersform.html", () => {
+        $('.modal-content').load("../components/users/usersform.html", () => {
 
         // opening menu
         $('#multiUseModal').modal('toggle');
@@ -45,7 +45,7 @@ $(document).ready(function () { // jquery delegation
 function loadDetailsById(id){ 
     $('.modal-dialog').addClass('modal-lg');
     
-    $('.modal-content').load("components/users/modifyusers.html", () => {
+    $('.modal-content').load("../components/users/modifyusers.html", () => {
         // prendi la variabile di stato dalla sessione
         let data = window.sessionStorage.getItem("latest_fetch"); 
         
@@ -134,7 +134,7 @@ function displayData(data){
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
     var user_token = window.localStorage.getItem('token');
-    $("#elements").load("components/loading-animation.html");
+    $("#elements").load("../components/loading-animation.html");
     return fetchProtectedDataFromServer('users/', user_token);
 }
 

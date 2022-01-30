@@ -122,7 +122,7 @@ $(document).on('click','.removeAlert', function (e) {
     var id = $(this.closest("[data-entryid]")).data("entryid"); //get item-id, embeeded into html element
     var name = $(this.parentElement.querySelector('.entry-title')).text(); // name of entry, used only for ui
 
-    $('.modal-content').load("components/warning_modal.html", () => {
+    $('.modal-content').load("../components/warning_modal.html", () => {
         $('.modal-body').html( "<p>Sei sicuro di voler eliminare " + name + "?</p>")}
     );
     

@@ -27,7 +27,7 @@ $(document).ready(function () { // jquery delegation
     $(document).on('click','#add-button', function () { // jquery delegation
 
         // loading form html
-        $('.modal-content').load("components/pickups/pickupform.html");
+        $('.modal-content').load("../components/pickups/pickupform.html");
 
         // opening menu
         $('#multiUseModal').modal('toggle');
@@ -40,7 +40,7 @@ $(document).ready(function () { // jquery delegation
  *  Versione del pickup.
  */
 function loadDetailsById(id){ 
-    $('.modal-content').load("components/pickups/modifypickup.html", () => {
+    $('.modal-content').load("../components/pickups/modifypickup.html", () => {
         let data = window.sessionStorage.getItem("latest_fetch"); 
         
         $.each(JSON.parse(data), function(key, val) {
@@ -100,7 +100,7 @@ function displayData(data){
  */
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
-    $("#elements").load("components/loading-animation.html");
+    $("#elements").load("../components/loading-animation.html");
     return fetchDataFromServer('pickups/');
 }
 

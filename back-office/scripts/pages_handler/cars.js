@@ -17,14 +17,14 @@ $(document).ready(function(){
  */
 function loadAddButton(){
     $('#add-button').html('<i class="fas fa-plus"></i>&nbsp; ' + "Aggiungi auto");
-    $('#search-bar').load('components/cars/carssearchbar.html');
+    $('#search-bar').load('../components/cars/carssearchbar.html');
 }
 
 /** Carica la searchbar
  * 
  */
 function loadSearchBar(){
-    $('#search-bar').load('components/cars/carssearch.html');
+    $('#search-bar').load('../components/cars/carssearch.html');
 }
 
 /** Carica i modali per l'aggiunta delle auto
@@ -37,7 +37,7 @@ $(document).ready(function () { // jquery delegation
         (async () => { 
             let pickups = await fetchPickupsFromServer();
             // loading form html
-            $('.modal-content').load("components/cars/carsform.html", () => {
+            $('.modal-content').load("../components/cars/carsform.html", () => {
                 $('.modal-dialog').addClass('modal-lg');
 
                 // aggiungi event listener per mostrare la data di non disponibilità
@@ -65,7 +65,7 @@ $(document).ready(function () { // jquery delegation
 function loadDetailsById(id){ 
     (async () => { let pickups = await fetchPickupsFromServer();
         $('.modal-dialog').addClass('modal-lg');
-        $('.modal-content').load("components/cars/modifycars.html", () => {
+        $('.modal-content').load("../components/cars/modifycars.html", () => {
 
             // aggiunge l'event listener per il checkbox
             $('input[id=notAvail]').change(function() {
@@ -331,7 +331,7 @@ function displayData(data){
  */
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
-    $("#elements").load("components/loading-animation.html");
+    $("#elements").load("../components/loading-animation.html");
     return fetchDataFromServer('cars/');
 }
 

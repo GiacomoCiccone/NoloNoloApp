@@ -22,9 +22,13 @@ app.use(cors());
 //serve static file from react app
 app.use(express.static(path.join(__dirname, './frontend/build')));
 //serve static file from vue app
-app.use(express.static(path.join(__dirname, './dashboard/build')));
+app.use(express.static(path.join(__dirname, './dashboard/dist')));
 //serve static file from jquery app
 app.use(express.static(path.join(__dirname, './back-office')));
+
+//serve static file from jquery app
+app.use(express.static(path.join(__dirname, './back-office/style')));
+
 
 //redirect verso routers
 app.use("/api/auth", require("./routers/auth")); //tutte le richieste ad /api/auth vengono mandate a /routers/auth
@@ -35,9 +39,39 @@ app.use("/api/rents", require("./routers/rents"));
 app.use("/api/kits", require("./routers/kits"));
 
 
+// redirect to the back-office home
+app.get(['/back-office/', '/back-office/index.html'], function (req, res) {
+  res.sendFile(path.join(__dirname, './back-office', 'index.html'));
+});
+
+// redirect to the back-office home
+app.get(['/back-office/users' ,'/back-office/users.html'], function (req, res) {
+  res.sendFile(path.join(__dirname, './back-office', 'users.html'));
+});
+
+// redirect to the back-office home
+app.get(['/back-office/rents' ,'/back-office/rents.html'], function (req, res) {
+  res.sendFile(path.join(__dirname, './back-office', 'rents.html'));
+});
+
+// redirect to the back-office home
+app.get(['/back-office/kits' ,'/back-office/kits.html'], function (req, res) {
+  res.sendFile(path.join(__dirname, './back-office', 'kits.html'));
+});
+
+// redirect to the back-office home
+app.get(['/back-office/pikcups' ,'/back-office/pickups.html'], function (req, res) {
+  res.sendFile(path.join(__dirname, './back-office', 'pickups.html'));
+});
+
+// redirect to the back-office home
+app.get(['/back-office/login' ,'/back-office/login.html'], function (req, res) {
+  res.sendFile(path.join(__dirname, './back-office', 'login.html'));
+});
+
 // redirect to the dashboard
 app.get('/dashboard/*', function (req, res) {
-  res.sendFile(path.join(__dirname, './dashboard/build', 'index.html'));
+  res.sendFile(path.join(__dirname, './dashboard/dist', 'index.html'));
 });
 
 // redirect everything else to the frontend
