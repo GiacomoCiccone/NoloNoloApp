@@ -126,6 +126,7 @@ function displayData(data){
                 '<p class="entry-text id-text">id: ' + val._id + '</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
                 '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' +
+                '<a href="#" class="btn btn-dark send-mail"><i class="fas fa-envelope"></i>&nbsp; Invia mail</a>' +
                 '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi account</a>' +
             '</div>' +
         '</div>';
@@ -255,6 +256,44 @@ $(document).on('hidden.bs.modal','#multiUseModal', function () {
     $(e.currentTarget).addClass("hidden"); // hides confirm button
     }
 );
+
+/** Azioni da eseguire quando si preme il tasto conferma per il checkbox
+ * 
+ */
+ $(document).on('click','.send-mail',(e) => {
+    // autorizza utente
+    verifyAction();
+
+    var id = $(e.currentTarget).closest("[data-entryid]").data("entryid"); //get item-id, embeeded into html element
+
+    $('.modal-content').load("components/users/sendmail.html", () => {
+        $('#multiUseModal').data('id', id).modal('toggle'); // only way to pass id to modal...
+    });
+    }
+);
+
+/** Azioni da eseguire quando si preme il tasto conferma per il checkbox
+ * 
+ */
+ $(document).on('click','#sendMailConfirm',(e) => {
+    // autorizza utente
+    verifyAction();
+
+    let id = $('#multiUseModal').data('id') //get item-id, embeeded into html element
+    
+    let email_content = $('#mailContent').val();
+    let email_subject = $('#mailSubject').val();
+    var user_token = window.localStorage.getItem('token');
+    let payload = {
+        subject : email_subject,
+        text : email_content
+    }
+
+    sendPayload(payload, 'users/contacts/' + id, user_token, 'POST');
+
+    }
+);
+
 
 /** Azioni da eseguire quando si preme il tasto modifica in caso del nome e cognome
  * 

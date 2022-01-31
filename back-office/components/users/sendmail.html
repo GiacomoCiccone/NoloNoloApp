@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="multiUseModalLabel">Invia una mail all'utente</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group m-2">
+        <label for="mailSubject">Oggetto:</label>
+        <input type="text" class="form-control" id="mailSubject" aria-describedby="Oggetto mail" placeholder="Oggetto...">
+      </div>
+      <div class="form-group m-2">
+        <label for="mailContent">Testo mail:</label>
+        <textarea class="form-control" id="mailContent" rows="3" placeholder="Inserisci il testo della mail"></textarea>
+    </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
+    <button type="button" id="sendMailConfirm" class="btn btn-primary m-2" data-dismiss="modal">Invia</button>
+  </div>

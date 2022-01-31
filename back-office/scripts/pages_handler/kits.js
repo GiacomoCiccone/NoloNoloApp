@@ -104,7 +104,7 @@ function displayData(data){
             '<div class="entry-image"><img src="' + image + '" alt=""></div>' + 
                 '<div class="entry-body">' +
                 '<h5 class="entry-title">' + val.name + '</h5>' + 
-                '<p class="entry-text">Costo al giorno:&nbsp;' + val.price + '€</p>' + 
+                '<p class="entry-text">Costo all\'ora:&nbsp;' + val.price + '€</p>' + 
                 '<span class="sr-only"> Puoi scegliere se vedere maggiori info, o rimuovere la entry. </span>' + 
                 '<a href="#" class="btn btn-primary details"><i class="fas fa-info-circle"></i>&nbsp; Più dettagli</a>' +
                 '<a href="#" class="btn btn-danger removeAlert"><i class="fas fa-trash-alt"></i>&nbsp; Rimuovi</a>' +
