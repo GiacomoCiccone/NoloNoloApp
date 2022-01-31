@@ -6,8 +6,8 @@ const Footer = () => {
             <div>
                 <ul style={{margin: '0'}} className="flex gap-10 list-none items-center">
                     <li><a aria-label="Clicca per andare all'app frontend di NoloNolo plus." href="/">NoloNolo<sup>+</sup> <i className="bi bi-laptop"></i></a></li>
-                    <li><a aria-label="Clicca per andare all'app admin di NoloNolo plus." href="/back-office">Admin <i className="bi bi-building"></i></a></li>
-                    <li><a aria-label="Clicca per andare all'app dashboard di NoloNolo plus." href="/dashboard">Manager <i className="bi bi-graph-up-arrow"></i></a></li>
+                    <li><a aria-label="Clicca per andare all'app admin di NoloNolo plus." href="/back-office/">Admin <i className="bi bi-building"></i></a></li>
+                    <li><a aria-label="Clicca per andare all'app dashboard di NoloNolo plus." href="/dashboard/">Manager <i className="bi bi-graph-up-arrow"></i></a></li>
                     
                 </ul>
 
