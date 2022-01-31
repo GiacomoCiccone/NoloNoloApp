@@ -357,6 +357,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
             }
             expandedKitsBody.rentObj = {};
             expandedKitsBody.rentObj.kits = expandedKits;
+            expandedKitsBody.isLate = req.body.isLate;
 
             //resettiamo l'altro campo
             if (req.body.type === "classic") req.body.period = undefined;
@@ -497,6 +498,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
             }
             expandedKitsBody.rentObj = {};
             expandedKitsBody.rentObj.kits = expandedKits;
+            expandedKitsBody.isLate = req.body.isLate;
 
             //resettiamo l'altro campo
             if (req.body.type === "classic") req.body.period = undefined;

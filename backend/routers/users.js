@@ -3,7 +3,7 @@ const express = require("express");
 var router = express.Router();
 const { protect } = require("../middleware/auth");
 const Users = require("../models/Users");
-const Rents = require("../models/Rents")
+const Rents = require("../models/Rents");
 const mongoose = require("mongoose");
 const ErrorResponse = require("../utils/errorResponse");
 
@@ -21,7 +21,7 @@ router.route("/").get(protect, async (req, res, next) => {
             );
             res.status(200).json({
                 success: true,
-                data: user
+                data: user,
             });
         } catch (error) {
             next(error);
@@ -158,6 +158,37 @@ router.route("/:id").delete(protect, async (req, res, next) => {
 }); //da proteggere
 
 //others
+
+//send mail
+router.route("/contacts/:id").post(protect, async (req, res, next) => {
+    if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
+        try {
+            const user = await Users.findById(req.params.id);
+            if (!user) {
+                return next(new ErrorResponse("Utente non trovato", 404));
+            }
+
+            try {
+                //mandiamo la mail
+                await sendEmail({
+                    to: user.email,
+                    subject: req.body.subject,
+                    text: req.body.message,
+                });
+
+                res.status(200).json({ success: true, data: "Email inviata" });
+            } catch (error) {
+                return next(
+                    new ErrorResponse("L'email non e' stata inviata", 500)
+                );
+            }
+        } catch (error) {
+            next(error);
+        }
+    } else {
+        return next(new ErrorResponse("Non autorizzato", 403));
+    }
+});
 
 //statistiche
 module.exports = router;
