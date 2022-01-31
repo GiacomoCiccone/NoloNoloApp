@@ -147,6 +147,10 @@ function loadDetailsById(id){
                     from_date = from_date.split('T')[0]
                     to_date = to_date.split('T')[0]
                     $('#rent-time-value').text('Prenotato dal ' + from_date + ' al ' + to_date);
+
+                    $('#fromDate').val(from_date);
+                    $('#toDate').val(to_date);
+
                 } else {
                     let string_date = val.period.since
                     string_date = string_date.split('T')[0]
@@ -155,6 +159,16 @@ function loadDetailsById(id){
                     } else {
                         $('#rent-time-value').text('Prenotato da ' + days_week[val.period.from] + ' a ' + days_week[val.period.to] + ', per ' + val.period.for + ' settimane, dal ' + string_date);
                     }
+                    
+                    // insermento dei valori nei form specifici
+                    $('#sinceDate').val(string_date);
+                    $('#weekPeriod').val(val.period.for);
+
+                    let weekDays_number = Math.abs(val.period.from - val.period.to) + 1;
+
+
+                    $('#weekDays').val(weekDays_number);
+
 
                     $('#classicRentDiv').addClass('hidden');
                     $('#periodicRentDiv').removeClass('hidden');
@@ -207,7 +221,7 @@ function createRent(){
         _classic.from = new Date($('#fromDate').val())
         _classic.to = new Date($('#toDate').val());
         if (_classic.from > _classic.to) {
-            alert('invalid date for classic rent');
+            alert('Data non valida... cosa ti salta in mente??');
             return;
         }
     } else {
@@ -242,26 +256,6 @@ function createRent(){
     // console.log(JSON.stringify(payload));
     
     sendPayload(payload, 'rents/', user_token, 'POST');
-}
-
-/** Ritona la data di disponibilità in modo corretto
- * 
- */
-function getUnavailDate(){
-    let _unavaiable = {from : null, to: null};
-    if (document.getElementById('notAvail').checked) { 
-        _unavaiable.from = new Date($('#fromDate').val());
-        if ($('#toDate').val() != ""){
-            _unavaiable.to = new Date($('#toDate').val());
-            if (_unavaiable.from > _unavaiable.to){
-                // data non corretta... inizio > fine
-                alert("invalid date: ignored");
-                return null;
-            }   
-        }
-        return _unavaiable;
-    }
-    return null;
 }
 
 
@@ -378,6 +372,21 @@ $(document).on('click','#apply-modifications', (e) => {
     let _classic = {from : null, to : null};
     let _period = {from : null, to : null, since: null, for: null, singleDay: null};
 
+    let latest_fetch = window.sessionStorage.getItem('latest_fetch');
+    
+    let _rent_obj = {};
+
+    $.each(JSON.parse(latest_fetch), function(key, val) {
+        if (val._id === id.toString()){
+            _rent_obj = val.rentObj;
+            _rent_obj.car = val.rentObj.car._id
+        }
+    });
+
+    console.log(JSON.stringify(_rent_obj));
+
+    // l'api richiede che mandiamo la macchina anche se non abbiamo fatto modifiche ad essa....
+
     if (_rent_type === 'classic'){
         _period = null;
         _classic.from = new Date($('#fromDate').val())
@@ -409,18 +418,21 @@ $(document).on('click','#apply-modifications', (e) => {
     let payload;
     if (sessionStorage.getItem('hasMadeChanges') == 1){
         payload = {
+            rentObj : _rent_obj,
             isLate : _rent_isLate,
             type : _rent_type,
             classic : _classic,
             period : _period,
         }
+
+        sendPayload(payload, 'rents/' + id, user_token, 'PUT');
     } else {
         payload = {
             isLate : _rent_isLate,
         }
+        sendPayload(payload, 'rents/' + id + '?changeState=true', user_token, 'PUT');
     }
     
-    sendPayload(payload, 'rents/' + id, user_token, 'PUT');
     }
 );
 
@@ -591,7 +603,8 @@ function fetchDataFromServerBruteForce(url){
         let to_date = _classic.to
         $('#rent-time-value').text('Prenotato dal ' + from_date + ' al ' + to_date);
     } else {
-        let string_date = _period.since
+        let string_date = _period.since.toISOString();
+        alert(string_date);
         string_date = string_date.split('T')[0]
         if (_period.singleDay){
             $('#rent-time-value').text('Prenotato un giorno (' + days_week[_period.from] + '), per ' + _period.for + ' settimane, dal ' + string_date);
@@ -620,6 +633,7 @@ function fetchDataFromServerBruteForce(url){
  $(document).on('click','.confirm-late-rent',(e) => {
     // autorizza utente
     verifyAction();
+    sessionStorage.setItem('hasMadeChangesToStatus', 1);
 
     // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
     $("#apply-modifications").removeClass('hidden');
@@ -641,17 +655,44 @@ function fetchDataFromServerBruteForce(url){
     }
 );
 
+/** Cambia lo stato a concluded
+ * 
+ */
 $(document).on('click','.conclude-status-btn',(e) => {
     // autorizza utente
     verifyAction();
     let id = $(e.currentTarget).closest("[data-entryid]").data("entryid"); 
-    let user_token = window.localStorage.getItem('token');
-    if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
-    
-    let payload = {
-        state : 'concluded',
-    };
-    sendPayload(payload, 'rents/' + id, user_token, 'PUT');
-
+    changeRentStatus('concluded', id);
     }
 );
+/** Cambia lo stato a accepted
+ * 
+ */
+$(document).on('click','.accept-status-btn',(e) => {
+    // autorizza utente
+    verifyAction();
+    let id = $(e.currentTarget).closest("[data-entryid]").data("entryid"); 
+    changeRentStatus('accepted', id);
+    }
+);
+
+/** Cambia lo stato di un rent su richiesta.
+ * 
+ */
+function changeRentStatus(status, id){
+    let user_token = window.localStorage.getItem('token');
+    if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
+    let payload;
+
+    if (status === 'concluded'){
+        payload = {
+            state : status,
+            concludedAt : new Date() // riempio con la data corrente il conluded at
+        };
+    } else {
+        payload = {
+            state : status, 
+        }
+    }
+    sendPayload(payload, 'rents/' + id + '?changeState=true', user_token, 'PUT');
+}
