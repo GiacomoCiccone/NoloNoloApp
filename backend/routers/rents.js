@@ -230,7 +230,7 @@ router.route("/:id").put(protect, async (req, res, next) => {
                     populate: { path: "kits", model: "Kits" },
                 });
 
-                rentToUpdate.price = calcPrice(rentToUpdate, rentToUpdate.rentObj, false)   //calcola il prezzo
+                rentToUpdate.price = calcPrice(rentToUpdate, rentToUpdate.rentObj.car, false)   //calcola il prezzo
                 await rentToUpdate.save();
 
                 const updatedRent = await Rents.findById(req.params.id) //ritorna solo gli id dei kits
