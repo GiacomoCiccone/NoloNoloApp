@@ -12,7 +12,7 @@ const Footer = () => {
                 </ul>
 
                 <p style={{marginTop: "0.5rem"}} >
-                    Copyright © 2021 - All right reserved by NoloNolo<sup>+</sup>
+                    Copyright © 2021 - All rights reserved by NoloNolo<sup>+</sup>
                 </p>
             </div>
         </footer>
