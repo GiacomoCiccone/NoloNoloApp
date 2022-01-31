@@ -37,14 +37,17 @@ function calcPrice(rent, car, simulation) {
         //se noleggia per piu di 4 giorni la settimana 10% di sconto
         if (rent.period.from > rent.period.to) {
             const totalDays = Math.abs(rent.period.from - 7) + rent.period.to
-            if (totalDays > 4) {
-                hoursDiscount += (totalHours * 0.1);
-            }
+            if (totalDays > 3) {
+                hoursDiscount += (totalHours * 0.4);
+            } else if (totalDays > 1)
+            hoursDiscount += (totalHours * 0.2);
+
         } else if (rent.period.from < rent.period.to) {
             const totalDays = Math.abs(rent.period.from - rent.period.to)
-            if (totalDays > 4) {
-                hoursDiscount += (totalHours * 0.1);
-            }
+            if (totalDays > 3) {
+                hoursDiscount += (totalHours * 0.4);
+            } else if (totalDays > 1)
+                hoursDiscount += (totalHours * 0.2);
         }
         
         //se e' un noleggio classico per piu di una settimana 10% sconto
