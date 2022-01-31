@@ -9,11 +9,11 @@ const express = require("express");
 const path = require("path");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
-const Users = require("../models/Users");
-const Rents = require("../models/Rents");
-const Cars = require("../models/Cars");
-const Kits = require("../models/Kits");
-const Pickups = require("../models/Pickups");
+const Users = require("./models/Users");
+const Rents = require("./models/Rents");
+const Cars = require("./models/Cars");
+const Kits = require("./models/Kits");
+const Pickups = require("./models/Pickups");
 
 //collega mongoose a mongo
 connectDB();

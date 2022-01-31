@@ -11,11 +11,26 @@
       
       <div style="height: 1px; background-color: #ccc; margin: 3rem 0 0 0" />
 
-      <div style="display:flex">
-        <h4 class="info">Noleggi <b>{{rents.length}}</b></h4>
-        <h4 class="info">Utenti <b>{{users.length}}</b></h4>
-        <h4 class="info">Luoghi <b>{{places.length}}</b></h4>
-        <h4 class="info">Macchine <b>{{cars.length}}</b></h4>
+      <br />
+
+      <div style="display:flex; gap: 1rem; align-items: center; justify-content: space-evenly; flex-wrap: wrap;">
+        <div class="info">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+        <p style="font-size: 1.5rem; font-weight: 600;">Noleggi </p>
+        <img width=40 style="margin-left: 1rem;" src="https://img.icons8.com/external-outline-juicy-fish/60/000000/external-car-side-hustles-outline-outline-juicy-fish.png"/>
+        </div> <span style="font-size: 3rem;">{{rents.length}}</span></div>
+        <div class="info"><div style="display: flex; justify-content: space-between; align-items: center;">
+        <p style="font-size: 1.5rem; font-weight: 600;">Utenti </p>
+        <img width=40 style="margin-left: 1rem;" src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/000000/external-user-interface-kiranshastry-solid-kiranshastry-1.png"/>
+        </div> <span style="font-size: 3rem;">{{users.length}}</span></div>
+        <div class="info"><div style="display: flex; justify-content: space-between; align-items: center;">
+        <p style="font-size: 1.5rem; font-weight: 600;">Luoghi di ritiro </p>
+        <img width=40 style="margin-left: 1rem;" src="https://img.icons8.com/external-icongeek26-glyph-icongeek26/64/000000/external-place-medical-icongeek26-glyph-icongeek26.png"/>
+        </div> <span style="font-size: 3rem;">{{places.length}}</span></div>
+        <div class="info"><div style="display: flex; justify-content: space-between; align-items: center;">
+        <p style="font-size: 1.5rem; font-weight: 600;">Auto </p>
+        <img width=40 style="margin-left: 1rem;" src="https://img.icons8.com/glyph-neue/64/000000/carpool.png"/>
+        </div> <span style="font-size: 3rem;">{{cars.length}}</span></div>
     
       </div>
       <div id="chartsContainer">
@@ -83,23 +98,28 @@
       <br />
       <div></div>
     </div>
+
+    <Footer />
   </div>
+
+  
 </template>
 
 <script>
 import axios from "axios";
 import Chart from "chart.js/auto";
+import Footer from './Footer.vue';
 
 export default {
   name: "Dashboard",
-
+  components: {Footer: Footer},
   data() {
     return {
       rents: [],
       users: [],
       cars: [],
       places: [],
-      error: null,
+      error: [],
     };
   },
 
@@ -152,7 +172,7 @@ export default {
           //var subDate = rent.createdAt.split('T')[0];
           day = new Date(rent.createdAt);
           stringDay=day.toLocaleDateString("it-IT");
-          console.log(stringDay);
+          //console.log(stringDay);
           if(mapDateRent.has(stringDay)){
             mapDateRent.set(stringDay,mapDateRent.get(stringDay)+1)
           }
@@ -656,7 +676,7 @@ export default {
         this.rents = data.data;
         //console.log(this.rents)
       } catch (error) {
-        alert("rents not uploaded");
+        this.error.push(error)
       }
 
       //fetch cars
@@ -674,7 +694,7 @@ export default {
         this.cars = data.data;
         //console.log(this.cars)
       } catch (error) {
-        alert("cars not uploaded");
+        this.error.push(error)
       }
 
       //fetch place
@@ -694,7 +714,7 @@ export default {
         this.places = data.data;
         //console.log(this.places)
       } catch (error) {
-        alert("places not uploaded");
+        this.error.push(error)
       }
 
 
@@ -713,7 +733,7 @@ export default {
         this.users = data.data;
         //console.log(this.users)
       } catch (error) {
-        alert("users not uploaded");
+        this.error.push(error)
       }
     }
 

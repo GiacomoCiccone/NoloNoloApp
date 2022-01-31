@@ -10,31 +10,35 @@
                         <label for="email">Email address</label>
                         <input type="email" name="email" v-model="email" class="form-control form-control-lg" />
                     </div>
-
+                    <br />
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" name="password" v-model="password" class="form-control form-control-lg" />
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-dark btn-lg btn-block">Sign In</button>
+                    <button aria-label="Clicca per accedere al tuo account manager" type="submit" class="btn btn-dark btn-lg btn-block">Sign In</button>
 
                     <p class="forgot-password text-right mt-2 mb-4">
-                        <a href="/forgotPassword">Forgot password ?</a>
+                        <a aria-label="Clicca se hai dimenticato la tua password." href="/forgotPassword">Forgot password ?</a>
                     </p>
 
                 </form>
 
-                <p v-if="error">{{error}}</p>
+                <p role="alert" v-if="error">{{error}}</p>
             </div>
         </div>
-    </div>    
+    </div>   
+
+    <Footer /> 
 </div>
 </template>
 
 <script>
     import axios from 'axios'
+    import Footer from './Footer.vue';
     export default {
         name: 'Login',
+        components: {Footer: Footer},
         data: () => ({
           email: '',
           password: '',

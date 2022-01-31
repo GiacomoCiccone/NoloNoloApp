@@ -12,7 +12,7 @@ Vue.use(VueRouter)
   {
     path: '*',
     name: 'Error',
-    component: () => import('../components/Dashboard.vue')
+    component: () => import('../components/NotFoundScreen.vue')
   },
   {
     path: '/',
