@@ -6,8 +6,8 @@ find ./ -type f -exec sed -i -e 's,components/,../components/,g' {} \;
 find ./ -type f -exec sed -i -e 's,style/,../style/,g' {} \;
 find ./ -type f -exec sed -i -e 's,scripts/,../scripts/,g' {} \;
 find ./ -type f -exec sed -i -e 's,jquery-3.6.0.min.js,../jquery-3.6.0.min.js,g' {} \;
-find ./ -type f -exec sed -i -e 's,replace("./login.html"),replace("./back-office/login.html"),g' {} \;
-sed -i -e 's,"./,"./back-office/,g' ./components/sidebar.html 
+# find ./ -type f -exec sed -i -e 's,replace("./login.html"),replace("./back-office/login.html"),g' {} \;
+# sed -i -e 's,"./,"./back-office/,g' ./components/sidebar.html 
 cd ../dashboard
 find ./ -type f -exec sed -i -e 's,http://localhost:8000,https://site202121.tw.cs.unibo.it,g' {} \;
 cd ../backend
