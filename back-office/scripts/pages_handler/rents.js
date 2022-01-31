@@ -325,8 +325,9 @@ function updateDisplayedEntries(){
     fetchDataFromServerBruteForce('pickups/');
     
     var user_token = window.localStorage.getItem('token');
-    $("#elements").load("components/loading-animation.html");
-    return fetchProtectedDataFromServer('rents/', user_token);
+    $("#elements").load("components/loading-animation.html", () => {
+        return fetchProtectedDataFromServer('rents/', user_token);
+    });
 }
 
 /** Rimuove un pickup.

@@ -139,8 +139,9 @@ function displayData(data){
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
     var user_token = window.localStorage.getItem('token');
-    $("#elements").load("components/loading-animation.html");
-    return fetchProtectedDataFromServer('users/', user_token);
+    $("#elements").load("components/loading-animation.html", () => {
+        return fetchProtectedDataFromServer('users/', user_token);
+    });
 }
 
 /** Rimuove un utente.
