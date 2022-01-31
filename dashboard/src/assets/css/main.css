@@ -161,9 +161,13 @@
   }
 
   .info{
-    margin: auto;
-    color: lightblue;
-    font-family:'Courier New', Courier, monospace;
+    background-color: #ffffff;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 20rem;
+    padding: 1rem 2rem;
+    min-height: 5rem;
+    box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.1);
   }
 
   @media screen and (max-width: 800px) {
@@ -177,5 +181,10 @@
 
     .doughnutChartContainer {
       max-width: none;
+    }
+
+    .info{
+      max-width: none;
+
     }
   }
