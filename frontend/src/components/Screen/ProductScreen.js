@@ -162,6 +162,7 @@ const ProductScreen = (props) => {
                     }
                 );
                 setPriceInfo(data.data);
+                console.log(data.data)
             } catch (error) {
                 setPriceInfo({});
             }
@@ -954,7 +955,7 @@ const ProductScreen = (props) => {
                                                                             >
                                                                                 +{" "}
                                                                                 {
-                                                                                    priceInfo.modelPrice
+                                                                                    priceInfo.modelPrice?.toFixed(2)
                                                                                 }
 
                                                                                 €{" "}
