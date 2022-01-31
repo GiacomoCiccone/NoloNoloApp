@@ -596,10 +596,10 @@ const RentInfoScreen = (props) => {
                                                     {userInfo.first_name}{" "}
                                                     {userInfo.last_name}
                                                     <br />
-                                                    {rent.address.via}
+                                                    {rent.address ? rent.address.via : userInfo.address.via}
                                                     <br />
-                                                    {rent.address.city}{" "}
-                                                    {rent.address.postal_code}
+                                                    {rent.address ? rent.address.city : userInfo.address.city}{" "}
+                                                    {rent.address ? rent.address.postal_code : userInfo.address.postal_code}
                                                     <br />
                                                     {userInfo.email}
                                                     <br />
