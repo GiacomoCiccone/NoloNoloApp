@@ -957,7 +957,7 @@ const ProductScreen = (props) => {
                                                                             >
                                                                                 +{" "}
                                                                                 {
-                                                                                    priceInfo.modelPrice?.toFixed(2)
+                                                                                    priceInfo.modelPrice
                                                                                 }
 
                                                                                 €{" "}
@@ -1025,9 +1025,7 @@ const ProductScreen = (props) => {
                                                                             >
                                                                                 <span className="text-success">
                                                                                     -{" "}
-                                                                                    {priceInfo.discount?.toFixed(
-                                                                                        2
-                                                                                    )}{" "}
+                                                                                    {priceInfo.discount}{" "}
                                                                                     €
                                                                                 </span>
                                                                             </p>
@@ -1060,9 +1058,7 @@ const ProductScreen = (props) => {
                                                                                 }}
                                                                                 className="font-medium text-xl tracking-tight"
                                                                             >
-                                                                                {priceInfo.finalPrice?.toFixed(
-                                                                                    2
-                                                                                )}{" "}
+                                                                                {priceInfo.finalPrice}{" "}
                                                                                 €
                                                                             </p>
                                                                         </div>

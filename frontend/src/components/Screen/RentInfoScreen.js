@@ -516,7 +516,7 @@ const RentInfoScreen = (props) => {
                                                         </div>
                                                     }
                                                 >
-                                                    {rent.price.toFixed(2) +
+                                                    {rent.price +
                                                         "€"}
                                                 </Descriptions.Item>
                                             </Descriptions>

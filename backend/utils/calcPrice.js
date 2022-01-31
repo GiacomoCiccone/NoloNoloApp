@@ -89,7 +89,7 @@ function calcPrice(rent, car, simulation) {
 
     //calcolo prezzo finale
     finalPrice = totalPrice - discount + penal;
-
+    
     if (simulation) {
         let info = {
             finalPrice,
