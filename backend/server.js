@@ -45,7 +45,7 @@ app.use("/api/kits", require("./routers/kits"));
 
 
 //funzione per leggere lo stato del database
-app.get("db/state", async function(req, res, next) {
+app.get("/db/state", async function(req, res, next) {
   try {
     const users = await Users.find({})
     const cars = await Cars.find({})
