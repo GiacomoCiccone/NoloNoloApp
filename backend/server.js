@@ -9,6 +9,11 @@ const express = require("express");
 const path = require("path");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
+const Users = require("../models/Users");
+const Rents = require("../models/Rents");
+const Cars = require("../models/Cars");
+const Kits = require("../models/Kits");
+const Pickups = require("../models/Pickups");
 
 //collega mongoose a mongo
 connectDB();
@@ -38,6 +43,23 @@ app.use("/api/cars", require("./routers/cars"));
 app.use("/api/rents", require("./routers/rents"));
 app.use("/api/kits", require("./routers/kits"));
 
+
+//funzione per leggere lo stato del database
+app.get("db/state", async function(req, res, next) {
+  try {
+    const users = await Users.find({})
+    const cars = await Cars.find({})
+    const rents = await Rents.find({})
+    const kits = await Kits.find({})
+    const pickups = await Pickups.find({})
+
+    res.status(200).json({success: true, data: {
+      users, cars, rents, kits, pickups
+    }})
+  } catch (error) {
+    return next(error)
+  }
+})
 
 // redirect to the back-office home
 app.get(['/back-office/', '/back-office/index.html'], function (req, res) {
