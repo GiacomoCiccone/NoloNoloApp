@@ -284,9 +284,10 @@ $(document).on('hidden.bs.modal','#multiUseModal', function () {
     let email_content = $('#mailContent').val();
     let email_subject = $('#mailSubject').val();
     var user_token = window.localStorage.getItem('token');
+
     let payload = {
         subject : email_subject,
-        text : email_content
+        message : email_content
     }
 
     sendPayload(payload, 'users/contacts/' + id, user_token, 'POST');
