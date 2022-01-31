@@ -957,7 +957,7 @@ const ProductScreen = (props) => {
                                                                             >
                                                                                 +{" "}
                                                                                 {
-                                                                                    priceInfo.modelPrice
+                                                                                    parseFloat(priceInfo.modelPrice).toFixed(2)
                                                                                 }
 
                                                                                 €{" "}
@@ -1025,7 +1025,7 @@ const ProductScreen = (props) => {
                                                                             >
                                                                                 <span className="text-success">
                                                                                     -{" "}
-                                                                                    {priceInfo.discount}{" "}
+                                                                                    {parseFloat(priceInfo.discount).toFixed(2)}{" "}
                                                                                     €
                                                                                 </span>
                                                                             </p>
@@ -1058,7 +1058,7 @@ const ProductScreen = (props) => {
                                                                                 }}
                                                                                 className="font-medium text-xl tracking-tight"
                                                                             >
-                                                                                {priceInfo.finalPrice}{" "}
+                                                                                {parseFloat(priceInfo.finalPrice).toFixed(2)}{" "}
                                                                                 €
                                                                             </p>
                                                                         </div>

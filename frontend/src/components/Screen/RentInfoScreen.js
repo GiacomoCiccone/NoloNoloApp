@@ -516,7 +516,7 @@ const RentInfoScreen = (props) => {
                                                         </div>
                                                     }
                                                 >
-                                                    {rent.price +
+                                                    {parseFloat(rent.price).toFixed(2) +
                                                         "€"}
                                                 </Descriptions.Item>
                                             </Descriptions>
@@ -636,7 +636,7 @@ const RentInfoScreen = (props) => {
                                                         </div>
                                                         <div className="text-right font-medium">
                                                             {
-                                                                priceInfo.modelPrice
+                                                                parseFloat(priceInfo.modelPrice).toFixed(2)
                                                             }{" "}
                                                             €{" "}
                                                             <span className="text-xs">
@@ -706,7 +706,7 @@ const RentInfoScreen = (props) => {
                                                         <div>Sconti</div>
                                                         <div className="text-right font-medium">
                                                             -{" "}
-                                                            {priceInfo.discount}{" "}
+                                                            {parseFloat(priceInfo.discount).toFixed(2)}{" "}
                                                             €
                                                         </div>
                                                     </div>
@@ -723,7 +723,7 @@ const RentInfoScreen = (props) => {
                                                             />
                                                         </div>
                                                         <div className="text-right font-medium">
-                                                            + {priceInfo.penal}{" "}
+                                                            + {parseFloat(priceInfo.penal).toFixed(2)}{" "}
                                                             €
                                                         </div>
                                                     </div>
@@ -734,7 +734,7 @@ const RentInfoScreen = (props) => {
                                                         </div>
                                                         <div className="text-right font-medium text-xl">
                                                             {
-                                                                priceInfo.finalPrice
+                                                                parseFloat(priceInfo.finalPrice).toFixed(2)
                                                             }{" "}
                                                             €
                                                         </div>
