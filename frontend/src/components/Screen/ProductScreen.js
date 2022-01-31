@@ -151,6 +151,8 @@ const ProductScreen = (props) => {
                 });
             }
 
+            console.log(bagKits)
+
             let carId = cars.filter(
                 (car) => car.condition === selectedCondition
             )[0]._id;
