@@ -48,8 +48,18 @@ function loadDetailsById(id){
         console.log(data)
         $.each(JSON.parse(data), function(key, val) {
             if (val._id === id.toString()){
-                $("#kit-title-value").text(val.point);
-                $("#kit-type-value").text(val.type);
+                
+                // nome
+                $("#kit-title-value").text(val.name);
+                $("#kitName").val(val.name);
+
+                // prezzo
+                $("#kit-price-value").text(val.price);
+                $("#kitPrice").val(val.price);
+
+                // immagine
+                $("#kit-image-value").text(val.image);
+                $("#kitImage").val(val.image);
             }
         })
     });
@@ -60,13 +70,19 @@ function loadDetailsById(id){
  *  Versione del kit.
  */
 function createKit(){
-    var data = $('#kitName').val();
-    var type = document.querySelector('input[name="selezioneTipokit"]:checked').value;
-
     var user_token = window.localStorage.getItem('token');
     if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
-    
-    var payload = {point : data, type : type};
+
+    let name_ = $("#kitName").val();
+
+    // prezzo
+    let price_ = $("#kitPrice").val();
+
+    // immagine
+    let image_ = $("#kitImage").val();
+
+    // manda i dati con una PUT al backend
+    let payload = {name : name_, image : image_, price : price_};
     sendPayload(payload, 'kits/', user_token, 'POST');
     fetchDataFromServer('kits/');
 }
@@ -133,12 +149,19 @@ $(document).on('click','#apply-modifications', (e) => {
     // prendi le informazioni necessarie
     let user_token = window.localStorage.getItem('token');
     let id = $('#multiUseModal').data('id');
-    let data = $("#pickup-title-value").text();
-    let type = $("#pickup-type-value").text();
+
+    // prendi le informazioni necessarie
+    let name_ = $("#kitName").val();
+
+    // prezzo
+    let price_ = $("#kitPrice").val();
+
+    // immagine
+    let image_ = $("#kitImage").val();
 
     // manda i dati con una PUT al backend
-    let payload = {point : data, type : type};
-    sendPayload(payload, 'pickups/' + id, user_token, 'PUT');
-    fetchDataFromServer('pickups/');
+    let payload = {name : name_, image : image_, price : price_};
+    sendPayload(payload, 'kits/' + id, user_token, 'PUT');
+    fetchDataFromServer('kits/');
     }
 );

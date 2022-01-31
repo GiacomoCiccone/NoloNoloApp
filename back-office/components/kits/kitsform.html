@@ -7,24 +7,27 @@
 <div class="modal-body">
   <form>
     <div class="form-group m-2">
-      <label for="pickupPlace">Zona del luogo di ritiro</label>
-      <input type="text" class="form-control" id="pickupName" aria-describedby="Nome luogo ritiro" placeholder="Via nolonolo...">
+      <label for="kitName">Nome kit:</label>
+      <input id="kitName" class="form-control form-control-small modify-input-text" type="text" placeholder="Inserisci il nome del kit...">
     </div>
-    <div class="form-check m-2">
-      <input class="form-check-input" type="radio" name="selezioneTipoPickup" id="pulsanteStazione" value="station" checked>
-      <label class="form-check-label" for="pulsanteStazione">
-          Stazione
-      </label>
+    <div class="form-group m-2">
+      <label for="kitImage">URL Immagine:</label>
+      <input id="kitImage" class="form-control form-control-small modify-input-text" type="text" placeholder="Inerisci l'URL dell'immagine">
     </div>
-    <div class="form-check m-2">
-      <input class="form-check-input" type="radio" name="selezioneTipoPickup" id="pulsanteAereoporto" value="airport">
-      <label class="form-check-label" for="pulsanteAereoporto">
-          Aereoporto
-      </label>
+    <div class="form-group m-2">
+      <label for="kitPrice">Prezzo:</label>
+      <div class="col-md-4">
+        <div class="input-group col-md-4">
+          <input id="kitPrice" type="number" placeholder="Prezzo" class="form-control modify-input-text" aria-label="Prezzo kit">
+          <div class="input-group-append">
+            <span class="input-group-text">€</span>
+          </div>
+        </div>
+      </div>
     </div>
   </form>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
-  <button type="button" id="send-pickup" class="btn btn-primary m-2" onclick="createPickup();" data-dismiss="modal">Crea</button>
+  <button type="button" id="send-pickup" class="btn btn-primary m-2" onclick="createKit();" data-dismiss="modal">Crea</button>
 </div>

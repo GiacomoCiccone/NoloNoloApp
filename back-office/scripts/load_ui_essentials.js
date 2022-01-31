@@ -10,8 +10,6 @@ $(document).ready(() => {
         highlightSidebarEntry();
     });
 
-    $("#elements").load("components/loading-animation.html");
-
     $('#content-header').load("components/header.html", () => {
         
         // caricamento dei dati dell'utente loggato

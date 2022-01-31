@@ -11,6 +11,7 @@ const ErrorResponse = require("../utils/errorResponse");
 router.route("/").post(protect, async (req, res, next) => {
   if (req.userInfo.role === "admin" || req.userInfo.role === "manager") {
   try {
+    console
     const kit = new Kits({...req.body});
 
     await kit.save();

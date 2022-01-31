@@ -70,25 +70,19 @@
               <label class="form-check-label col-form-label col-form-label-sm" for="fromDatePeriod">
                 Dal
               </label>
-              <duet-date-picker identifier="fromDatePeriod" aria-describedby="Dal" required ></duet-date-picker>
+              <duet-date-picker identifier="sinceDate" aria-describedby="Dal" required ></duet-date-picker>
             </div>
             <div class="col-sm m-2">
-              <label class="form-check-label col-form-label col-form-label-sm" for="fromWeekDate">
-                dal giorno della settimana
+              <label class="form-check-label col-form-label col-form-label-sm" for="weekDays">
+                Giorni alla settimana:
               </label>
-              <input type="number" class="form-control form-control-sm" id="fromWeekDate" aria-describedby="dal giorno della settimana" required>
-            </div>
-            <div class="col-sm m-2">
-              <label class="form-check-label col-form-label col-form-label-sm" for="toWeekDate">
-                al giorno della settimana
-              </label>
-              <input type="number" class="form-control form-control-sm" id="toWeekDate" aria-describedby="al giorno della settimana" required>
+              <input type="number" class="form-control form-control-sm" id="weekDays" placeholder="Numero da 1 a 7" aria-describedby="Giorni alla settimana" required>
             </div>
             <div class="col-sm m-2">
               <label class="form-check-label col-form-label col-form-label-sm" for="weekPeriod">
                 Numero settimane:
               </label>
-              <input type="number" class="form-control form-control-sm" id="weekPeriod" aria-describedby="Numero settimane" required>
+              <input type="number" class="form-control form-control-sm" id="weekPeriod" placeholder="Numero da 1 a 54" aria-describedby="Numero settimane" required>
             </div>
           </div>
         </div>

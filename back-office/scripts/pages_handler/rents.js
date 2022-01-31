@@ -90,6 +90,9 @@ function loadDetailsById(id){
         // riempi ogni campo del menu della descrizioni
         $.each(JSON.parse(data), function(key, val) {
             if (val._id === id.toString()){
+                // mettere valori dentro a key
+
+                
                 // data creazione e ultima modifica
                 $('#creation-date').text(val.createdAt);
                 $('#change-date').text(val.updatedAt);
@@ -152,6 +155,9 @@ function loadDetailsById(id){
                     } else {
                         $('#rent-time-value').text('Prenotato da ' + days_week[val.period.from] + ' a ' + days_week[val.period.to] + ', per ' + val.period.for + ' settimane, dal ' + string_date);
                     }
+
+                    $('#classicRentDiv').addClass('hidden');
+                    $('#periodicRentDiv').removeClass('hidden');
                 }
                 
                 // consegna in ritardo
@@ -186,43 +192,54 @@ function loadDetailsById(id){
  *  Versione delle auto.
  */
 function createRent(){
-    let _img_url = $('#autoImage').val();
-    let _model = $('#autoModel').val();
-    let _brand = $('#autoBrand').val();
-    let _cond = document.querySelector('input[name="selezioneCondizAuto"]:checked').value;
-    let _pickup = $('#pickupPlace').val();
-    let _tag =  $('#carTag').val();
-    let _desc = $('#autoDescription').val();
-    let _seats = $('#seatsNumber').val();
-    let _isAutomatic = document.getElementById('hasAutomaticTransmission').checked;
-    let _isThreeDoors = document.getElementById('hasThreeDoors').checked;
-    let _bags = $('#baggagesNumber').val();
-    let _isElec = document.getElementById('isElectric').checked;
-    let _price = $('#basePrice').val();
-    let _unavaiable = getUnavailDate();
 
+    let _rent_kits = $('#kitsRent').val();
+    let _car_id = $('#autoRent').val();
+    let _user_id = $('#userRent').val();
+    let _rent_status = $('#rentStatus').val()
+    let _rent_type = document.querySelector('input[name="rentType"]:checked').value;
+    let _classic = {from : null, to : null};
+    let _period = {from : null, to : null, since: null, for: null, singleDay: null};
+    let _rent_obj = {car: _car_id, kits: _rent_kits};
+
+    if (_rent_type === 'classic'){
+        _period = null;
+        _classic.from = new Date($('#fromDate').val())
+        _classic.to = new Date($('#toDate').val());
+        if (_classic.from > _classic.to) {
+            alert('invalid date for classic rent');
+            return;
+        }
+    } else {
+        _classic = null;
+        
+        let days_period = $('#weekDays').val();
+        _period.since = new Date($('#sinceDate').val());
+        _period.from = ((_period.since.getDay() + 6) % 7) + 1;
+        _period.to = _period.from;
+        for (let i = 0; i < days_period - 1; i++) {
+            _period.to = _period.to + 1;
+            if (_period.to === 8) {
+                _period.to = 1;
+            }
+        }
+        _period.for = $('#weekPeriod').val();
+        _period.singleDay = (_period.from === _period.to);
+    }
 
     var user_token = window.localStorage.getItem('token');
     if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
     
     let payload = {
-        image : _img_url, 
-        model : _brand + " " + _model,
-        brand : _brand,
-        condition : _cond,
-        place : _pickup,
-        tag : _tag,
-        description : _desc,
-        seats : _seats,
-        hasAutomaticTransmission : _isAutomatic,
-        hasThreeDoors : _isThreeDoors,
-        baggageSize : _bags,
-        isElectric : _isElec,
-        basePrice : _price,
-        unavaiable : _unavaiable != null ? _unavaiable : undefined
+        customer : _user_id, 
+        rentObj : _rent_obj,
+        state : _rent_status,
+        type : _rent_type,
+        classic : _classic,
+        period : _period,
     };
 
-    console.log(JSON.stringify(payload));
+    // console.log(JSON.stringify(payload));
     
     sendPayload(payload, 'rents/', user_token, 'POST');
 }
@@ -265,9 +282,9 @@ function getUnavailDate(){
  */
  function showStatusButton(val){
     if (val === 'accepted')
-        return '<a href="#" class="btn btn-success change-status-btn"><i class="fas fa-check"></i>&nbsp; Concludi</a>';
+        return '<a href="#" class="btn btn-success conclude-status-btn"><i class="fas fa-check"></i>&nbsp; Concludi</a>';
     else if (val === 'pending')
-        return '<a href="#" class="btn btn-success change-status-btn"><i class="fas fa-check"></i>&nbsp; Accetta</a>';
+        return '<a href="#" class="btn btn-success accept-status-btn"><i class="fas fa-check"></i>&nbsp; Accetta</a>';
     else
         return '';
 }
@@ -354,48 +371,63 @@ $(document).on('click','#apply-modifications', (e) => {
     // autorizza utente
     verifyAction();
 
-    let _img_url = $('#autoImage').val();
-    let _model = $('#autoModel').val();
-    let _brand = $('#autoBrand').val();
-    let _cond = document.querySelector('input[name="selezioneCondizAuto"]:checked').value;
-    let _pickup = $('#pickupPlace').val();
-    let _tag =  $('#carTag').val();
-    let _desc = $('#autoDescription').val();
-    let _seats = $('#seatsNumber').val();
-    let _isAutomatic = document.getElementById('hasAutomaticTransmission').checked;
-    let _isThreeDoors = document.getElementById('hasThreeDoors').checked;
-    let _bags = $('#baggagesNumber').val();
-    let _isElec = document.getElementById('isElectric').checked;
-    let _price = $('#basePrice').val();
     let id = $('#multiUseModal').data('id');
-    let _unavaiable = getUnavailDate();
 
+    let _rent_isLate = $('#isLate').is(":checked")
+    let _rent_type = document.querySelector('input[name="rentType"]:checked').value;
+    let _classic = {from : null, to : null};
+    let _period = {from : null, to : null, since: null, for: null, singleDay: null};
+
+    if (_rent_type === 'classic'){
+        _period = null;
+        _classic.from = new Date($('#fromDate').val())
+        _classic.to = new Date($('#toDate').val());
+        if (_classic.from > _classic.to) {
+            alert('invalid date for classic rent');
+            return;
+        }
+    } else {
+        _classic = null;
+        
+        let days_period = $('#weekDays').val();
+        _period.since = new Date($('#sinceDate').val());
+        _period.from = ((_period.since.getDay() + 6) % 7) + 1;
+        _period.to = _period.from;
+        for (let i = 0; i < days_period - 1; i++) {
+            _period.to = _period.to + 1;
+            if (_period.to === 8) {
+                _period.to = 1;
+            }
+        }
+        _period.for = $('#weekPeriod').val();
+        _period.singleDay = (_period.from === _period.to);
+    }
 
     var user_token = window.localStorage.getItem('token');
     if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
     
-    let payload = {
-        image : _img_url, 
-        model : _brand + " " + _model,
-        brand : _brand,
-        condition : _cond,
-        place : _pickup,
-        tag : _tag,
-        description : _desc,
-        seats : _seats,
-        hasAutomaticTransmission : _isAutomatic,
-        hasThreeDoors : _isThreeDoors,
-        baggageSize : _bags,
-        isElectric : _isElec,
-        basePrice : _price,
-        unavaiable : _unavaiable != null ? _unavaiable : null
-    };
+    let payload;
+    if (sessionStorage.getItem('hasMadeChanges') == 1){
+        payload = {
+            isLate : _rent_isLate,
+            type : _rent_type,
+            classic : _classic,
+            period : _period,
+        }
+    } else {
+        payload = {
+            isLate : _rent_isLate,
+        }
+    }
+    
     sendPayload(payload, 'rents/' + id, user_token, 'PUT');
-    updateDisplayedEntries();
     }
 );
 
-
+/** Usata per mostrare solo le non deprecate.
+ * 
+ * 
+ */
 function carAvailability(val){
     if (val == null || Date.now() < new Date(val.from)){
         return 'available';
@@ -419,7 +451,7 @@ function carAvailability(val){
  */
 function displayAutoSelect(data){
     $.each(data, function(key, val) { 
-        if (carAvailability(val.unavaiable) != 'deprecato') {
+        if (carAvailability(val.unavaiable) === 'available') {
             var element =   
             '<option value="' + val._id +'">' + val.model +', ' + val.condition + ', '+ val.place.point+ ', ' + val.basePrice + '€</option>';
             $("#autoRent").append(element);
@@ -506,7 +538,7 @@ function fetchDataFromServerBruteForce(url){
 /** Azioni da eseguire quando si preme il tasto conferma per il checkbox
  * 
  */
- $(document).on('click','.confirm-checkbox-car',(e) => {
+ $(document).on('click','.confirm-date-rent',(e) => {
     // autorizza utente
     verifyAction();
 
@@ -518,79 +550,59 @@ function fetchDataFromServerBruteForce(url){
 
     let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
     let modify_button = $(e.currentTarget).siblings(".modify"); 
+
+    let _rent_type = document.querySelector('input[name="rentType"]:checked').value;
+    let _classic = {from : null, to : null};
+    let _period = {from : null, to : null, since: null, for: null, singleDay: null};
 
     // cambia i valori della UI
-    $("#car-bool-value-electric").text($('#isElectric').is(":checked"))
-    $("#car-bool-value-automatic").text($('#hasAutomaticTransmission').is(":checked"))
-    $("#car-bool-value-doors").text($('#hasThreeDoors').is(":checked"))
-
-
-    // nascondi bottoni, mostra altri
-    // nasconde anche il form di input per la modifica
-    modify_button.removeClass("hidden");
-    modify_button.focus(); 
-    input_form.addClass("hidden"); // shows input forms and buttons
-    $(e.currentTarget).addClass("hidden"); // hides confirm button
-    }
-);
-
-/** Conferma la modifica dei dati per la data e la disponibilità
- * 
- * 
- */
-$(document).on('click','.confirm-avail-car',(e) => {
-    // autorizza utente
-    verifyAction();
-
-    // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
-    if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
-        sessionStorage.setItem('hasMadeChanges', 1);
-        $("#apply-modifications").removeClass('hidden');
-    }
-
-    // roba per codice UI
-    let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
-    let modify_button = $(e.currentTarget).siblings(".modify"); 
-
-    // cambia i valori della UI 
-    try {
-        if ($("#notAvail").is(":checked")){
-
-            // mostra i campi delle date in modo corretto
-            let from_date = new Date($('#fromDate').val());
-            var year = from_date.getUTCFullYear();
-            if (year < 1970) from_date.setFullYear(1969);
-            let date_string = from_date.toISOString();
-            date_string = date_string.split('T')[0];
-            $("#car-date-from").html(date_string);
-            $("#car-unavail-date").addClass('text-danger');
-            $("#car-unavail-date").removeClass('text-success');
-            $("#avail").html("Non disponibile dal &nbsp;");
-
-            let to_date_text = $('#toDate').val();
-            if (to_date_text != "" && to_date_text != null) {
-                $('#to-text').removeClass('hidden');
-                let to_date = new Date(to_date_text);
-                var year = to_date.getUTCFullYear();
-                if (year < 1970) to_date.setFullYear(1969);
-                date_string = to_date.toISOString();
-                date_string = date_string.split('T')[0];
-                $("#car-date-to").html(date_string);
-            } else {
-                $('#to-text').addClass('hidden');
-                $("#car-date-to").html("");
-            }
-        } else {
-            $("#car-unavail-date").addClass('text-success');
-            $("#car-unavail-date").removeClass('text-danger');
-            $("#avail").html("Disponibile nel nostro magazzino");
-            $("#car-date-from").html("");
-            $('#to-text').addClass('hidden');
-            $("#car-date-to").html("");
+    if (_rent_type === 'classic'){
+        _period = null;
+        _classic.from = $('#fromDate').val()
+        _classic.to = $('#toDate').val();
+        if (_classic.from > _classic.to) {
+            alert('invalid date for classic rent');
+            return;
         }
-    } catch (e) {
-        alert("date error");
+    } else {
+        _classic = null;
+        
+        let days_period = $('#weekDays').val();
+        _period.since = new Date($('#sinceDate').val());
+        _period.from = ((_period.since.getDay() + 6) % 7) + 1;
+        _period.to = _period.from;
+        for (let i = 0; i < days_period - 1; i++) {
+            _period.to = _period.to + 1;
+            if (_period.to === 8) {
+                _period.to = 1;
+            }
+        }
+        _period.for = $('#weekPeriod').val();
+        _period.singleDay = (_period.from === _period.to);
     }
+
+    // Tipo prenotazione
+    $("#rent-type-value").text(_rent_type);
+
+    // informazione temporale
+    let days_week = [0, "lunedì", "martedì", "mercoledì", "giovedì", "venerdì", "sabato", "domenica"]
+    if (_rent_type === 'classic') {
+        let from_date = _classic.from
+        let to_date = _classic.to
+        $('#rent-time-value').text('Prenotato dal ' + from_date + ' al ' + to_date);
+    } else {
+        let string_date = _period.since
+        string_date = string_date.split('T')[0]
+        if (_period.singleDay){
+            $('#rent-time-value').text('Prenotato un giorno (' + days_week[_period.from] + '), per ' + _period.for + ' settimane, dal ' + string_date);
+        } else {
+            $('#rent-time-value').text('Prenotato da ' + days_week[_period.from] + ' a ' + days_week[_period.to] + ', per ' + _period.for + ' settimane, dal ' + string_date);
+        }
+
+        $('#classicRentDiv').addClass('hidden');
+        $('#periodicRentDiv').removeClass('hidden');
+    }
+
 
     // nascondi bottoni, mostra altri
     // nasconde anche il form di input per la modifica
@@ -602,26 +614,23 @@ $(document).on('click','.confirm-avail-car',(e) => {
 );
 
 
-
-/** Azioni da eseguire quando si preme il tasto conferma per il luogo di ritiro
+/** Modifica il tipo del rent, con data etc 
  * 
  */
- $(document).on('click','.confirm-pickup-car',(e) => {
+ $(document).on('click','.confirm-late-rent',(e) => {
     // autorizza utente
     verifyAction();
 
     // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
-    if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
-        sessionStorage.setItem('hasMadeChanges', 1);
-        $("#apply-modifications").removeClass('hidden');
-    }
+    $("#apply-modifications").removeClass('hidden');
 
     let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
     let modify_button = $(e.currentTarget).siblings(".modify"); 
 
+    let late = $('#isLate').is(":checked");
+
     // cambia i valori della UI
-    $("#car-pickup-value").text($('#pickupPlace option:selected').text())
-    $("#car-pickup-value").data("pickup_id", $('#pickupPlace').val());
+    $("#rent-late-value").text(late);
 
     // nascondi bottoni, mostra altri
     // nasconde anche il form di input per la modifica
@@ -632,50 +641,17 @@ $(document).on('click','.confirm-avail-car',(e) => {
     }
 );
 
-/** Azioni da eseguire quando si preme il tasto modifica in caso di input testuali
- * 
- */
- $(document).on('click','.modify-car-pickup-btn',(e) => {
+$(document).on('click','.conclude-status-btn',(e) => {
     // autorizza utente
     verifyAction();
-    let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
-    let confirm_button = $(e.currentTarget).siblings(".confirm"); 
-
-    // immetti il valore iniziale nel form
-    $("#pickupPlace").val($("#car-pickup-value").data("pickup_id"))
-
-    // nascondi il bottone, mostra gli altri
-    // mostra anche il form di input per la modifica
-    confirm_button.removeClass("hidden");
-    confirm_button.focus();
-    input_form.removeClass("hidden"); // shows input forms and buttons
-    $(e.currentTarget).addClass("hidden"); // hides modify button
-    }
-);
-
-/** Azioni da eseguire quando si preme il tasto modifica in caso di input testuali
- * 
- */
- $(document).on('click','.confirm-car-title-btn',(e) => {
-    // autorizza utente
-    verifyAction();
-    // mostra il pulsante "applica modifiche" solo se si è fatta una modifica 
-    if (sessionStorage.getItem('hasMadeChanges') !== 1) { 
-        sessionStorage.setItem('hasMadeChanges', 1);
-        $("#apply-modifications").removeClass('hidden');
-    }
-
-    let input_form = $(e.currentTarget).closest('.modify-container').find('.modify-input');
-    let modify_button = $(e.currentTarget).siblings(".modify"); 
-
-    // immetti il valore iniziale nel form
-    $("#car-title-value").text($("#autoBrand").val() + ' ' + $("#autoModel").val());    
+    let id = $(e.currentTarget).closest("[data-entryid]").data("entryid"); 
+    let user_token = window.localStorage.getItem('token');
+    if (user_token == null) {alert("user data not found"); window.replace("./"); return false;}
     
-    // nascondi il bottone, mostra gli altri
-    // mostra anche il form di input per la modifica
-    modify_button.removeClass("hidden");
-    modify_button.focus(); 
-    input_form.addClass("hidden"); // shows input forms and buttons
-    $(e.currentTarget).addClass("hidden"); // hides confirm button
+    let payload = {
+        state : 'concluded',
+    };
+    sendPayload(payload, 'rents/' + id, user_token, 'PUT');
+
     }
 );

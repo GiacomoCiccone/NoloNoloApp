@@ -397,7 +397,6 @@ $(document).on('click','#apply-modifications', (e) => {
         unavaiable : _unavaiable != null ? _unavaiable : null
     };
     sendPayload(payload, 'cars/' + id, user_token, 'PUT');
-    updateDisplayedEntries();
     }
 );
 
