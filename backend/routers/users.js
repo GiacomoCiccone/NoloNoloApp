@@ -6,6 +6,7 @@ const Users = require("../models/Users");
 const Rents = require("../models/Rents");
 const mongoose = require("mongoose");
 const ErrorResponse = require("../utils/errorResponse");
+const sendEmail = require("../utils/sendEmail");
 
 //CRUD
 
