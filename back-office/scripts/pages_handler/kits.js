@@ -103,8 +103,9 @@ function displayData(data){
  */
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
-    $("#elements").load("components/loading-animation.html");
-    return fetchDataFromServer('kits/');
+    $("#elements").load("components/loading-animation.html", () => {
+        return fetchDataFromServer('kits/');
+    });
 }
 
 /** Rimuove un kit.

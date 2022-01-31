@@ -112,8 +112,9 @@ function displayData(data){
  */
 function updateDisplayedEntries(){
     // mette la schermata di caricamento
-    $("#elements").load("components/loading-animation.html");
-    return fetchDataFromServer('pickups/');
+    $("#elements").load("components/loading-animation.html", () => {
+        return fetchDataFromServer('pickups/');
+    });
 }
 
 /** Rimuove un pickup.
